@@ -20,6 +20,13 @@ namespace Data.Models
         public int? ClubMembershipId { get; set; }
         public ClubMembership? ClubMembership { get; set; }
 
-        public ICollection<Group> Groups { get; set; }
+        public ICollection<Group> Groups { get; set; } = null!;
+
+        public Student(string firstName, string lastName, string gender)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Gender = gender;
+        }
     }
 }

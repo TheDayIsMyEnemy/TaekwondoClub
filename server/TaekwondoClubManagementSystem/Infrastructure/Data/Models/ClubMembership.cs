@@ -6,15 +6,17 @@ namespace Data.Models
     {
         public int Id { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        [Column(TypeName = "date")]
+        public DateTime StartDate { get; set; }
 
-        public DateTime? EndDate { get; set; }
-
-        [NotMapped]
-        public bool IsExpired => DateTime.Now > EndDate;
+        [Column(TypeName = "date")]
+        public DateTime EndDate { get; set; }
 
         public string? Note { get; set; }
 
-        public Student Student { get; set; }
+        public Student Student { get; set; } = null!;
+
+        [NotMapped]
+        public bool IsActive => DateTime.Now < EndDate;
     }
 }

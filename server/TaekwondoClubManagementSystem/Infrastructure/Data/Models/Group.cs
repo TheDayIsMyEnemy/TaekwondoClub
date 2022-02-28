@@ -6,12 +6,11 @@
 
         public string Name { get; set; }
 
-        public ICollection<Student> Students { get; set; }
+        public ICollection<Student> Students { get; set; } = null!;
 
         public Group(string name)
         {
             Name = name;
-            Students = new List<Student>();
         }
     }
 }

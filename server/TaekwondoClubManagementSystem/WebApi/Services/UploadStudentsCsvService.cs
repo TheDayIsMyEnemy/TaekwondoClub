@@ -37,7 +37,7 @@ namespace WebApi.Services
                     newStudents.Add(student);
             }
 
-            if (newStudents.Any()) 
+            if (newStudents.Any())
                 await _studentRepository.AddRangeAsync(newStudents);
 
             return newStudents.Count;
@@ -56,7 +56,7 @@ namespace WebApi.Services
 
         private Student CreateNewStudentFromCsvRow(string[] csvColumns, string[] csvRow)
         {
-            var student = new Student();
+            var student = new Student("", "", "");
 
             for (int colNum = 0; colNum < csvRow.Length; colNum++)
             {
