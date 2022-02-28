@@ -1,4 +1,4 @@
-﻿namespace Data.Models
+﻿namespace Infrastructure.Data.Models
 {
     public class Group
     {

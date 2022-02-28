@@ -1,4 +1,4 @@
-﻿using Data.Models;
+﻿using Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data

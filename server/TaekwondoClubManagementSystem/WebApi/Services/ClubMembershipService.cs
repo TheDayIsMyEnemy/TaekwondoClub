@@ -1,4 +1,4 @@
-﻿using Data.Models;
+﻿using Infrastructure.Data.Models;
 using Infrastructure.Data.Repositories.Interfaces;
 
 namespace WebApi.Services

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Data.Models
+namespace Infrastructure.Data.Models
 {
     public class ClubMembership
     {
@@ -17,6 +17,6 @@ namespace Data.Models
         public Student Student { get; set; } = null!;
 
         [NotMapped]
-        public bool IsActive => DateTime.Now < EndDate;
+        public bool IsActive => DateTime.Now.Date < EndDate.Date;
     }
 }
