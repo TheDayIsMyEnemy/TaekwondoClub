@@ -43,10 +43,10 @@ namespace WebApi.Services
             return newStudents.Count;
         }
 
-        private string[][] GetCsvRows(MemoryStream memoryStream)
+        private string[][] GetCsvRows(MemoryStream csvStream)
         {
             return Encoding.UTF8
-               .GetString(memoryStream.ToArray())
+               .GetString(csvStream.ToArray())
                .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
                .Select(row => row.Split(",")
                     .Select(rowValue => rowValue.Replace("\"", String.Empty))
@@ -57,41 +57,31 @@ namespace WebApi.Services
         private Student CreateNewStudentFromCsvRow(string[] csvColumns, string[] csvRow)
         {
             var student = new Student("", "", "");
+            var studentType = student.GetType();
 
             for (int colNum = 0; colNum < csvRow.Length; colNum++)
             {
                 var columnName = csvColumns[colNum];
                 var cellValue = csvRow[colNum];
 
-                if (_csvColumnToStudentProp.ContainsKey(columnName))
+                if (_csvColumnToStudentProp.ContainsKey(columnName) && 
+                    !string.IsNullOrWhiteSpace(cellValue))
                 {
                     var studentPropName = _csvColumnToStudentProp[columnName];
-                    var studentProp = student
-                        .GetType()
-                        .GetProperty(studentPropName);
-                    SetValueToStudentProp(student, cellValue, studentPropName, studentProp);
+                    var studentProp = studentType.GetProperty(studentPropName);
+                    var parsedCellValue = ParseCellValue(cellValue, studentPropName);
+                    studentProp?.SetValue(student, parsedCellValue);
                 }
             }
             return student;
         }
 
-        private void SetValueToStudentProp(Student student, string studentValue, string studentPropName, System.Reflection.PropertyInfo? studentProp)
+        private object ParseCellValue(string cellValue, string studentPropName)
         {
-            if (studentProp != null)
-            {
-                if (studentPropName == "BirthDate")
-                {
-                    DateTime? dateTime = DateTime
-                        .ParseExact(studentValue
-                        , "dd/MM/yyyy"
-                        , null);
-                    studentProp.SetValue(student, dateTime);
-                }
-                else
-                {
-                    studentProp.SetValue(student, studentValue);
-                }
-            }
+            if (studentPropName.Equals("BirthDate"))
+                return DateTime.ParseExact(cellValue, "dd/MM/yyyy", null);
+
+            return cellValue;
         }
     }
 }

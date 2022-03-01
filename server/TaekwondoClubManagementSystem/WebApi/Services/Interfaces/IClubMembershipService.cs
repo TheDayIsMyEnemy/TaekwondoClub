@@ -2,6 +2,6 @@
 {
     public interface IClubMembershipService
     {
-        public Task<bool> CreateClubMembership(int studentId, int days);
+        Task<bool> CreateNewClubMembership(int studentId, DateTime startDate, DateTime endDate);
     }
 }

@@ -5,19 +5,21 @@ namespace WebApi.Services
 {
     public class ClubMembershipService : IClubMembershipService
     {
+        public readonly IClubMembershipRepository _clubMembershipRepository;
         public readonly IStudentRepository _studentRepository;
 
         public ClubMembershipService(
+            IClubMembershipRepository clubMembershipRepository,
             IStudentRepository studentRepository)
-            
         {
+            _clubMembershipRepository = clubMembershipRepository;
             _studentRepository = studentRepository;
         }
 
-        public async Task<bool> CreateClubMembership(int studentId, int days)
+        public async Task<bool> CreateNewClubMembership(int studentId, DateTime startDate, DateTime endDate)
         {
             var student = await _studentRepository
-                .GetStudentAndClubMembershipByStudentId(studentId);
+                .GetByIdAsync(studentId);
 
             if (student == null)
                 return false;
@@ -25,20 +27,18 @@ namespace WebApi.Services
             if (student.ClubMembershipId.HasValue)
                 return false;
 
-            var dateNow = DateTime.Now;
-
-            student.ClubMembership = new ClubMembership
+            var clubMembership = new ClubMembership
             {
-                StartDate = dateNow,
-                EndDate = dateNow.AddDays(days)
+                Student = student,
+                StartDate = startDate,
+                EndDate = endDate
             };
 
-            await _studentRepository.UpdateAsync(student);
+            await _clubMembershipRepository.AddAsync(clubMembership);
             return true;
-            
         }
 
-        //public async Task<bool> UpdateMembeshipService(int studentId, int days)
+        //public async Task<bool> UpdateClubMembership(int clubMembershipId, int days)
         //{
         //    var student = await _context
         //        .Students

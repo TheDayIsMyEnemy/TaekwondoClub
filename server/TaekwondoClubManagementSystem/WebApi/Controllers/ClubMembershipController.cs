@@ -20,15 +20,15 @@ namespace WebApi.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] MembershipRequest request)
-        {
-            var result =
-                await _clubMembershipService
-                .CreateClubMembership(request.StudentId, request.MembershipExpirationDays);
+        //[HttpPost]
+        //public async Task<IActionResult> Create([FromBody] MembershipRequest request)
+        //{
+        //    var result =
+        //        await _clubMembershipService
+        //        .CreateNewClubMembership(request.StudentId, request.MembershipExpirationDays);
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
         //public void Update(MembershipRequest request)
         //{
