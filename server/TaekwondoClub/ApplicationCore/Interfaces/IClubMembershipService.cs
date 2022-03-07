@@ -1,4 +1,4 @@
-﻿namespace TaekwondoClub.Interfaces
+﻿namespace ApplicationCore.Interfaces
 {
     public interface IClubMembershipService
     {

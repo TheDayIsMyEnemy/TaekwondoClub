@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TaekwondoClub.Models
+namespace ApplicationCore.Models
 {
     public class ClubMembership
     {

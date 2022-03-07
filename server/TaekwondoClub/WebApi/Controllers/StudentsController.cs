@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaekwondoClub.Interfaces;
-using TaekwondoClub.Models;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Models;
 
 namespace WebApi.Controllers
 {

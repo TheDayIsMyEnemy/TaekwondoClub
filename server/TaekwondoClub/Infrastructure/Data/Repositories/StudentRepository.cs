@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaekwondoClub.Interfaces;
-using TaekwondoClub.Models;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Models;
 
 namespace Infrastructure.Data.Repositories
 {

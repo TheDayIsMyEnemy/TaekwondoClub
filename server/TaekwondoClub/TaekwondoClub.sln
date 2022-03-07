@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{9E84CC6D-B8CB-4E50-8A89-A375FEB43622}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaekwondoClub", "TaekwondoClub\TaekwondoClub.csproj", "{3CF12563-63E4-493E-B217-16AFA5657511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationCore", "ApplicationCore\ApplicationCore.csproj", "{3CF12563-63E4-493E-B217-16AFA5657511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

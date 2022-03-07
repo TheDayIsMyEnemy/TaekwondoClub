@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using TaekwondoClub.Interfaces;
-using TaekwondoClub.Models;
+using ApplicationCore.Interfaces;
+using ApplicationCore.Models;
 
-namespace TaekwondoClub.Services
+namespace ApplicationCore.Services
 {
     public class UploadStudentsCsvService : IUploadStudentsCsvService
     {
@@ -20,10 +20,15 @@ namespace TaekwondoClub.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<int> CreateNewStudentsFromCsvFile(MemoryStream csvStream)
+        public async Task<int> CreateStudentsFromCsvFile(Stream csvStream)
         {
-            // To do: Add validations 
-            var csvRows = GetCsvRows(csvStream);
+            if (csvStream == null || csvStream.Length == 0)
+                return 0;
+
+            var memoryStream = new MemoryStream();
+            await csvStream.CopyToAsync(memoryStream);
+
+            var csvRows = GetCsvRows(memoryStream);
             var csvColumns = csvRows[0];
             var newStudents = new List<Student>();
 

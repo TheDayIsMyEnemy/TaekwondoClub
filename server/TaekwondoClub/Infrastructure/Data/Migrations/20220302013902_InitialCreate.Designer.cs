@@ -39,7 +39,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("GroupStudent");
                 });
 
-            modelBuilder.Entity("TaekwondoClub.Models.ClubMembership", b =>
+            modelBuilder.Entity("ApplicationCore.Models.ClubMembership", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +61,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("ClubMemberships");
                 });
 
-            modelBuilder.Entity("TaekwondoClub.Models.Group", b =>
+            modelBuilder.Entity("ApplicationCore.Models.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +78,7 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("TaekwondoClub.Models.Student", b =>
+            modelBuilder.Entity("ApplicationCore.Models.Student", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,29 +118,29 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("GroupStudent", b =>
                 {
-                    b.HasOne("TaekwondoClub.Models.Group", null)
+                    b.HasOne("ApplicationCore.Models.Group", null)
                         .WithMany()
                         .HasForeignKey("GroupsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TaekwondoClub.Models.Student", null)
+                    b.HasOne("ApplicationCore.Models.Student", null)
                         .WithMany()
                         .HasForeignKey("StudentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TaekwondoClub.Models.Student", b =>
+            modelBuilder.Entity("ApplicationCore.Models.Student", b =>
                 {
-                    b.HasOne("TaekwondoClub.Models.ClubMembership", "ClubMembership")
+                    b.HasOne("ApplicationCore.Models.ClubMembership", "ClubMembership")
                         .WithOne("Student")
-                        .HasForeignKey("TaekwondoClub.Models.Student", "ClubMembershipId");
+                        .HasForeignKey("ApplicationCore.Models.Student", "ClubMembershipId");
 
                     b.Navigation("ClubMembership");
                 });
 
-            modelBuilder.Entity("TaekwondoClub.Models.ClubMembership", b =>
+            modelBuilder.Entity("ApplicationCore.Models.ClubMembership", b =>
                 {
                     b.Navigation("Student")
                         .IsRequired();

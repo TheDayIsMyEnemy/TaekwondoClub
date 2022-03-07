@@ -1,6 +1,6 @@
-﻿using TaekwondoClub.Models;
+﻿using ApplicationCore.Models;
 
-namespace TaekwondoClub.Interfaces
+namespace ApplicationCore.Interfaces
 {
     public interface IStudentRepository : IAsyncRepository<Student>
     {

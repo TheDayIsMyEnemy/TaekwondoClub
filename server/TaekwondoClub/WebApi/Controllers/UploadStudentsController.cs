@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaekwondoClub.Interfaces;
+using ApplicationCore.Interfaces;
 
 namespace WebApi.Controllers
 {
-    public class UploadStudentsCsvController : ApiControllerBase
+    public class UploadStudentsController : ApiControllerBase
     {
         private readonly IUploadStudentsCsvService _studentsCsvUploadService;
 
-        public UploadStudentsCsvController(IUploadStudentsCsvService studentsCsvUploadService)
+        public UploadStudentsController(IUploadStudentsCsvService studentsCsvUploadService)
         {
             _studentsCsvUploadService = studentsCsvUploadService;
         }
@@ -15,11 +15,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] IFormFile studentsCsv)
         {
-            var csvStream = new MemoryStream();
-            await studentsCsv.CopyToAsync(csvStream);
-
             var newStudentsCount = await _studentsCsvUploadService
-                .CreateNewStudentsFromCsvFile(csvStream);
+                .CreateStudentsFromCsvFile(studentsCsv.OpenReadStream());
 
             return Ok(newStudentsCount);
         }

@@ -1,8 +1,8 @@
+using ApplicationCore.Interfaces;
+using ApplicationCore.Services;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
-using TaekwondoClub.Interfaces;
-using TaekwondoClub.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

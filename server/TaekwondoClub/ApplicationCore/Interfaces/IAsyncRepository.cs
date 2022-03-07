@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace TaekwondoClub.Interfaces
+namespace ApplicationCore.Interfaces
 {
     public interface IAsyncRepository<TEntity> where TEntity : class
     {

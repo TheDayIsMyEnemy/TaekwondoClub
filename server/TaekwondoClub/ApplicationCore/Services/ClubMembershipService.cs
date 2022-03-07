@@ -1,7 +1,7 @@
-﻿using TaekwondoClub.Interfaces;
-using TaekwondoClub.Models;
+﻿using ApplicationCore.Interfaces;
+using ApplicationCore.Models;
 
-namespace TaekwondoClub.Services
+namespace ApplicationCore.Services
 {
     public class ClubMembershipService : IClubMembershipService
     {

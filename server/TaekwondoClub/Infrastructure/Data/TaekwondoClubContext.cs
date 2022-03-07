@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaekwondoClub.Models;
+using ApplicationCore.Models;
 
 namespace Infrastructure.Data
 {

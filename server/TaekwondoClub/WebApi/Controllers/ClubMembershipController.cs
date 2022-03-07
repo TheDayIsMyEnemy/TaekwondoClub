@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TaekwondoClub.Interfaces;
+﻿using ApplicationCore.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Models.Requests;
 
 namespace WebApi.Controllers

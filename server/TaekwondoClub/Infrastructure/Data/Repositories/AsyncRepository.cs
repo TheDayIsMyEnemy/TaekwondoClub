@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using TaekwondoClub.Interfaces;
+using ApplicationCore.Interfaces;
 
 namespace Infrastructure.Data.Repositories
 {
