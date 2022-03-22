@@ -1,14 +1,13 @@
 import React from "react";
 import "./css/App.css";
 import StudentTable from "./components/StudentTable";
+import { MantineProvider } from "@mantine/core";
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header"></header>
-      <StudentTable  />
-      <footer></footer>
-    </div>
+    <MantineProvider theme={{ colorScheme: "dark" }} withGlobalStyles>
+        <StudentTable />
+    </MantineProvider>
   );
 };
 

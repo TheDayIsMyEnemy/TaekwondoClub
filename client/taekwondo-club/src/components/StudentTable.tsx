@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../css/StudentTable.css";
-import "../css/CheckBox.css";
-import CheckBox from "./CheckBox";
+import { Table } from "@mantine/core";
 
 type Student = {
   id: number;
@@ -10,8 +8,8 @@ type Student = {
   gender: string;
   phoneNumber: string;
   birthDate: Date;
-  isPaid: boolean;
-}
+  isActive: boolean;
+};
 
 const StudentTable = () => {
   const [students, setStudents] = useState<Array<Student>>();
@@ -27,7 +25,7 @@ const StudentTable = () => {
   }, []);
 
   return (
-    <table className="students-table">
+    <Table>
       <thead>
         <tr>
           <th>Id</th>
@@ -36,9 +34,7 @@ const StudentTable = () => {
           <th>Gender</th>
           <th>PhoneNumber</th>
           <th>Date Of Birth</th>
-          <th>Payment</th>
-          <th>Check</th>
-          
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -51,14 +47,15 @@ const StudentTable = () => {
                 <td>{student.lastName}</td>
                 <td>{student.gender}</td>
                 <td>{student.phoneNumber}</td>
-                <td>{new Date(student.birthDate).toLocaleDateString("bg-BG")}</td>
-                <td>{student.isPaid}</td>
-                <td><CheckBox/></td>
+                <td>
+                  {new Date(student.birthDate).toLocaleDateString("bg-BG")}
+                </td>
+                <td>{student.isActive}</td>
               </tr>
             );
           })}
       </tbody>
-    </table>
+    </Table>
   );
 };
 
