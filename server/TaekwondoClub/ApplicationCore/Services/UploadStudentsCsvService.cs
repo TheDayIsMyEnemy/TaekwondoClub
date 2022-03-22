@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models;
+using ApplicationCore.Enums;
 
 namespace ApplicationCore.Services
 {
@@ -20,16 +21,33 @@ namespace ApplicationCore.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<int> CreateStudentsFromCsvFile(Stream csvStream)
+        public async Task<(CreateStudentsFromCsvOutcome, int?)> CreateStudentsFromCsvFile(Stream csvStream)
         {
-            if (csvStream == null || csvStream.Length == 0)
-                return 0;
+            if (csvStream == null)
+                return (CreateStudentsFromCsvOutcome.FileNotFound, null);
+
+            if (csvStream.Length == 0)
+                return (CreateStudentsFromCsvOutcome.EmptyFile, null);
 
             var memoryStream = new MemoryStream();
             await csvStream.CopyToAsync(memoryStream);
 
-            var csvRows = GetCsvRows(memoryStream);
-            var csvColumns = csvRows[0];
+            string[] csvColumns = null;
+            string[][] csvRows = null;
+
+            try
+            {
+                csvRows = GetCsvRows(memoryStream);
+                csvColumns = csvRows[0];
+            }
+            catch (Exception)
+            {
+                return (CreateStudentsFromCsvOutcome.InvalidFile, null);
+            }
+
+            if (!ValidateColumns(csvColumns))
+                return (CreateStudentsFromCsvOutcome.MissingRequiredColumns, null);          
+
             var newStudents = new List<Student>();
 
             for (int row = 1; row < csvRows.Length; row++)
@@ -44,7 +62,13 @@ namespace ApplicationCore.Services
             if (newStudents.Any())
                 await _studentRepository.AddRangeAsync(newStudents);
 
-            return newStudents.Count;
+            return (CreateStudentsFromCsvOutcome.Success, newStudents.Count);
+        }
+
+        private bool ValidateColumns(string[] csvColumns)
+        {
+            return true;
+            // check if all required columns exist
         }
 
         private string[][] GetCsvRows(MemoryStream csvStream)

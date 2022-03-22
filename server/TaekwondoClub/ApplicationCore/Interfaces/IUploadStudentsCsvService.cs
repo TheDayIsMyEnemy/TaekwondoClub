@@ -1,7 +1,9 @@
-﻿namespace ApplicationCore.Interfaces
+﻿using ApplicationCore.Enums;
+
+namespace ApplicationCore.Interfaces
 {
     public interface IUploadStudentsCsvService
     {
-        public Task<int> CreateStudentsFromCsvFile(Stream csvStream);
+        public Task<(CreateStudentsFromCsvOutcome, int?)> CreateStudentsFromCsvFile(Stream csvStream);
     }
 }
