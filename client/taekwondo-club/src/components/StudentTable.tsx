@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "@mantine/core";
+import { AppShell, Table } from "@mantine/core";
+
 
 type Student = {
   id: number;
@@ -25,6 +26,7 @@ const StudentTable = () => {
   }, []);
 
   return (
+
     <Table>
       <thead>
         <tr>
@@ -50,7 +52,7 @@ const StudentTable = () => {
                 <td>
                   {new Date(student.birthDate).toLocaleDateString("bg-BG")}
                 </td>
-                <td>{student.isActive}</td>
+                <td>{student.isActive ? "Yes" : "No"}</td>
               </tr>
             );
           })}
