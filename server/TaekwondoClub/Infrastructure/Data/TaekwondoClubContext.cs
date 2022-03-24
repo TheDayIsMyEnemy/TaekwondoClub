@@ -29,6 +29,10 @@ namespace Infrastructure.Data
                 .HasColumnType(dateColumnType);
             builder
                 .Entity<ClubMembership>()
+                .Property(p => p.CreatedDate)
+                .HasColumnType(dateColumnType);
+            builder
+                .Entity<ClubMembership>()
                 .Ignore(p => p.IsActive);
         }
     }

@@ -31,37 +31,43 @@ namespace ApplicationCore.Services
             {
                 StudentId = studentId,
                 StartDate = startDate,
-                EndDate = endDate
+                EndDate = endDate,
+                CreatedDate = DateTime.Now
             };
 
-            await _clubMembershipRepository.AddAsync(clubMembership);
+            try
+            {
+                await _clubMembershipRepository.AddAsync(clubMembership);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            
             return true;
         }
 
-        //public async Task<bool> UpdateClubMembership(int clubMembershipId, int days)
-        //{
-        //    var student = await _context
-        //        .Students
-        //        .FirstOrDefaultAsync(s => s.Id == studentId);
+        public async Task<bool> UpdateClubMembership(int clubMembershipId, DateTime startDate, DateTime endDate)
+        {
+            var clubMembership = await _clubMembershipRepository.GetByIdAsync(clubMembershipId);
 
-        //    if (student == null)
-        //        return false;
+            if (clubMembership == null)
+                return false;
 
-        //    var dateNow = DateTime.Now;
+            clubMembership.StartDate = startDate;
+            clubMembership.EndDate = endDate;
 
-        //    if (student.Membership.IsExpired)
-        //    {
-        //        student.Membership.StartDate = dateNow;
-        //        student.Membership.EndDate = dateNow.AddDays(days);
-        //    }
-        //    else
-        //    {
-        //        int daysLeft = (student.Membership.EndDate - student.Membership.StartDate).Value.Days;
-        //        int totalMembershipDays = daysLeft + days;
-        //        student.Membership.StartDate = dateNow;
-        //        student.Membership.EndDate = dateNow.AddDays(daysLeft);
-        //    }
-        //    return true;
-        //}
+            try
+            {
+                await _clubMembershipRepository.UpdateAsync(clubMembership);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            
+            return true;
+        }
     }
 }

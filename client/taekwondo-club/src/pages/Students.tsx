@@ -5,13 +5,19 @@ import { Student } from "../types";
 import axios from "axios";
 
 export const Students = () => {
-  const [activePage, setPage] = useState(1);
+  const [activePage, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
-    axios.get("https://localhost:7258/students")
-      .then(res => setStudents(res.data));
-  }, [activePage]);
+    if (!isLoading) {
+      setIsLoading(true);
+      axios.get("https://localhost:7258/students").then((res) => {
+        setStudents(res.data);
+        setIsLoading(false);
+      });
+    }
+  }, []);
 
   return (
     <Paper
@@ -21,19 +27,25 @@ export const Students = () => {
       component={ScrollArea}
       style={{ height: "calc(100vh - 110px)" }}
     >
-      <Text>Current page: {activePage}</Text>
-      <StudentTable students={students} />
-      <Space h="sm" />
-      <Pagination
-        total={20}
-        color="orange"
-        size="md"
-        radius="md"
-        siblings={1} // default to 1
-        boundaries={2} // default to 1
-        page={activePage}
-        onChange={setPage}
-      />
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : (
+        <>
+          <Text>Current page: {activePage}</Text>
+          <StudentTable students={students} />
+          <Space h="sm" />
+          <Pagination
+            total={20}
+            color="orange"
+            size="md"
+            radius="md"
+            siblings={1} // default to 1
+            boundaries={2} // default to 1
+            page={activePage}
+            onChange={setPage}
+          />
+        </>
+      )}
     </Paper>
   );
 };

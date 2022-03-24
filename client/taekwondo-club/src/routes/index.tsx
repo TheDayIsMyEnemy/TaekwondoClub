@@ -1,3 +1,4 @@
+import { Home } from "../pages/Home";
 import { Students } from "../pages/Students";
 import { UploadStudents } from "../pages/UploadStudents";
 
@@ -17,7 +18,7 @@ const routes: Route[] = [
   {
     name: "Home",
     path: "/",
-    element: Students,
+    element: Home,
     color: "pink",
     icon: HomeIcon,
   },
@@ -29,7 +30,7 @@ const routes: Route[] = [
     color: "lime",
   },
   {
-    name: "Upload students",
+    name: "Upload Students",
     path: "/upload-students",
     element: UploadStudents,
     icon: UploadIcon,
