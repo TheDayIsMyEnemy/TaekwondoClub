@@ -1,32 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { AppShell, Table } from "@mantine/core";
+import React, { useState, useEffect, FC } from "react";
+import { Table } from "@mantine/core";
+import { Student } from "../types";
 
-
-type Student = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  gender: string;
-  phoneNumber: string;
-  birthDate: Date;
-  isActive: boolean;
+type StudentTableProps = {
+  students: Student[];
 };
 
-const StudentTable = () => {
-  const [students, setStudents] = useState<Array<Student>>();
-
-  useEffect(() => {
-    fetch("https://localhost:7258/students")
+export const StudentTable: FC<StudentTableProps> = ({
+  students,
+}): JSX.Element => {
+  const RenewMembersip = async (studentId: number) => {
+    const dateNow = new Date().toJSON();
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate() + 30);
+    const body = {
+      studentId: studentId,
+      startDate: dateNow,
+      endDate: endDate.toJSON(),
+    };
+    await fetch("https://localhost:7258/clubmembership", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // 'Accept': 'application/json',
+        // "Access-Control-Allow-Origin": "*",
+      },
+      // mode: "same-origin",
+      body: JSON.stringify(body),
+    })
       .then((res) => res.json())
       .then((json) => {
         // console.log(json);
-        setStudents(json);
+        // setStudents(json);
       })
       .catch((error) => console.log(error));
-  }, []);
+  };
 
   return (
-
     <Table>
       <thead>
         <tr>
@@ -34,9 +44,9 @@ const StudentTable = () => {
           <th>First Name</th>
           <th>Last Name</th>
           <th>Gender</th>
-          <th>PhoneNumber</th>
           <th>Date Of Birth</th>
-          <th>Status</th>
+          <th>Membership</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -48,11 +58,19 @@ const StudentTable = () => {
                 <td>{student.firstName}</td>
                 <td>{student.lastName}</td>
                 <td>{student.gender}</td>
-                <td>{student.phoneNumber}</td>
                 <td>
                   {new Date(student.birthDate).toLocaleDateString("bg-BG")}
                 </td>
-                <td>{student.isActive ? "Yes" : "No"}</td>
+                <td>
+                  {student.clubMembership?.isActive
+                    ? `Active until ${new Date(
+                        student.clubMembership.endDate
+                      ).toLocaleDateString()}`
+                    : student.clubMembership?.endDate != null
+                    ? `Expired on ${student.clubMembership.endDate}`
+                    : `Not created`}
+                </td>
+                <td></td>
               </tr>
             );
           })}
@@ -60,5 +78,3 @@ const StudentTable = () => {
     </Table>
   );
 };
-
-export default StudentTable;

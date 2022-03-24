@@ -4,7 +4,7 @@ import { SunIcon, MoonIcon } from '@modulz/radix-icons'
 import { Group, ActionIcon, Text } from '@mantine/core'
 import { BookmarkFillIcon, BookmarkIcon } from '@primer/octicons-react'
 
-export function Brand() {
+const Brand = () => {
   const theme = useMantineTheme()
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
 
@@ -25,7 +25,6 @@ export function Brand() {
         <ActionIcon variant="light" size={30} color="orange">
           {colorScheme === 'dark' ? <BookmarkIcon /> : <BookmarkFillIcon />}
         </ActionIcon>
-        <Text component="h4">Marky</Text>
         <ActionIcon
           variant="default"
           onClick={() => toggleColorScheme()}
@@ -37,3 +36,5 @@ export function Brand() {
     </div>
   )
 }
+
+export default Brand;
