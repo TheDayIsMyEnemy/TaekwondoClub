@@ -8,6 +8,13 @@ namespace Infrastructure.Data.Repositories
     {
         public StudentRepository(TaekwondoClubContext context) : base(context) { }
 
+        public async Task<IEnumerable<Student>> GetAllStudentsWithClubMembership()
+        {
+            return await _dbSet
+                .Include(s => s.ClubMembership)
+                .ToListAsync();
+        }
+
         public async Task<Student?> GetStudentAndClubMembershipByStudentId(int studentId)
         {
             return await _dbSet

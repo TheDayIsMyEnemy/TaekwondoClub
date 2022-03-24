@@ -5,7 +5,7 @@ using ApplicationCore.Enums;
 
 namespace ApplicationCore.Services
 {
-    public class UploadStudentsCsvService : IUploadStudentsCsvService
+    public class UploadStudentsCsvFileService : IUploadStudentsCsvFileService
     {
         private readonly IStudentRepository _studentRepository;
         private readonly Dictionary<string, string> _csvColumnToStudentProp =
@@ -16,18 +16,18 @@ namespace ApplicationCore.Services
                 { "Date of Birth", "BirthDate"}
             };
 
-        public UploadStudentsCsvService(IStudentRepository studentRepository)
+        public UploadStudentsCsvFileService(IStudentRepository studentRepository)
         {
             _studentRepository = studentRepository;
         }
 
-        public async Task<(CreateStudentsFromCsvOutcome, int?)> CreateStudentsFromCsvFile(Stream csvStream)
+        public async Task<(UploadStudentsCsvFile, int?)> UploadStudentsCsvFile(Stream csvStream)
         {
             if (csvStream == null)
-                return (CreateStudentsFromCsvOutcome.FileNotFound, null);
+                return (Enums.UploadStudentsCsvFile.FileNotFound, null);
 
             if (csvStream.Length == 0)
-                return (CreateStudentsFromCsvOutcome.EmptyFile, null);
+                return (Enums.UploadStudentsCsvFile.EmptyFile, null);
 
             var memoryStream = new MemoryStream();
             await csvStream.CopyToAsync(memoryStream);
@@ -42,11 +42,11 @@ namespace ApplicationCore.Services
             }
             catch (Exception)
             {
-                return (CreateStudentsFromCsvOutcome.InvalidFile, null);
+                return (Enums.UploadStudentsCsvFile.InvalidFile, null);
             }
 
             if (!ValidateColumns(csvColumns))
-                return (CreateStudentsFromCsvOutcome.MissingRequiredColumns, null);          
+                return (Enums.UploadStudentsCsvFile.MissingRequiredColumns, null);          
 
             var newStudents = new List<Student>();
 
@@ -62,7 +62,7 @@ namespace ApplicationCore.Services
             if (newStudents.Any())
                 await _studentRepository.AddRangeAsync(newStudents);
 
-            return (CreateStudentsFromCsvOutcome.Success, newStudents.Count);
+            return (Enums.UploadStudentsCsvFile.Success, newStudents.Count);
         }
 
         private bool ValidateColumns(string[] csvColumns)
@@ -85,6 +85,7 @@ namespace ApplicationCore.Services
         private Student CreateNewStudentFromCsvRow(string[] csvColumns, string[] csvRow)
         {
             var student = new Student("", "", "");
+
             var studentType = student.GetType();
 
             for (int colNum = 0; colNum < csvRow.Length; colNum++)

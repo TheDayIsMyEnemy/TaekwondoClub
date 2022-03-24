@@ -1,22 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ApplicationCore.Models
+﻿namespace ApplicationCore.Models
 {
     public class ClubMembership
-    {
+    {     
         public int Id { get; set; }
 
-        [Column(TypeName = "date")]
-        public DateTime StartDate { get; set; }
-
-        [Column(TypeName = "date")]
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public string? Note { get; set; }
 
+        public int StudentId { get; set; }
         public Student Student { get; set; } = null!;
 
-        [NotMapped]
-        public bool IsActive => DateTime.Now.Date < EndDate.Date;
+        public bool IsActive => DateTime.Now.Date < EndDate?.Date;
     }
 }

@@ -19,17 +19,17 @@ namespace ApplicationCore.Services
         public async Task<bool> CreateNewClubMembership(int studentId, DateTime startDate, DateTime endDate)
         {
             var student = await _studentRepository
-                .GetByIdAsync(studentId);
+                .GetStudentAndClubMembershipByStudentId(studentId);
 
             if (student == null)
                 return false;
 
-            if (student.ClubMembershipId.HasValue)
+            if (student.ClubMembership != null)
                 return false;
 
             var clubMembership = new ClubMembership
             {
-                Student = student,
+                StudentId = studentId,
                 StartDate = startDate,
                 EndDate = endDate
             };

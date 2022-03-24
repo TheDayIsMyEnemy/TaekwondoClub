@@ -1,35 +1,36 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApplicationCore.Enums;
 using ApplicationCore.Interfaces;
-using ApplicationCore.Enums;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
     public class UploadStudentsController : ApiControllerBase
     {
-        private readonly IUploadStudentsCsvService _studentsCsvUploadService;
+        private readonly IUploadStudentsCsvFileService _uploadStudentsCsvFileService;
 
-        public UploadStudentsController(IUploadStudentsCsvService studentsCsvUploadService)
+        public UploadStudentsController(IUploadStudentsCsvFileService uploadStudentsCsvFileService)
         {
-            _studentsCsvUploadService = studentsCsvUploadService;
+            _uploadStudentsCsvFileService = uploadStudentsCsvFileService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] IFormFile studentsCsv)
+        public async Task<IActionResult> Post([FromForm] IFormFile students)
         {
-            var (outcome, newStudentsCount) = await _studentsCsvUploadService
-                .CreateStudentsFromCsvFile(studentsCsv.OpenReadStream());
+            var (outcome, newStudentsCount) = await _uploadStudentsCsvFileService
+                .UploadStudentsCsvFile(students.OpenReadStream());
 
             switch (outcome)
             {
-                case CreateStudentsFromCsvOutcome.Success:
+                case UploadStudentsCsvFile.Success:
                     return Ok(newStudentsCount);
-                case CreateStudentsFromCsvOutcome.FileNotFound:
-                case CreateStudentsFromCsvOutcome.EmptyFile:
-                    return BadRequest();
-                case CreateStudentsFromCsvOutcome.MissingRequiredColumns:
-                case CreateStudentsFromCsvOutcome.InvalidFile:            
+                case UploadStudentsCsvFile.FileNotFound:
+                case UploadStudentsCsvFile.EmptyFile:
+                    return BadRequest(outcome.ToString());
+                case UploadStudentsCsvFile.MissingRequiredColumns:
+                case UploadStudentsCsvFile.InvalidFile:
+                    return UnprocessableEntity(outcome.ToString());
                 default:
-                    return UnprocessableEntity();
+                    return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }

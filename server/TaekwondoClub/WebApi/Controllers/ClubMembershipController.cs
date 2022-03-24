@@ -20,7 +20,7 @@ namespace WebApi.Controllers
                 await _clubMembershipService
                 .CreateNewClubMembership(request.StudentId, request.StartDate, request.EndDate);
 
-            return Ok(result);
+            return Ok();
         }
     }
 }

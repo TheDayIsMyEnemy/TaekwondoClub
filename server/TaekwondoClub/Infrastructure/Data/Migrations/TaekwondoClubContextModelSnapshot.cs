@@ -17,25 +17,10 @@ namespace Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("GroupStudent", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GroupsId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("GroupStudent");
-                });
 
             modelBuilder.Entity("ApplicationCore.Models.ClubMembership", b =>
                 {
@@ -45,16 +30,22 @@ namespace Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("date");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("date");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
 
                     b.ToTable("ClubMemberships");
                 });
@@ -87,9 +78,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("date");
 
-                    b.Property<int?>("ClubMembershipId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -107,11 +95,33 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClubMembershipId")
-                        .IsUnique()
-                        .HasFilter("[ClubMembershipId] IS NOT NULL");
-
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("GroupStudent", b =>
+                {
+                    b.Property<int>("GroupsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GroupsId", "StudentsId");
+
+                    b.HasIndex("StudentsId");
+
+                    b.ToTable("GroupStudent");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Models.ClubMembership", b =>
+                {
+                    b.HasOne("ApplicationCore.Models.Student", "Student")
+                        .WithOne("ClubMembership")
+                        .HasForeignKey("ApplicationCore.Models.ClubMembership", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("GroupStudent", b =>
@@ -131,17 +141,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("ApplicationCore.Models.Student", b =>
                 {
-                    b.HasOne("ApplicationCore.Models.ClubMembership", "ClubMembership")
-                        .WithOne("Student")
-                        .HasForeignKey("ApplicationCore.Models.Student", "ClubMembershipId");
-
                     b.Navigation("ClubMembership");
-                });
-
-            modelBuilder.Entity("ApplicationCore.Models.ClubMembership", b =>
-                {
-                    b.Navigation("Student")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

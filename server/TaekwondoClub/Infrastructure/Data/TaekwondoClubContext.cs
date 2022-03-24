@@ -27,6 +27,9 @@ namespace Infrastructure.Data
                 .Entity<ClubMembership>()
                 .Property(p => p.EndDate)
                 .HasColumnType(dateColumnType);
+            builder
+                .Entity<ClubMembership>()
+                .Ignore(p => p.IsActive);
         }
     }
 }

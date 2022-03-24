@@ -1,6 +1,6 @@
 ﻿namespace ApplicationCore.Enums
 {
-    public enum CreateStudentsFromCsvOutcome
+    public enum UploadStudentsCsvFile
     {
         Success,
         FileNotFound,
