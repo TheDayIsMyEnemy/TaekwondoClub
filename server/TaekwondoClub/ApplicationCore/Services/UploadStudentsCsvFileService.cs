@@ -21,13 +21,13 @@ namespace ApplicationCore.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<(UploadStudentsCsvFile, int?)> UploadStudentsCsvFile(Stream csvStream)
+        public async Task<(UploadStudentsCsvFileOutcome, int?)> UploadStudentsCsvFile(Stream csvStream)
         {
             if (csvStream == null)
-                return (Enums.UploadStudentsCsvFile.FileNotFound, null);
+                return (UploadStudentsCsvFileOutcome.FileNotFound, null);
 
             if (csvStream.Length == 0)
-                return (Enums.UploadStudentsCsvFile.EmptyFile, null);
+                return (UploadStudentsCsvFileOutcome.EmptyFile, null);
 
             var memoryStream = new MemoryStream();
             await csvStream.CopyToAsync(memoryStream);
@@ -42,11 +42,11 @@ namespace ApplicationCore.Services
             }
             catch (Exception)
             {
-                return (Enums.UploadStudentsCsvFile.InvalidFile, null);
+                return (UploadStudentsCsvFileOutcome.InvalidFile, null);
             }
 
             if (!ValidateColumns(csvColumns))
-                return (Enums.UploadStudentsCsvFile.MissingRequiredColumns, null);          
+                return (UploadStudentsCsvFileOutcome.MissingRequiredColumns, null);          
 
             var newStudents = new List<Student>();
 
@@ -62,7 +62,7 @@ namespace ApplicationCore.Services
             if (newStudents.Any())
                 await _studentRepository.AddRangeAsync(newStudents);
 
-            return (Enums.UploadStudentsCsvFile.Success, newStudents.Count);
+            return (UploadStudentsCsvFileOutcome.Success, newStudents.Count);
         }
 
         private bool ValidateColumns(string[] csvColumns)

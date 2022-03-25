@@ -21,13 +21,13 @@ namespace WebApi.Controllers
 
             switch (outcome)
             {
-                case UploadStudentsCsvFile.Success:
+                case UploadStudentsCsvFileOutcome.Success:
                     return Ok(newStudentsCount);
-                case UploadStudentsCsvFile.FileNotFound:
-                case UploadStudentsCsvFile.EmptyFile:
+                case UploadStudentsCsvFileOutcome.FileNotFound:
+                case UploadStudentsCsvFileOutcome.EmptyFile:
                     return BadRequest(outcome.ToString());
-                case UploadStudentsCsvFile.MissingRequiredColumns:
-                case UploadStudentsCsvFile.InvalidFile:
+                case UploadStudentsCsvFileOutcome.MissingRequiredColumns:
+                case UploadStudentsCsvFileOutcome.InvalidFile:
                     return UnprocessableEntity(outcome.ToString());
                 default:
                     return StatusCode(StatusCodes.Status500InternalServerError);

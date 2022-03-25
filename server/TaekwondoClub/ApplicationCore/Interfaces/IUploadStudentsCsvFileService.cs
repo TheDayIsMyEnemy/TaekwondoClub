@@ -4,6 +4,6 @@ namespace ApplicationCore.Interfaces
 {
     public interface IUploadStudentsCsvFileService
     {
-        public Task<(UploadStudentsCsvFile, int?)> UploadStudentsCsvFile(Stream csvStream);
+        public Task<(UploadStudentsCsvFileOutcome, int?)> UploadStudentsCsvFile(Stream csvStream);
     }
 }
