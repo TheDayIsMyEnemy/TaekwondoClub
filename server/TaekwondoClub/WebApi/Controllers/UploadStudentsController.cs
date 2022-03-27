@@ -25,7 +25,6 @@ namespace WebApi.Controllers
                     return Ok(newStudentsCount);
                 case UploadStudentsCsvFileOutcome.FileNotFound:
                 case UploadStudentsCsvFileOutcome.EmptyFile:
-                    return BadRequest(outcome.ToString());
                 case UploadStudentsCsvFileOutcome.MissingRequiredColumns:
                 case UploadStudentsCsvFileOutcome.InvalidFile:
                     return UnprocessableEntity(outcome.ToString());
