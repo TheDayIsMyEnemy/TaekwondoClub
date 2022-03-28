@@ -30,5 +30,37 @@ namespace WebApi.Controllers
             return mappedStudents;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var student = await _studentRepository.GetStudentAndClubMembershipByStudentId(id);
+
+            if (student == null)
+                return NotFound();
+
+            var mappedStudent = _mapper.Map<Student, StudentDto>(student);
+
+            return Ok(mappedStudent);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var student = await _studentRepository.GetByIdAsync(id);
+
+            if (student == null)
+                return NotFound();
+
+            try
+            {
+                await _studentRepository.RemoveAsync(student);
+            }
+            catch (Exception)
+            {
+                return UnprocessableEntity();
+            }
+
+            return NoContent();
+        }
     }
 }
