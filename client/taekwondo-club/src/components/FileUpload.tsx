@@ -1,70 +1,107 @@
-import { Group, Text, useMantineTheme, MantineTheme } from "@mantine/core";
-import { Upload, FileImport, X, Icon as TablerIcon } from "tabler-icons-react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
+import {
+  Text,
+  Group,
+  Button,
+  createStyles,
+  MantineTheme,
+  useMantineTheme,
+} from "@mantine/core";
 import { Dropzone, DropzoneStatus, MIME_TYPES } from "@mantine/dropzone";
-import { useState } from "react";
+import { CloudUpload } from "tabler-icons-react";
 
-function getIconColor(status: DropzoneStatus, theme: MantineTheme) {
+const useStyles = createStyles((theme) => ({
+  wrapper: {
+    position: "relative",
+    marginBottom: 30,
+  },
+
+  dropzone: {
+    borderWidth: 1,
+    paddingBottom: 50,
+  },
+
+  icon: {
+    color:
+      theme.colorScheme === "dark"
+        ? theme.colors.dark[3]
+        : theme.colors.gray[4],
+  },
+
+  control: {
+    position: "absolute",
+    width: 250,
+    left: "calc(50% - 125px)",
+    bottom: -20,
+  },
+}));
+
+const getActiveColor = (status: DropzoneStatus, theme: MantineTheme) => {
   return status.accepted
-    ? theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 4 : 6]
+    ? theme.colors[theme.primaryColor][6]
     : status.rejected
-    ? theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]
+    ? theme.colors.red[6]
     : theme.colorScheme === "dark"
     ? theme.colors.dark[0]
-    : theme.colors.gray[7];
-}
-
-const FileUploadIcon = ({
-  status,
-  ...props
-}: React.ComponentProps<TablerIcon> & { status: DropzoneStatus }) => {
-  if (status.accepted) {
-    return <Upload {...props} />;
-  }
-
-  if (status.rejected) {
-    return <X {...props} />;
-  }
-
-  return <FileImport {...props} />;
+    : theme.black;
 };
 
-const DropzoneChildren = (status: DropzoneStatus, theme: MantineTheme) => (
-  <Group
-    position="center"
-    spacing="xl"
-    style={{ minHeight: 220, pointerEvents: "none" }}
-  >
-    <FileUploadIcon
-      status={status}
-      style={{ color: getIconColor(status, theme) }}
-      size={80}
-    />
+type FileUploadProps = {
+  setFile: Dispatch<SetStateAction<File | undefined>>;
+};
 
-    <div>
-      <Text size="xl" inline>
-        Drag and drop or click to select file
-      </Text>
-      <Text size="sm" color="dimmed" inline mt={7}>
-        Only CSV files
-      </Text>
-    </div>
-  </Group>
-);
-
-export const FileUpload = () => {
+export const FileUpload: React.FC<FileUploadProps> = (
+  props: FileUploadProps
+) => {
   const theme = useMantineTheme();
-  const [accepted, setAccepted] = useState<boolean>(false);
+  const { classes } = useStyles();
+  const openRef = useRef<() => void>(() => {});
 
   return (
-    <Dropzone
-      onDrop={(files) => {
+    <div className={classes.wrapper}>
+      <Dropzone
+        openRef={openRef}
+        onDrop={(files) => props.setFile(files[0])}
+        className={classes.dropzone}
+        radius="md"
+        accept={[MIME_TYPES.csv]}
+        maxSize={30 * 1024 ** 2}
+        multiple={false}
+      >
+        {(status) => (
+          <div style={{ pointerEvents: "none" }}>
+            <Group position="center">
+              <CloudUpload size={50} color={getActiveColor(status, theme)} />
+            </Group>
+            <Text
+              align="center"
+              weight={700}
+              size="lg"
+              mt="xl"
+              sx={{ color: getActiveColor(status, theme) }}
+            >
+              {status.accepted
+                ? "Drop files here"
+                : status.rejected
+                ? "Invalid file"
+                : "Upload students"}
+            </Text>
+            <Text align="center" size="sm" mt="xs" color="dimmed">
+              Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
+              <i>.csv</i> files that are less than 30mb in size.
+            </Text>
+          </div>
+        )}
+      </Dropzone>
 
-      }}
-      onReject={(files) => console.log(files)}
-      accept={[MIME_TYPES.csv]}
-      multiple={false}
-    >
-      {(status) => DropzoneChildren(status, theme)}
-    </Dropzone>
+      <Button
+        className={classes.control}
+        size="md"
+        radius="xl"
+        onClick={() => openRef.current()}
+      >
+        Select files
+      </Button>
+    </div>
   );
 };
