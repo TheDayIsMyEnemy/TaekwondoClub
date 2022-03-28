@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Interfaces;
 using ApplicationCore.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
 
 namespace WebApi.Controllers
@@ -11,17 +11,16 @@ namespace WebApi.Controllers
         private readonly IMapper _mapper;
         private readonly IStudentRepository _studentRepository;
 
-        public StudentsController(IStudentRepository studentRepository, IMapper mapper)
+        public StudentsController(IMapper mapper, IStudentRepository studentRepository)
         {
-            _studentRepository = studentRepository;
             _mapper = mapper;
+            _studentRepository = studentRepository;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<StudentDto>> GetAll()
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetAll()
         {
-            var students = await _studentRepository
-                .GetAllStudentsWithClubMembership();
+            var students = await _studentRepository.GetAllStudentsWithClubMembership();
 
             var mappedStudents = _mapper
                 .Map<IEnumerable<Student>, IEnumerable<StudentDto>>(students)
@@ -31,16 +30,16 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<StudentDto>> Get(int id)
         {
             var student = await _studentRepository.GetStudentAndClubMembershipByStudentId(id);
 
             if (student == null)
                 return NotFound();
 
-            var mappedStudent = _mapper.Map<Student, StudentDto>(student);
+            var studentDto = _mapper.Map<Student, StudentDto>(student);
 
-            return Ok(mappedStudent);
+            return studentDto;
         }
 
         [HttpDelete("{id}")]
