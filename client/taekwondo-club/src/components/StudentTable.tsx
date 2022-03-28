@@ -1,47 +1,37 @@
 import React, { FC, useState } from "react";
-import { Table, Button, ActionIcon, Group, Modal } from "@mantine/core";
+import {
+  Table,
+  Button,
+  ActionIcon,
+  Group,
+  Modal,
+  Space,
+  Center,
+} from "@mantine/core";
 import { RangeCalendar } from "@mantine/dates";
 import { Student } from "../types";
 import { PencilIcon, DiffRemovedIcon } from "@primer/octicons-react";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
+import client from "../api";
 
 type StudentTableProps = {
   students: Student[];
+  onUpdateClubMembership: (
+    clubMembershipId: number,
+    startDate: Date,
+    endDate: Date
+  ) => void;
 };
 
 export const StudentTable: FC<StudentTableProps> = ({
   students,
+  onUpdateClubMembership,
 }): JSX.Element => {
   const [membershipModal, setMembershipModal] = useState(false);
   const [membershipCalendar, setMembershipCalendar] = useState<
     [Date | null, Date | null]
-  >([new Date(), dayjs().add(1, "month").toDate()]);
-  // const RenewMembersip = async (studentId: number) => {
-  //   const dateNow = new Date().toJSON();
-  //   let endDate = new Date();
-  //   endDate.setDate(endDate.getDate() + 30);
-  //   const body = {
-  //     studentId: studentId,
-  //     startDate: dateNow,
-  //     endDate: endDate.toJSON(),
-  //   };
-  //   await fetch("https://localhost:7258/clubmembership", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       // 'Accept': 'application/json',
-  //       // "Access-Control-Allow-Origin": "*",
-  //     },
-  //     // mode: "same-origin",
-  //     body: JSON.stringify(body),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       // console.log(json);
-  //       // setStudents(json);
-  //     })
-  //     .catch((error) => console.log(error));
-  // };
+  >([null, null]);
+  const [student, setStudent] = useState<Student | undefined>();
 
   const createClubMembership = () => {};
 
@@ -55,11 +45,32 @@ export const StudentTable: FC<StudentTableProps> = ({
         onClose={() => setMembershipModal(false)}
         title="Set Membership"
       >
-        <RangeCalendar
-          value={membershipCalendar}
-          onChange={setMembershipCalendar}
-          amountOfMonths={2}
-        />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (student?.clubMembership) {
+              setMembershipModal(false);
+              onUpdateClubMembership(
+                student.clubMembership.id,
+                membershipCalendar[0] as Date,
+                membershipCalendar[1] as Date
+              );
+            } else {
+            }
+          }}
+        >
+          <RangeCalendar
+            value={membershipCalendar}
+            onChange={setMembershipCalendar}
+            amountOfMonths={2}
+          />
+          <Space h={35} />
+          <Center style={{ width: 550 }}>
+            <Button variant="light" size="md" type="submit">
+              Submit
+            </Button>
+          </Center>
+        </form>
       </Modal>
       <Table>
         <thead>
@@ -96,7 +107,21 @@ export const StudentTable: FC<StudentTableProps> = ({
                     <Group spacing={8}>
                       <ActionIcon
                         variant="light"
-                        onClick={() => setMembershipModal(true)}
+                        onClick={() => {
+                          setStudent(student);
+                          if (student.clubMembership) {
+                            setMembershipCalendar([
+                              new Date(student.clubMembership.startDate),
+                              new Date(student.clubMembership.endDate),
+                            ]);
+                          } else {
+                            setMembershipCalendar([
+                              new Date(),
+                              dayjs().add(1, "month").toDate(),
+                            ]);
+                          }
+                          setMembershipModal(true);
+                        }}
                       >
                         <PencilIcon />
                       </ActionIcon>
