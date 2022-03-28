@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export const SetMembershipModal = (
   opened: boolean,
-  onSubmit: (e) => void,
+  onSubmit: () => void,
   onClose: () => void
 ) => {
   const [membershipCalendar, setMembershipCalendar] = useState<
@@ -21,15 +21,7 @@ export const SetMembershipModal = (
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          if (student?.clubMembership) {
-            setMembershipModal(false);
-            onUpdateClubMembership(
-              student.clubMembership.id,
-              membershipCalendar[0] as Date,
-              membershipCalendar[1] as Date
-            );
-          } else {
-          }
+          onSubmit();
         }}
       >
         <RangeCalendar
