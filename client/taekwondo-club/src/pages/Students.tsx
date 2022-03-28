@@ -2,7 +2,7 @@ import { StudentTable } from "../components/StudentTable";
 import { Paper, Pagination, Space, Text, ScrollArea } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Student } from "../types";
-import axios from "axios";
+import client from "../api";
 
 export const Students = () => {
   const [activePage, setPage] = useState<number>(1);
@@ -12,7 +12,7 @@ export const Students = () => {
   useEffect(() => {
     if (!isLoading) {
       setIsLoading(true);
-      axios.get("https://localhost:7258/students").then((res) => {
+      client.get("/students").then((res) => {
         setStudents(res.data);
         setIsLoading(false);
       });

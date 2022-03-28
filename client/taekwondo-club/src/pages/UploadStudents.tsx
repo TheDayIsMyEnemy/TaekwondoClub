@@ -1,7 +1,7 @@
 import { Button, Paper } from "@mantine/core";
 import { useState } from "react";
 import { FileUpload } from "../components/FileUpload";
-import axios from "axios";
+import client from "../api";
 
 export const UploadStudents = () => {
   const [file, setFile] = useState<File>();
@@ -11,14 +11,16 @@ export const UploadStudents = () => {
     const formData = new FormData();
     formData.append("students", file as Blob);
 
-    axios
-      .post("https://localhost:7258/UploadStudents", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((er) => console.log(er));
+    if (file) {
+      client
+        .post("/UploadStudents", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => console.log(res))
+        .catch((er) => console.log(er));
+    }
   };
 
   return (
