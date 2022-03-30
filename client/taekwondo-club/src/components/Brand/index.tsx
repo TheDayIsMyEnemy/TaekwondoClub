@@ -1,12 +1,12 @@
-import React from 'react'
-import { useMantineColorScheme, useMantineTheme } from '@mantine/styles'
-import { SunIcon, MoonIcon } from '@modulz/radix-icons'
-import { Group, ActionIcon, Text } from '@mantine/core'
-import { BookmarkFillIcon, BookmarkIcon } from '@primer/octicons-react'
+import { useMantineColorScheme, useMantineTheme } from "@mantine/styles";
+import { Group, ActionIcon } from "@mantine/core";
+import { Sun, MoonStars } from "tabler-icons-react";
+import { BookmarkFillIcon, BookmarkIcon } from "@primer/octicons-react";
 
-const Brand = () => {
-  const theme = useMantineTheme()
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+const Brand = (): JSX.Element => {
+  const theme = useMantineTheme();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const dark = colorScheme === "dark";
 
   return (
     <div
@@ -15,26 +15,25 @@ const Brand = () => {
         paddingRight: theme.spacing.xs,
         paddingBottom: theme.spacing.lg,
         borderBottom: `1px solid ${
-          theme.colorScheme === 'dark'
-            ? theme.colors.dark[4]
-            : theme.colors.gray[2]
+          dark ? theme.colors.dark[4] : theme.colors.gray[2]
         }`,
       }}
     >
       <Group position="apart">
         <ActionIcon variant="light" size={30} color="orange">
-          {colorScheme === 'dark' ? <BookmarkIcon /> : <BookmarkFillIcon />}
+          {dark ? <BookmarkIcon /> : <BookmarkFillIcon />}
         </ActionIcon>
         <ActionIcon
-          variant="default"
+          variant="outline"
+          color={dark ? "gray" : "blue"}
           onClick={() => toggleColorScheme()}
-          size={30}
+          title="Toggle color scheme"
         >
-          {colorScheme === 'dark' ? <SunIcon /> : <MoonIcon />}
+          {dark ? <Sun size={18} /> : <MoonStars size={18} />}
         </ActionIcon>
       </Group>
     </div>
-  )
-}
+  );
+};
 
 export default Brand;

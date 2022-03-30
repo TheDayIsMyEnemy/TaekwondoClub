@@ -1,5 +1,4 @@
 import routes from "./routes";
-import "@modulz/radix-icons";
 import "./css/app.css";
 import { Routes, Route } from "react-router-dom";
 import {
