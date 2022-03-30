@@ -1,7 +1,7 @@
 type ClubMembership = {
   id: number;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | null;
+  endDate: Date | null;
   note: string;
   isActive: boolean;
 };
@@ -13,7 +13,7 @@ type Student = {
   gender: string;
   phoneNumber: string;
   birthDate: Date;
-  clubMembership: ClubMembership;
+  clubMembership: ClubMembership | null;
 };
 
 export type { ClubMembership, Student };
