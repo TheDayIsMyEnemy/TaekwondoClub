@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { createStyles } from "@mantine/styles";
 import { ThemeIcon, Group, Text, Anchor } from "@mantine/core";
@@ -47,12 +46,9 @@ const MainLink = ({ icon: Icon, color, name, path }: Route) => {
   );
 };
 
-/**
- * @see https://github.com/mantinedev/mantine/blob/master/src/mantine-core/src/components/AppShell/demos/_mainLinks.tsx
- */
 const MainLinks = () => {
   const links = routes.map((link) => <MainLink {...link} key={link.name} />);
   return <div>{links}</div>;
-}
+};
 
 export default MainLinks;
