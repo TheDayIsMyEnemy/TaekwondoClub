@@ -15,7 +15,7 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import PrivateRoute from "./routes/PrivateRoute";
-import { MainLinks } from "./components/Sidebar";
+import { MainLinks } from "./components/Navbar";
 import Brand from "./components/Brand";
 import { useCallback, useState } from "react";
 import { NotificationProvider } from "./hooks/context/Notification";

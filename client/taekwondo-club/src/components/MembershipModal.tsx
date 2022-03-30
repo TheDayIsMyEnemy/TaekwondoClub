@@ -2,7 +2,7 @@ import { Button, Center, Modal, Space } from "@mantine/core";
 import { RangeCalendar } from "@mantine/dates";
 import { useState } from "react";
 
-export const SetMembershipModal = (
+export const MembershipModal = (
   opened: boolean,
   onSubmit: () => void,
   onClose: () => void

@@ -50,7 +50,9 @@ const MainLink = ({ icon: Icon, color, name, path }: Route) => {
 /**
  * @see https://github.com/mantinedev/mantine/blob/master/src/mantine-core/src/components/AppShell/demos/_mainLinks.tsx
  */
-export default function MainLinks() {
+const MainLinks = () => {
   const links = routes.map((link) => <MainLink {...link} key={link.name} />);
   return <div>{links}</div>;
 }
+
+export default MainLinks;

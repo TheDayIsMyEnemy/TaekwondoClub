@@ -3,6 +3,7 @@ import { Paper, Pagination, Space, Text, ScrollArea } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Student } from "../types";
 import { getStudents, updateClubMembership } from "../actions";
+import { MembershipModal } from "../components/MembershipModal";
 
 export const Students = () => {
   const [activePage, setPage] = useState<number>(1);
@@ -34,6 +35,7 @@ export const Students = () => {
   };
 
   return (
+    // <SetMembershipModal/>
     <Paper
       p="xs"
       shadow="xs"
