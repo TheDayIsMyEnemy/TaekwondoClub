@@ -1,4 +1,4 @@
-import client from "./api";
+import client from ".";
 
 export const getStudents = () => {
     return client.get("/students");

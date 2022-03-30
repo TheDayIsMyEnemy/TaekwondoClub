@@ -2,7 +2,7 @@ import { StudentTable } from "../components/StudentTable";
 import { Paper, Pagination, Space, Text, ScrollArea } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Student } from "../types";
-import { getStudents, updateClubMembership } from "../actions";
+import { getStudents, updateClubMembership } from "../api/requests";
 import { MembershipModal } from "../components/MembershipModal";
 
 export const Students = () => {
