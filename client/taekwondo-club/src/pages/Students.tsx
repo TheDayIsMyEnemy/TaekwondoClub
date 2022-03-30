@@ -21,6 +21,9 @@ export const Students = () => {
     if (!isLoading) {
       loadStudents();
     }
+    return () => {
+      setStudents([]);
+    }
   }, []);
 
   const loadStudents = () => {
