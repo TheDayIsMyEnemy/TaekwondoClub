@@ -104,7 +104,7 @@ export const Students = () => {
       <RenewMembershipModal
         opened={isMembershipModalOpened}
         onSubmit={onRenewMembershipFormSubmit}
-        onClose={() => setIsMembershipModalOpened(true)}
+        onClose={() => setIsMembershipModalOpened(false)}
       />
       <Paper p="xs" shadow="xs" withBorder style={{ height: "70px" }}>
         <Button

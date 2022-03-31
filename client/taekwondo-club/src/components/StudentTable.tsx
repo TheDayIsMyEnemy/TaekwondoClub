@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Table, ActionIcon, Group, Badge, Tooltip } from "@mantine/core";
 import { ClubMembership, Student } from "../types";
 import { Pencil, Trash } from "tabler-icons-react";
+import { IdBadgeIcon } from "@primer/octicons-react";
 
 type StudentTableProps = {
   students: Student[];
@@ -60,16 +61,23 @@ export const StudentTable: FC<StudentTableProps> = ({
                 <td>{getStatusBadge(student.clubMembership)}</td>
                 <td>
                   <Group spacing={0}>
-                    <ActionIcon color="green"
-                    onClick={() => {
-                      onRenewMembershipModalOpen(student);
-                    }}>
+                    <ActionIcon
+                      color="blue"
+                      onClick={() => {
+                        onRenewMembershipModalOpen(student);
+                      }}
+                    >
+                      <IdBadgeIcon></IdBadgeIcon>
+                    </ActionIcon>
+                    <ActionIcon color="green">
                       <Pencil size={16} />
                     </ActionIcon>
-                    <ActionIcon color="red"
-                    onClick={() => {
-                      onDeleteStudentModalOpen(student);
-                    }}>
+                    <ActionIcon
+                      color="red"
+                      onClick={() => {
+                        onDeleteStudentModalOpen(student);
+                      }}
+                    >
                       <Trash size={16} />
                     </ActionIcon>
                   </Group>
