@@ -3,13 +3,13 @@ import { RangeCalendar } from "@mantine/dates";
 import { FC, useState } from "react";
 import dayjs from "dayjs";
 
-type MembershipModalProps = {
+type RenewMembershipModalProps = {
   opened: boolean;
   onSubmit: (startDate: Date, endDate: Date) => void;
   onClose: () => void;
 };
 
-export const MembershipModal: FC<MembershipModalProps> = ({
+export const RenewMembershipModal: FC<RenewMembershipModalProps> = ({
   opened,
   onSubmit,
   onClose
@@ -22,7 +22,7 @@ export const MembershipModal: FC<MembershipModalProps> = ({
   ]);
 
   return (
-    <Modal size="xl" opened={opened} onClose={onClose} title="Set Membership">
+    <Modal size="xl" opened={opened} onClose={onClose} title="Renew Membership">
       <form
         onSubmit={(e) => {
           e.preventDefault();

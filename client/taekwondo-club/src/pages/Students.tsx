@@ -7,7 +7,7 @@ import {
   updateClubMembership,
   getStudents,
 } from "../api/requests";
-import { MembershipModal } from "../components/MembershipModal";
+import { RenewMembershipModal } from "../components/RenewMembershipModal";
 
 export const Students = () => {
   const [activePage, setPage] = useState<number>(1);
@@ -54,7 +54,7 @@ export const Students = () => {
 
   return (
     <>
-      <MembershipModal
+      <RenewMembershipModal
         opened={isMembershipModalOpened}
         onSubmit={onMembershipFormSubmit}
         onClose={() => setIsMembershipModalOpened(false)}
