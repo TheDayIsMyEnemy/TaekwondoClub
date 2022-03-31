@@ -5,12 +5,14 @@ import { Pencil, Trash } from "tabler-icons-react";
 
 type StudentTableProps = {
   students: Student[];
-  onMembershipModalOpen: (selectedStudent: Student) => void;
+  onRenewMembershipModalOpen: (selectedStudent: Student) => void;
+  onDeleteStudentModalOpen: (selectedStudent: Student) => void;
 };
 
 export const StudentTable: FC<StudentTableProps> = ({
   students,
-  onMembershipModalOpen,
+  onRenewMembershipModalOpen,
+  onDeleteStudentModalOpen,
 }): JSX.Element => {
   const getStatusBadge = (
     clubMembership: ClubMembership | null
@@ -60,11 +62,14 @@ export const StudentTable: FC<StudentTableProps> = ({
                   <Group spacing={0}>
                     <ActionIcon color="green"
                     onClick={() => {
-                      onMembershipModalOpen(student);
+                      onRenewMembershipModalOpen(student);
                     }}>
                       <Pencil size={16} />
                     </ActionIcon>
-                    <ActionIcon color="red">
+                    <ActionIcon color="red"
+                    onClick={() => {
+                      onDeleteStudentModalOpen(student);
+                    }}>
                       <Trash size={16} />
                     </ActionIcon>
                   </Group>

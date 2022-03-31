@@ -8,7 +8,9 @@ import {
   createClubMembership,
   updateClubMembership,
   getStudents,
+  deleteStudent,
 } from "../api/requests";
+import { DeleteStudentModal } from "../components/DeleteStudentModal";
 
 export const Students = () => {
   const [activePage, setPage] = useState<number>(1);
@@ -16,6 +18,8 @@ export const Students = () => {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isMembershipModalOpened, setIsMembershipModalOpened] =
+    useState<boolean>(false);
+  const [isDeleteStudentModalOpened, setIsDeleteStudentModalOpened] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -35,7 +39,20 @@ export const Students = () => {
     });
   };
 
-  const onMembershipFormSubmit = (startDate: Date, endDate: Date) => {
+  const onDeleteStudentFormSubmit = () => {
+    deleteStudent(selectedStudent!.id).then(() => {
+      setIsDeleteStudentModalOpened(false);
+      showNotification({
+        title: "Delete Student",
+        message: `${selectedStudent?.firstName} ${selectedStudent?.lastName}
+           has been deleted successfully!`,
+        color: "green",
+      });
+      loadStudents();
+    });
+  };
+
+  const onRenewMembershipFormSubmit = (startDate: Date, endDate: Date) => {
     if (selectedStudent?.clubMembership) {
       updateClubMembership(
         selectedStudent.clubMembership.id,
@@ -46,7 +63,7 @@ export const Students = () => {
         showNotification({
           title: "Renew Membership",
           message: "The membership has been updated successfully!",
-          color: "green"
+          color: "green",
         });
         loadStudents();
       });
@@ -62,8 +79,14 @@ export const Students = () => {
     <>
       <RenewMembershipModal
         opened={isMembershipModalOpened}
-        onSubmit={onMembershipFormSubmit}
+        onSubmit={onRenewMembershipFormSubmit}
         onClose={() => setIsMembershipModalOpened(false)}
+      />
+      <DeleteStudentModal
+        studentFullName={`${selectedStudent?.firstName} ${selectedStudent?.lastName}`}
+        opened={isDeleteStudentModalOpened}
+        onSubmit={onDeleteStudentFormSubmit}
+        onClose={() => setIsDeleteStudentModalOpened(false)}
       />
       <Paper
         p="xs"
@@ -78,8 +101,12 @@ export const Students = () => {
           <>
             <StudentTable
               students={students}
-              onMembershipModalOpen={(selectedStudent) => {
+              onRenewMembershipModalOpen={(selectedStudent) => {
                 setIsMembershipModalOpened(true);
+                setSelectedStudent(selectedStudent);
+              }}
+              onDeleteStudentModalOpen={(selectedStudent) => {
+                setIsDeleteStudentModalOpened(true);
                 setSelectedStudent(selectedStudent);
               }}
             />
