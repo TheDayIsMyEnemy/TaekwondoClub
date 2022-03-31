@@ -6,6 +6,7 @@
     "@mantine/core": "^4.0.7",
     "@mantine/dates": "^4.0.8",
     "@mantine/dropzone": "^4.0.9",
+    "@mantine/form": "^4.1.0",
     "@mantine/hooks": "^4.0.7",
     "@mantine/notifications": "^4.1.0",
     "@primer/octicons-react": "^17.0.0",

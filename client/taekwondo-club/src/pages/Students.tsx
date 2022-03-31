@@ -1,8 +1,17 @@
 import { useEffect, useState } from "react";
-import { Paper, Pagination, Space, Text, ScrollArea } from "@mantine/core";
+import {
+  Paper,
+  Pagination,
+  Space,
+  Text,
+  ScrollArea,
+  Button,
+} from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { StudentTable } from "../components/StudentTable";
+import { AddStudentModal } from "../components/AddStudentModal";
 import { RenewMembershipModal } from "../components/RenewMembershipModal";
+import { DeleteStudentModal } from "../components/DeleteStudentModal";
 import { Student } from "../types";
 import {
   createClubMembership,
@@ -10,7 +19,6 @@ import {
   getStudents,
   deleteStudent,
 } from "../api/requests";
-import { DeleteStudentModal } from "../components/DeleteStudentModal";
 
 export const Students = () => {
   const [activePage, setPage] = useState<number>(1);
@@ -20,6 +28,9 @@ export const Students = () => {
   const [isMembershipModalOpened, setIsMembershipModalOpened] =
     useState<boolean>(false);
   const [isDeleteStudentModalOpened, setIsDeleteStudentModalOpened] =
+    useState<boolean>(false);
+
+  const [isAddStudentModalOpened, setIsAddStudentModalOpened] =
     useState<boolean>(false);
 
   useEffect(() => {
@@ -38,6 +49,8 @@ export const Students = () => {
       setIsLoading(false);
     });
   };
+
+  const onAddStudentFormSubmit = () => {};
 
   const onDeleteStudentFormSubmit = () => {
     deleteStudent(selectedStudent!.id).then(() => {
@@ -77,10 +90,10 @@ export const Students = () => {
 
   return (
     <>
-      <RenewMembershipModal
-        opened={isMembershipModalOpened}
-        onSubmit={onRenewMembershipFormSubmit}
-        onClose={() => setIsMembershipModalOpened(false)}
+      <AddStudentModal
+        opened={isAddStudentModalOpened}
+        onSubmit={onAddStudentFormSubmit}
+        onClose={() => setIsAddStudentModalOpened(false)}
       />
       <DeleteStudentModal
         studentFullName={`${selectedStudent?.firstName} ${selectedStudent?.lastName}`}
@@ -88,6 +101,21 @@ export const Students = () => {
         onSubmit={onDeleteStudentFormSubmit}
         onClose={() => setIsDeleteStudentModalOpened(false)}
       />
+      <RenewMembershipModal
+        opened={isMembershipModalOpened}
+        onSubmit={onRenewMembershipFormSubmit}
+        onClose={() => setIsMembershipModalOpened(true)}
+      />
+      <Paper p="xs" shadow="xs" withBorder style={{ height: "70px" }}>
+        <Button
+          size="sm"
+          color="green"
+          onClick={() => setIsAddStudentModalOpened(true)}
+        >
+          Add Student
+        </Button>
+      </Paper>
+      <Space h={10} />
       <Paper
         p="xs"
         shadow="xs"
