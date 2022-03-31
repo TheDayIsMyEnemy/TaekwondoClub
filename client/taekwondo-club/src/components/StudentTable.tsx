@@ -39,8 +39,8 @@ export const StudentTable: FC<StudentTableProps> = ({
           <th>Id</th>
           <th>First Name</th>
           <th>Last Name</th>
-          <th>Gender</th>
           <th>Date Of Birth</th>
+          <th>Phone</th>
           <th>Membership</th>
           <th>Actions</th>
         </tr>
@@ -53,8 +53,8 @@ export const StudentTable: FC<StudentTableProps> = ({
                 <td>{student.id}</td>
                 <td>{student.firstName}</td>
                 <td>{student.lastName}</td>
-                <td>{student.gender}</td>
                 <td>{new Date(student.birthDate).toLocaleDateString()}</td>
+                <td>{student.phoneNumber}</td>
                 <td>{getStatusBadge(student.clubMembership)}</td>
                 <td>
                   <Group spacing={0}>

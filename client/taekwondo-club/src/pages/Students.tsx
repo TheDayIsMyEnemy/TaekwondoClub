@@ -1,13 +1,14 @@
-import { StudentTable } from "../components/StudentTable";
-import { Paper, Pagination, Space, Text, ScrollArea } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { Paper, Pagination, Space, Text, ScrollArea } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import { StudentTable } from "../components/StudentTable";
+import { RenewMembershipModal } from "../components/RenewMembershipModal";
 import { Student } from "../types";
 import {
   createClubMembership,
   updateClubMembership,
   getStudents,
 } from "../api/requests";
-import { RenewMembershipModal } from "../components/RenewMembershipModal";
 
 export const Students = () => {
   const [activePage, setPage] = useState<number>(1);
@@ -23,7 +24,7 @@ export const Students = () => {
     }
     return () => {
       setStudents([]);
-    }
+    };
   }, []);
 
   const loadStudents = () => {
@@ -42,6 +43,11 @@ export const Students = () => {
         endDate
       ).then(() => {
         setIsMembershipModalOpened(false);
+        showNotification({
+          title: "Renew Membership",
+          message: "The membership has been updated successfully!",
+          color: "green"
+        });
         loadStudents();
       });
     } else {

@@ -17,7 +17,7 @@ import PrivateRoute from "./routes/PrivateRoute";
 import NavbarSimple from "./components/Navbar";
 import Brand from "./components/Brand";
 import { useCallback, useState } from "react";
-import { NotificationProvider } from "./hooks/context/Notification";
+import { NotificationsProvider } from '@mantine/notifications';
 
 const App = () => {
   const [color, setColor] = useState<ColorScheme>("light");
@@ -39,7 +39,7 @@ const App = () => {
           colorScheme: color,
         }}
       >
-        <NotificationProvider>
+        <NotificationsProvider position="top-right" zIndex={2077}>
           <AppShell
             // Add fixed prop if don't want sidebar to shrink
             // But it will make main content to be tear off into right side
@@ -81,7 +81,7 @@ const App = () => {
               })}
             </Routes>
           </AppShell>
-        </NotificationProvider>
+        </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
