@@ -22,7 +22,7 @@ export const DeleteStudentModal: React.FC<DeleteStudentModalProps> = ({
   onClose,
 }): JSX.Element => {
   return (
-    <Modal size="sm" opened={opened} onClose={onClose} title={`Delete ${studentFullName}`}>
+    <Modal size="sm" opened={opened} onClose={onClose} withCloseButton={false}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -30,7 +30,8 @@ export const DeleteStudentModal: React.FC<DeleteStudentModalProps> = ({
         }}
       >
         <Paper>
-          <Text align="center">Are you sure?</Text>
+          <Text align="center">Are you sure you want to delete</Text>
+          <Text align="center" weight={700}>{studentFullName}?</Text>
           <Space h={20} />
           <Center>
             <Group>
