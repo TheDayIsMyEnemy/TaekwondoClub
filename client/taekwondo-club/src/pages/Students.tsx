@@ -58,8 +58,6 @@ export const Students = () => {
         opened={isMembershipModalOpened}
         onSubmit={onMembershipFormSubmit}
         onClose={() => setIsMembershipModalOpened(false)}
-        calendarStartDate={selectedStudent?.clubMembership?.startDate as Date}
-        calendarEndDate={selectedStudent?.clubMembership?.endDate as Date}
       />
       <Paper
         p="xs"
@@ -72,7 +70,6 @@ export const Students = () => {
           <Text>Loading...</Text>
         ) : (
           <>
-            <Text>Current page: {activePage}</Text>
             <StudentTable
               students={students}
               onMembershipModalOpen={(selectedStudent) => {

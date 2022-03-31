@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { Table, ActionIcon, Group } from "@mantine/core";
-import { Student } from "../types";
-import { PencilIcon, DiffRemovedIcon } from "@primer/octicons-react";
+import { Table, ActionIcon, Group, Badge, Tooltip } from "@mantine/core";
+import { ClubMembership, Student } from "../types";
+import { Pencil, Trash } from "tabler-icons-react";
 
 type StudentTableProps = {
   students: Student[];
@@ -12,6 +12,26 @@ export const StudentTable: FC<StudentTableProps> = ({
   students,
   onMembershipModalOpen,
 }): JSX.Element => {
+  const getStatusBadge = (
+    clubMembership: ClubMembership | null
+  ): JSX.Element => {
+    if (clubMembership == null) {
+      return <></>;
+    }
+
+    const endDate = `${new Date(clubMembership.endDate).toLocaleDateString()}`;
+
+    return clubMembership.isActive ? (
+      <Tooltip label={endDate}>
+        <Badge>Active</Badge>
+      </Tooltip>
+    ) : (
+      <Tooltip label={endDate}>
+        <Badge color="gray">Expired</Badge>
+      </Tooltip>
+    );
+  };
+
   return (
     <Table>
       <thead>
@@ -35,27 +55,17 @@ export const StudentTable: FC<StudentTableProps> = ({
                 <td>{student.lastName}</td>
                 <td>{student.gender}</td>
                 <td>{new Date(student.birthDate).toLocaleDateString()}</td>
+                <td>{getStatusBadge(student.clubMembership)}</td>
                 <td>
-                  {student.clubMembership?.isActive
-                    ? `Active until ${new Date(
-                        student.clubMembership.endDate!
-                      ).toLocaleDateString()}`
-                    : student.clubMembership?.endDate != null
-                    ? `Expired on ${student.clubMembership.endDate}`
-                    : `Not created`}
-                </td>
-                <td>
-                  <Group spacing={8}>
-                    <ActionIcon
-                      variant="light"
-                      onClick={() => {
-                        onMembershipModalOpen(student);
-                      }}
-                    >
-                      <PencilIcon />
+                  <Group spacing={0}>
+                    <ActionIcon color="green"
+                    onClick={() => {
+                      onMembershipModalOpen(student);
+                    }}>
+                      <Pencil size={16} />
                     </ActionIcon>
-                    <ActionIcon variant="light">
-                      <DiffRemovedIcon />
+                    <ActionIcon color="red">
+                      <Trash size={16} />
                     </ActionIcon>
                   </Group>
                 </td>

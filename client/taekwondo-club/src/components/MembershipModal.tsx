@@ -7,22 +7,19 @@ type MembershipModalProps = {
   opened: boolean;
   onSubmit: (startDate: Date, endDate: Date) => void;
   onClose: () => void;
-  calendarStartDate: Date | null;
-  calendarEndDate: Date | null;
 };
 
 export const MembershipModal: FC<MembershipModalProps> = ({
   opened,
   onSubmit,
-  onClose,
-  calendarStartDate,
-  calendarEndDate,
+  onClose
 }): JSX.Element => {
-  const startDate = calendarStartDate ?? new Date();
-  const endDate = calendarEndDate ?? dayjs().add(1, "month").toDate()
-  const [calendar, setCalendar] = useState<
-    [Date | null, Date | null]
-  >([startDate, endDate]);
+  const startDate = new Date();
+  const endDate = dayjs().add(1, "month").toDate();
+  const [calendar, setCalendar] = useState<[Date | null, Date | null]>([
+    startDate,
+    endDate,
+  ]);
 
   return (
     <Modal size="xl" opened={opened} onClose={onClose} title="Set Membership">

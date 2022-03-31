@@ -1,7 +1,7 @@
 type ClubMembership = {
   id: number;
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate: Date;
+  endDate: Date;
   note: string;
   isActive: boolean;
 };
