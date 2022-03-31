@@ -32,8 +32,8 @@ namespace ApplicationCore.Services
             var memoryStream = new MemoryStream();
             await csvStream.CopyToAsync(memoryStream);
 
-            string[] csvColumns = null;
-            string[][] csvRows = null;
+            string[] csvColumns = null!;
+            string[][] csvRows = null!;
 
             try
             {
