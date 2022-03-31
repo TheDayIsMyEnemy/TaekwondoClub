@@ -27,7 +27,7 @@ export const StudentTable: FC<StudentTableProps> = ({
       </Tooltip>
     ) : (
       <Tooltip label={endDate}>
-        <Badge color="gray">Expired</Badge>
+        <Badge color="red">Expired</Badge>
       </Tooltip>
     );
   };
