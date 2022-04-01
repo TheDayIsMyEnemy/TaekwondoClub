@@ -94,7 +94,6 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
             error={form.errors.lastName}
           />
           <Select
-            required={true}
             value={form.values.gender}
             label="Gender"
             data={[
