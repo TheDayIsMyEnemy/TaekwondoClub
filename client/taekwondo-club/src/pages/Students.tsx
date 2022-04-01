@@ -12,11 +12,12 @@ import { StudentTable } from "../components/StudentTable";
 import { AddStudentModal } from "../components/AddStudentModal";
 import { RenewMembershipModal } from "../components/RenewMembershipModal";
 import { DeleteStudentModal } from "../components/DeleteStudentModal";
-import { Student } from "../types";
+import { CreateStudentRequest, Student } from "../types";
 import {
   createClubMembership,
   updateClubMembership,
   getStudents,
+  createStudent,
   deleteStudent,
 } from "../api/requests";
 
@@ -29,7 +30,6 @@ export const Students = () => {
     useState<boolean>(false);
   const [isDeleteStudentModalOpened, setIsDeleteStudentModalOpened] =
     useState<boolean>(false);
-
   const [isAddStudentModalOpened, setIsAddStudentModalOpened] =
     useState<boolean>(false);
 
@@ -50,7 +50,17 @@ export const Students = () => {
     });
   };
 
-  const onAddStudentFormSubmit = () => {};
+  const onAddStudentFormSubmit = (student: CreateStudentRequest) => {
+    createStudent(student).then(() => {
+      setIsAddStudentModalOpened(false);
+      showNotification({
+        title: "Add Student",
+        message: `${student.firstName} ${student.lastName} has been created successfully!`,
+        color: "green",
+      });
+      loadStudents();
+    });
+  };
 
   const onDeleteStudentFormSubmit = () => {
     deleteStudent(selectedStudent!.id).then(() => {

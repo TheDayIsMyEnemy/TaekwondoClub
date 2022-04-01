@@ -56,7 +56,7 @@ export const StudentTable: FC<StudentTableProps> = ({
                 <td>{student.id}</td>
                 <td>{student.firstName}</td>
                 <td>{student.lastName}</td>
-                <td>{new Date(student.birthDate).toLocaleDateString()}</td>
+                <td>{student.birthDate ? new Date(student.birthDate).toLocaleDateString() : null}</td>
                 <td>{student.phoneNumber}</td>
                 <td>{getStatusBadge(student.clubMembership)}</td>
                 <td>

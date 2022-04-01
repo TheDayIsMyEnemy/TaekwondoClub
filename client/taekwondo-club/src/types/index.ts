@@ -16,4 +16,12 @@ type Student = {
   clubMembership: ClubMembership | null;
 };
 
-export type { ClubMembership, Student };
+type CreateStudentRequest = {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  phoneNumber: string;
+  birthDate: Date | null;
+};
+
+export type { Student, ClubMembership, CreateStudentRequest };

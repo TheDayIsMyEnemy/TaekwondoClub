@@ -30,6 +30,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IClubMembershipRepository, ClubMembershipRepository>();
 
+builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IUploadStudentsCsvFileService, UploadStudentsCsvFileService>();
 builder.Services.AddScoped<IClubMembershipService, ClubMembershipService>();
 

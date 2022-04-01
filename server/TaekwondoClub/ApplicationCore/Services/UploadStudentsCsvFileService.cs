@@ -84,7 +84,7 @@ namespace ApplicationCore.Services
 
         private Student CreateNewStudentFromCsvRow(string[] csvColumns, string[] csvRow)
         {
-            var student = new Student("", "", "");
+            var student = new Student("", "", "", null, null);
 
             var studentType = student.GetType();
 

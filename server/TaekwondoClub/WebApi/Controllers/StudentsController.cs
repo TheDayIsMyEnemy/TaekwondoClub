@@ -3,6 +3,7 @@ using ApplicationCore.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models;
+using WebApi.Models.Requests;
 
 namespace WebApi.Controllers
 {
@@ -10,10 +11,12 @@ namespace WebApi.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IStudentRepository _studentRepository;
+        private readonly IStudentService _studentService;
 
-        public StudentsController(IMapper mapper, IStudentRepository studentRepository)
+        public StudentsController(IMapper mapper, IStudentRepository studentRepository, IStudentService studentService)
         {
             _mapper = mapper;
+            _studentService = studentService;
             _studentRepository = studentRepository;
         }
 
@@ -40,6 +43,18 @@ namespace WebApi.Controllers
             var studentDto = _mapper.Map<Student, StudentDto>(student);
 
             return studentDto;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateStudentRequest request)
+        {
+            var result = await _studentService.CreateNewStudent(request.FirstName,
+                request.LastName,
+                request.Gender,
+                request.BirthDate,
+                request.PhoneNumber);
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
