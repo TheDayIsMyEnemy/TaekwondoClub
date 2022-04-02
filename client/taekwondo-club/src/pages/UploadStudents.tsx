@@ -1,5 +1,6 @@
-import { Button, Paper } from "@mantine/core";
 import { useState } from "react";
+import { Button, Paper } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { FileUpload } from "../components/FileUpload";
 import client from "../api";
 
@@ -18,8 +19,20 @@ export const UploadStudents = () => {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((res) => console.log(res))
-        .catch((er) => console.log(er));
+        .then((res) => {
+          showNotification({
+            title: "File uploaded successfully",
+            message: `${res.data} new students have been added.`,
+            color: "green"
+          });
+        })
+        .catch((err) => {
+          showNotification({
+            title: "There is an error occurred",
+            message: `${err}`,
+            color: "red"
+          });
+        });
     }
   };
 
