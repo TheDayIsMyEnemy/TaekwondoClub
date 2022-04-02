@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         {
             var result =
                 await _membershipService
-                .UpdateMembership(req.ClubMembershipId, req.StartDate, req.EndDate);
+                .UpdateMembership(req.MembershipId, req.StartDate, req.EndDate);
 
             return Ok(result);
         }
