@@ -3,31 +3,31 @@ using ApplicationCore.Models;
 
 namespace ApplicationCore.Services
 {
-    public class ClubMembershipService : IClubMembershipService
+    public class MembershipService : IMembershipService
     {
-        public readonly IClubMembershipRepository _clubMembershipRepository;
+        public readonly IMembershipRepository _membershipRepository;
         public readonly IStudentRepository _studentRepository;
 
-        public ClubMembershipService(
-            IClubMembershipRepository clubMembershipRepository,
+        public MembershipService(
+            IMembershipRepository membershipRepository,
             IStudentRepository studentRepository)
         {
-            _clubMembershipRepository = clubMembershipRepository;
+            _membershipRepository = membershipRepository;
             _studentRepository = studentRepository;
         }
 
-        public async Task<bool> CreateNewClubMembership(int studentId, DateTime startDate, DateTime endDate)
+        public async Task<bool> CreateNewMembership(int studentId, DateTime startDate, DateTime endDate)
         {
             var student = await _studentRepository
-                .GetStudentAndClubMembershipByStudentId(studentId);
+                .GetStudentAndMembershipByStudentId(studentId);
 
             if (student == null)
                 return false;
 
-            if (student.ClubMembership != null)
+            if (student.Membership != null)
                 return false;
 
-            var clubMembership = new ClubMembership
+            var clubMembership = new Membership
             {
                 StudentId = studentId,
                 StartDate = startDate,
@@ -37,7 +37,7 @@ namespace ApplicationCore.Services
 
             try
             {
-                await _clubMembershipRepository.AddAsync(clubMembership);
+                await _membershipRepository.AddAsync(clubMembership);
             }
             catch (Exception)
             {
@@ -48,9 +48,9 @@ namespace ApplicationCore.Services
             return true;
         }
 
-        public async Task<bool> UpdateClubMembership(int clubMembershipId, DateTime startDate, DateTime endDate)
+        public async Task<bool> UpdateMembership(int clubMembershipId, DateTime startDate, DateTime endDate)
         {
-            var clubMembership = await _clubMembershipRepository.GetByIdAsync(clubMembershipId);
+            var clubMembership = await _membershipRepository.GetByIdAsync(clubMembershipId);
 
             if (clubMembership == null)
                 return false;
@@ -60,7 +60,7 @@ namespace ApplicationCore.Services
 
             try
             {
-                await _clubMembershipRepository.UpdateAsync(clubMembership);
+                await _membershipRepository.UpdateAsync(clubMembership);
             }
             catch (Exception)
             {

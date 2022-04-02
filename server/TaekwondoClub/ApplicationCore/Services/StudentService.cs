@@ -12,10 +12,20 @@ namespace ApplicationCore.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<bool> CreateNewStudent(string firstName, string lastName, string gender, DateTime? birthDate, string? phoneNumber)
+        public async Task<bool> CreateNewStudent(
+            string firstName,
+            string lastName,
+            string gender,
+            DateTime? birthDate,
+            string? phoneNumber,
+            DateTime[]? membershipPeriod)
         {
             // add validations
             var student = new Student(firstName, lastName, gender, birthDate, phoneNumber);
+            if (membershipPeriod != null)
+            {
+                //var membership = new ClubMembership { S}
+            }
 
             try
             {

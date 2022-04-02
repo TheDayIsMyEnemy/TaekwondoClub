@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models
 {
-    public class ClubMembershipDto
+    public class MembershipDto
     {
         public int Id { get; set; }
 

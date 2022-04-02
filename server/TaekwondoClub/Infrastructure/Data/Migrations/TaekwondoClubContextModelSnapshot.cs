@@ -22,37 +22,6 @@ namespace Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ApplicationCore.Models.ClubMembership", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("date");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique();
-
-                    b.ToTable("ClubMemberships");
-                });
-
             modelBuilder.Entity("ApplicationCore.Models.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -68,6 +37,37 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("ApplicationCore.Models.Membership", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
+
+                    b.ToTable("Memberships");
                 });
 
             modelBuilder.Entity("ApplicationCore.Models.Student", b =>
@@ -116,11 +116,11 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("GroupStudent");
                 });
 
-            modelBuilder.Entity("ApplicationCore.Models.ClubMembership", b =>
+            modelBuilder.Entity("ApplicationCore.Models.Membership", b =>
                 {
                     b.HasOne("ApplicationCore.Models.Student", "Student")
-                        .WithOne("ClubMembership")
-                        .HasForeignKey("ApplicationCore.Models.ClubMembership", "StudentId")
+                        .WithOne("Membership")
+                        .HasForeignKey("ApplicationCore.Models.Membership", "StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -144,7 +144,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("ApplicationCore.Models.Student", b =>
                 {
-                    b.Navigation("ClubMembership");
+                    b.Navigation("Membership");
                 });
 #pragma warning restore 612, 618
         }

@@ -28,7 +28,7 @@
 
         public string? PhoneNumber { get; set; }
 
-        public ClubMembership? ClubMembership { get; set; }
+        public Membership? Membership { get; set; }
 
         public ICollection<Group> Groups { get; set; } = null!;
     }

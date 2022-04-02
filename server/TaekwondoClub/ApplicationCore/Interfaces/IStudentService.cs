@@ -7,6 +7,7 @@
             string lastName,
             string gender,
             DateTime? birthDate,
-            string? phoneNumber);
+            string? phoneNumber,
+            DateTime[]? membershipPeriod);
     }
 }

@@ -9,7 +9,7 @@ namespace Infrastructure.Data
 
         public DbSet<Student> Students => Set<Student>();
         public DbSet<Group> Groups => Set<Group>();
-        public DbSet<ClubMembership> ClubMemberships => Set<ClubMembership>();
+        public DbSet<Membership> Memberships => Set<Membership>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -20,19 +20,19 @@ namespace Infrastructure.Data
                 .Property(p => p.BirthDate)
                 .HasColumnType(dateColumnType);
             builder
-                .Entity<ClubMembership>()
+                .Entity<Membership>()
                 .Property(p => p.StartDate)
                 .HasColumnType(dateColumnType);
             builder
-                .Entity<ClubMembership>()
+                .Entity<Membership>()
                 .Property(p => p.EndDate)
                 .HasColumnType(dateColumnType);
             builder
-                .Entity<ClubMembership>()
+                .Entity<Membership>()
                 .Property(p => p.CreatedDate)
                 .HasColumnType(dateColumnType);
             builder
-                .Entity<ClubMembership>()
+                .Entity<Membership>()
                 .Ignore(p => p.IsActive);
         }
     }

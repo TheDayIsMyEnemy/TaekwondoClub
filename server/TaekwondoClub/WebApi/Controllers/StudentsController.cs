@@ -23,7 +23,7 @@ namespace WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentDto>>> GetAll()
         {
-            var students = await _studentRepository.GetAllStudentsWithClubMembership();
+            var students = await _studentRepository.GetAllStudentsWithMembership();
 
             var mappedStudents = _mapper
                 .Map<IEnumerable<Student>, IEnumerable<StudentDto>>(students)
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentDto>> Get(int id)
         {
-            var student = await _studentRepository.GetStudentAndClubMembershipByStudentId(id);
+            var student = await _studentRepository.GetStudentAndMembershipByStudentId(id);
 
             if (student == null)
                 return NotFound();
@@ -46,13 +46,14 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateStudentRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateStudentRequest req)
         {
-            var result = await _studentService.CreateNewStudent(request.FirstName,
-                request.LastName,
-                request.Gender,
-                request.BirthDate,
-                request.PhoneNumber);
+            var result = await _studentService.CreateNewStudent(req.FirstName,
+                req.LastName,
+                req.Gender,
+                req.BirthDate,
+                req.PhoneNumber,
+                req.MembershipPeriod);
 
             return Ok(result);
         }

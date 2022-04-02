@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models.Requests
 {
-    public class UpdateClubMembershipRequest
+    public class UpdateMembershipRequest
     {
         public int ClubMembershipId { get; set; }
 

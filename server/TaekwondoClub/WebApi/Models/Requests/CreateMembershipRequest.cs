@@ -1,6 +1,6 @@
 ﻿namespace WebApi.Models.Requests
 {
-    public class CreateClubMembershipRequest
+    public class CreateMembershipRequest
     {
         public int StudentId { get; set; }
 

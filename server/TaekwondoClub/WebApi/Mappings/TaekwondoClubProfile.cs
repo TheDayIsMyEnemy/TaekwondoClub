@@ -9,7 +9,7 @@ namespace WebApi.Mappings
         public TaekwondoClubProfile()
         {
             CreateMap<Student, StudentDto>();
-            CreateMap<ClubMembership, ClubMembershipDto>();
+            CreateMap<Membership, MembershipDto>();
         }
     }
 }

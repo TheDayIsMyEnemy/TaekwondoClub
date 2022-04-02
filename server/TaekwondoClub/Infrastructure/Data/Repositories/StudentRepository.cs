@@ -8,17 +8,17 @@ namespace Infrastructure.Data.Repositories
     {
         public StudentRepository(TaekwondoClubContext context) : base(context) { }
 
-        public async Task<IEnumerable<Student>> GetAllStudentsWithClubMembership()
+        public async Task<IEnumerable<Student>> GetAllStudentsWithMembership()
         {
             return await _dbSet
-                .Include(s => s.ClubMembership)
+                .Include(s => s.Membership)
                 .ToListAsync();
         }
 
-        public async Task<Student?> GetStudentAndClubMembershipByStudentId(int studentId)
+        public async Task<Student?> GetStudentAndMembershipByStudentId(int studentId)
         {
             return await _dbSet
-                .Include(s => s.ClubMembership)
+                .Include(s => s.Membership)
                 .FirstOrDefaultAsync(s => s.Id == studentId);
         }
 

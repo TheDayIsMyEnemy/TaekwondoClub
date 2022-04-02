@@ -1,6 +1,6 @@
 ﻿namespace ApplicationCore.Models
 {
-    public class ClubMembership
+    public class Membership
     {     
         public int Id { get; set; }
 
