@@ -14,6 +14,6 @@
 
         public string? PhoneNumber { get; set; }
 
-        public MembershipDto? ClubMembership { get; set; }
+        public MembershipDto? Membership { get; set; }
     }
 }
