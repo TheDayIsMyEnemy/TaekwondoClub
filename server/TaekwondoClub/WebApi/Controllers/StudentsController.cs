@@ -48,7 +48,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStudentRequest req)
         {
-            var result = await _studentService.CreateNewStudent(req.FirstName,
+            var result = await _studentService.CreateNewStudentWithMembership(req.FirstName,
                 req.LastName,
                 req.Gender,
                 req.BirthDate,

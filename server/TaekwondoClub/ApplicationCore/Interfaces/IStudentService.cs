@@ -2,7 +2,7 @@
 {
     public interface IStudentService
     {
-        public Task<bool> CreateNewStudent(
+        public Task<bool> CreateNewStudentWithMembership(
             string firstName,
             string lastName,
             string gender,

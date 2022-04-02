@@ -12,7 +12,7 @@ namespace ApplicationCore.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<bool> CreateNewStudent(
+        public async Task<bool> CreateNewStudentWithMembership(
             string firstName,
             string lastName,
             string gender,
@@ -22,14 +22,20 @@ namespace ApplicationCore.Services
         {
             // add validations
             var student = new Student(firstName, lastName, gender, birthDate, phoneNumber);
+
             if (membershipPeriod != null)
             {
-                //var membership = new ClubMembership { S}
+                student.Membership = new Membership
+                {
+                    CreatedDate = DateTime.Now,
+                    StartDate = membershipPeriod[0],
+                    EndDate = membershipPeriod[1]
+                };
             }
 
             try
             {
-               await  _studentRepository.AddAsync(student);
+                await _studentRepository.AddAsync(student);
             }
             catch (Exception)
             {
