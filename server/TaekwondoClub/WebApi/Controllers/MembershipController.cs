@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Enums;
+using ApplicationCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models.Requests;
 
@@ -16,21 +17,42 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMembershipRequest req)
         {
-            var result =
+            var outcome =
                 await _membershipService
-                .CreateNewMembership(req.StudentId, req.StartDate, req.EndDate);
+                .CreateMembership(req.StudentId, req.StartDate, req.EndDate);
 
-            return Ok(result);
+            switch (outcome)
+            {
+                case CreateMembershipOutcome.Success:
+                    return Ok();
+                case CreateMembershipOutcome.StudentDoesNotExist:
+                case CreateMembershipOutcome.StudentMembershipAlreadyExists:
+                case CreateMembershipOutcome.InvalidMembershipPeriod:
+                case CreateMembershipOutcome.InsertFailed:
+                    return UnprocessableEntity(outcome);
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateMembershipRequest req)
         {
-            var result =
+            var outcome =
                 await _membershipService
                 .UpdateMembership(req.MembershipId, req.StartDate, req.EndDate);
 
-            return Ok(result);
+            switch (outcome)
+            {
+                case UpdateMembershipOutcome.Success:
+                    return Ok();
+                case UpdateMembershipOutcome.MembershipDoesNotExist:
+                case UpdateMembershipOutcome.InvalidMembershipPeriod:
+                case UpdateMembershipOutcome.UpdateFailed:
+                    return UnprocessableEntity();
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

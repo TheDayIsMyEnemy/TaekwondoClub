@@ -1,8 +1,10 @@
-﻿namespace ApplicationCore.Interfaces
+﻿using ApplicationCore.Enums;
+
+namespace ApplicationCore.Interfaces
 {
     public interface IMembershipService
     {
-        Task<bool> CreateNewMembership(int studentId, DateTime startDate, DateTime endDate);
-        Task<bool> UpdateMembership(int clubMembershipId, DateTime startDate, DateTime endDate);
+        Task<CreateMembershipOutcome> CreateMembership(int studentId, DateTime startDate, DateTime endDate);
+        Task<UpdateMembershipOutcome> UpdateMembership(int membershipId, DateTime startDate, DateTime endDate);
     }
 }
