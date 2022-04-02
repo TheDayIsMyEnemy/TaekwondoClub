@@ -35,7 +35,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
       birthDate: null,
       gender: "Male",
       phoneNumber: "",
-      clubMembershipPeriod: [
+      membershipPeriod: [
         new Date(),
         dayjs().add(1, "month").add(1, "day").toDate(),
       ],
@@ -51,7 +51,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
           ? null
           : "Invalid number";
       },
-      clubMembershipPeriod: (values) => {
+      membershipPeriod: (values) => {
         if (
           isAddMembershipChecked &&
           (values[0] == null || values[1] == null)
@@ -79,7 +79,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
               return;
             }
             if (!isAddMembershipChecked) {
-              form.values.clubMembershipPeriod = [null, null];
+              form.values.membershipPeriod = [null, null];
             }
             onSubmit(form.values);
           }}
@@ -144,13 +144,13 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
               required={true}
               label="Membership period"
               placeholder="Pick dates range"
-              value={form.values.clubMembershipPeriod}
+              value={form.values.membershipPeriod}
               onChange={(values) => {
-                form.clearFieldError("clubMembershipPeriod");
-                form.setFieldValue("clubMembershipPeriod", values);
+                form.clearFieldError("membershipPeriod");
+                form.setFieldValue("membershipPeriod", values);
               }}
               mt="sm"
-              error={form.errors.clubMembershipPeriod}
+              error={form.errors.membershipPeriod}
             />
           )}
           <Space h={35} />

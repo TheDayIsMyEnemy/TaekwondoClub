@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Table, ActionIcon, Group, Badge, Tooltip } from "@mantine/core";
-import { ClubMembership, Student } from "../types";
+import { Membership, Student } from "../types";
 import { Pencil, Trash } from "tabler-icons-react";
 import { IdBadgeIcon } from "@primer/octicons-react";
 
@@ -16,15 +16,15 @@ export const StudentTable: FC<StudentTableProps> = ({
   onDeleteStudentModalOpen,
 }): JSX.Element => {
   const getStatusBadge = (
-    clubMembership: ClubMembership | null
+    membership: Membership | null
   ): JSX.Element => {
-    if (clubMembership == null) {
+    if (membership == null) {
       return <></>;
     }
 
-    const endDate = `${new Date(clubMembership.endDate).toLocaleDateString()}`;
+    const endDate = `${new Date(membership.endDate).toLocaleDateString()}`;
 
-    return clubMembership.isActive ? (
+    return membership.isActive ? (
       <Tooltip label={endDate}>
         <Badge>Active</Badge>
       </Tooltip>
@@ -58,7 +58,7 @@ export const StudentTable: FC<StudentTableProps> = ({
                 <td>{student.lastName}</td>
                 <td>{student.birthDate ? new Date(student.birthDate).toLocaleDateString() : null}</td>
                 <td>{student.phoneNumber}</td>
-                <td>{getStatusBadge(student.clubMembership)}</td>
+                <td>{getStatusBadge(student.membership)}</td>
                 <td>
                   <Group spacing={0}>
                     <ActionIcon

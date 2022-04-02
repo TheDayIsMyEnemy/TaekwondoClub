@@ -14,8 +14,8 @@ import { RenewMembershipModal } from "../components/RenewMembershipModal";
 import { DeleteStudentModal } from "../components/DeleteStudentModal";
 import { CreateStudent, Student } from "../types";
 import {
-  createClubMembership,
-  updateClubMembership,
+  createMembership,
+  updateMembership,
   getStudents,
   createStudent,
   deleteStudent,
@@ -76,9 +76,9 @@ export const Students = () => {
   };
 
   const onRenewMembershipFormSubmit = (startDate: Date, endDate: Date) => {
-    if (selectedStudent?.clubMembership) {
-      updateClubMembership(
-        selectedStudent.clubMembership.id,
+    if (selectedStudent?.membership) {
+      updateMembership(
+        selectedStudent.membership.id,
         startDate,
         endDate
       ).then(() => {
@@ -91,7 +91,7 @@ export const Students = () => {
         loadStudents();
       });
     } else {
-      createClubMembership(selectedStudent!.id, startDate, endDate).then(() => {
+      createMembership(selectedStudent!.id, startDate, endDate).then(() => {
         setIsMembershipModalOpened(false);
         loadStudents();
       });

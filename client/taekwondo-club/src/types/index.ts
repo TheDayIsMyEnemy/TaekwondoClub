@@ -1,4 +1,4 @@
-type ClubMembership = {
+type Membership = {
   id: number;
   startDate: Date;
   endDate: Date;
@@ -13,7 +13,7 @@ type Student = {
   gender: string;
   phoneNumber: string;
   birthDate: Date;
-  clubMembership: ClubMembership | null;
+  membership: Membership | null;
 };
 
 type CreateStudent = {
@@ -22,7 +22,7 @@ type CreateStudent = {
   gender: string;
   phoneNumber: string;
   birthDate: Date | null;
-  clubMembershipPeriod: [Date | null, Date | null];
+  membershipPeriod: [Date | null, Date | null];
 };
 
-export type { Student, ClubMembership, CreateStudent };
+export type { Student, Membership, CreateStudent };
