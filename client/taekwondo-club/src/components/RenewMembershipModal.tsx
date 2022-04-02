@@ -15,7 +15,7 @@ export const RenewMembershipModal: FC<RenewMembershipModalProps> = ({
   onClose,
 }): JSX.Element => {
   const startDate = new Date();
-  const endDate = dayjs().add(1, "month").add(1, "day").toDate();
+  const endDate = dayjs().add(1, "month").toDate();
   const [calendar, setCalendar] = useState<[Date | null, Date | null]>([
     startDate,
     endDate,

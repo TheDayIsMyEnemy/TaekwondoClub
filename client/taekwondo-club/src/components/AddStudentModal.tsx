@@ -37,7 +37,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
       phoneNumber: "",
       membershipPeriod: [
         new Date(),
-        dayjs().add(1, "month").add(1, "day").toDate(),
+        dayjs().add(1, "month").toDate(),
       ],
     },
     validate: {
