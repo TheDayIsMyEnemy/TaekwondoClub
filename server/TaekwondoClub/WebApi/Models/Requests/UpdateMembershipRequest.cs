@@ -2,7 +2,7 @@
 {
     public class UpdateMembershipRequest
     {
-        public int ClubMembershipId { get; set; }
+        public int MembershipId { get; set; }
 
         public DateTime StartDate { get; set; }
 
