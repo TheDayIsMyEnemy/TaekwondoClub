@@ -23,8 +23,9 @@ namespace ApplicationCore.Services
 
             if (student == null)
                 return false;
-
             if (student.Membership != null)
+                return false;
+            if (!ValidateMembershipPeriod(startDate, endDate))
                 return false;
 
             var clubMembership = new Membership
@@ -43,30 +44,39 @@ namespace ApplicationCore.Services
             {
                 return false;
             }
-
-            
+    
             return true;
         }
 
         public async Task<bool> UpdateMembership(int clubMembershipId, DateTime startDate, DateTime endDate)
         {
-            var clubMembership = await _membershipRepository.GetByIdAsync(clubMembershipId);
+            var membership = await _membershipRepository.GetByIdAsync(clubMembershipId);
 
-            if (clubMembership == null)
+            if (membership == null)
+                return false;
+            if (!ValidateMembershipPeriod(startDate, endDate))
                 return false;
 
-            clubMembership.StartDate = startDate;
-            clubMembership.EndDate = endDate;
+            membership.StartDate = startDate;
+            membership.EndDate = endDate;
 
             try
             {
-                await _membershipRepository.UpdateAsync(clubMembership);
+                await _membershipRepository.UpdateAsync(membership);
             }
             catch (Exception)
             {
                 return false;
             }
             
+            return true;
+        }
+
+        private bool ValidateMembershipPeriod(DateTime startDate, DateTime endDate)
+        {
+            if (startDate < DateTime.Now || startDate >= endDate)
+                return false;
+
             return true;
         }
     }
