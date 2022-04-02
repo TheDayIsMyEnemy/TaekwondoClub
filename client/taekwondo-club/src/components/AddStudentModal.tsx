@@ -35,10 +35,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
       birthDate: null,
       gender: "Male",
       phoneNumber: "",
-      membershipPeriod: [
-        new Date(),
-        dayjs().add(1, "month").toDate(),
-      ],
+      membershipPeriod: [new Date(), dayjs().add(1, "month").toDate()],
     },
     validate: {
       firstName: (value) => (/^\s+$/.test(value) ? "Invalid First Name" : null),
@@ -47,7 +44,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
         if (!value) {
           return null;
         }
-        return /$^(0\d{10})$|^(359\d{10})$/.test(value)
+        return /^0\d{9}$|^359\d{9}$/.test(value)
           ? null
           : "Invalid number";
       },
@@ -155,7 +152,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
           )}
           <Space h={35} />
           <Center>
-            <Button variant="light" size="md" type="submit">
+            <Button color="green" size="md" type="submit">
               Submit
             </Button>
           </Center>
