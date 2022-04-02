@@ -2,18 +2,21 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Modal,
   Select,
   Space,
   TextInput,
 } from "@mantine/core";
-import { DatePicker } from "@mantine/dates";
+import { DatePicker, DateRangePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { CreateStudentRequest } from "../types";
+import dayjs from "dayjs";
+import { useState } from "react";
+import { CreateStudent } from "../types";
 
 type AddStudentModalProps = {
   opened: boolean;
-  onSubmit: (student: CreateStudentRequest) => void;
+  onSubmit: (student: CreateStudent) => void;
   onClose: () => void;
 };
 
@@ -22,16 +25,21 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
   onSubmit,
   onClose,
 }): JSX.Element => {
-  const initialValues: CreateStudentRequest = {
-    firstName: "",
-    lastName: "",
-    birthDate: null,
-    gender: "Male",
-    phoneNumber: "",
-    // clubMembership: null,
-  };
-  const form = useForm({
-    initialValues: initialValues,
+  const [isAddMembershipChecked, setIsAddMembershipChecked] =
+    useState<boolean>(false);
+
+  const form = useForm<CreateStudent>({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      birthDate: null,
+      gender: "Male",
+      phoneNumber: "",
+      clubMembershipPeriod: [
+        new Date(),
+        dayjs().add(1, "month").add(1, "day").toDate(),
+      ],
+    },
     validate: {
       firstName: (value) => (/^\s+$/.test(value) ? "Invalid First Name" : null),
       lastName: (value) => (/^\s+$/.test(value) ? "Invalid Last Name" : null),
@@ -42,6 +50,15 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
         return /$^(0\d{10})$|^(359\d{10})$/.test(value)
           ? null
           : "Invalid number";
+      },
+      clubMembershipPeriod: (values) => {
+        if (
+          isAddMembershipChecked &&
+          (values[0] == null || values[1] == null)
+        ) {
+          return "Invalid dates";
+        }
+        return null;
       },
     },
   });
@@ -57,20 +74,14 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            const s = form.validate();
-            if (s.hasErrors) {
+            const formValidation = form.validate();
+            if (formValidation.hasErrors) {
               return;
             }
-            console.log(form.values);
-            console.log(s);
-            // const req:CreateStudentRequest = {
-            //   firstName: form.values.firstName,
-            //   lastName: form.values.lastName,
-            //   gender: form.values.gender,
-            //   birthDate: form.values.birthDate,
-
-            // }
-            onSubmit(form.values as CreateStudentRequest);
+            if (!isAddMembershipChecked) {
+              form.values.clubMembershipPeriod = [null, null];
+            }
+            onSubmit(form.values);
           }}
         >
           <TextInput
@@ -122,6 +133,26 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
             }}
             error={form.errors.phoneNumber}
           />
+          <Checkbox
+            checked={isAddMembershipChecked}
+            label="Add Membership"
+            mt="sm"
+            onChange={() => setIsAddMembershipChecked(!isAddMembershipChecked)}
+          />
+          {isAddMembershipChecked && (
+            <DateRangePicker
+              required={true}
+              label="Membership period"
+              placeholder="Pick dates range"
+              value={form.values.clubMembershipPeriod}
+              onChange={(values) => {
+                form.clearFieldError("clubMembershipPeriod");
+                form.setFieldValue("clubMembershipPeriod", values);
+              }}
+              mt="sm"
+              error={form.errors.clubMembershipPeriod}
+            />
+          )}
           <Space h={35} />
           <Center>
             <Button variant="light" size="md" type="submit">

@@ -1,13 +1,13 @@
 import client from ".";
-import {CreateStudentRequest} from "../types";
+import { CreateStudent } from "../types";
 
 export const getStudents = () => {
   return client.get("/students");
 };
 
-export const createStudent = (request: CreateStudentRequest) => {
-  return client.post("/students", request)
-}
+export const createStudent = (request: CreateStudent) => {
+  return client.post("/students", request);
+};
 
 export const deleteStudent = (id: number) => {
   return client.delete(`/students/${id}`);

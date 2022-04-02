@@ -12,7 +12,7 @@ import { StudentTable } from "../components/StudentTable";
 import { AddStudentModal } from "../components/AddStudentModal";
 import { RenewMembershipModal } from "../components/RenewMembershipModal";
 import { DeleteStudentModal } from "../components/DeleteStudentModal";
-import { CreateStudentRequest, Student } from "../types";
+import { CreateStudent, Student } from "../types";
 import {
   createClubMembership,
   updateClubMembership,
@@ -50,7 +50,7 @@ export const Students = () => {
     });
   };
 
-  const onAddStudentFormSubmit = (student: CreateStudentRequest) => {
+  const onAddStudentFormSubmit = (student: CreateStudent) => {
     createStudent(student).then(() => {
       setIsAddStudentModalOpened(false);
       showNotification({
