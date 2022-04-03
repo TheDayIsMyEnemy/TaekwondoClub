@@ -4,7 +4,6 @@ using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using WebApi.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -15,13 +14,11 @@ builder.Services.AddDbContext<TaekwondoClubContext>(options =>
     options.UseSqlServer(config.GetConnectionString("TaekwondoClubConnection"));
 });
 
-builder.Services.AddAutoMapper(typeof(TaekwondoClubProfile));
-
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
     {
-        //o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-        //o.JsonSerializerOptions.MaxDepth = 0;
+        o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        o.JsonSerializerOptions.MaxDepth = 0;
     });
 
 builder.Services.AddEndpointsApiExplorer();

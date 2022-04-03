@@ -17,7 +17,10 @@ namespace ApplicationCore.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<CreateMembershipOutcome> CreateMembership(int studentId, DateTime startDate, DateTime endDate)
+        public async Task<CreateMembershipOutcome> CreateMembership(
+            int studentId,
+            DateTime startDate,
+            DateTime endDate)
         {
             var student = await _studentRepository
                 .GetStudentAndMembershipByStudentId(studentId);
@@ -47,7 +50,10 @@ namespace ApplicationCore.Services
             return CreateMembershipOutcome.Success;
         }
 
-        public async Task<UpdateMembershipOutcome> UpdateMembership(int membershipId, DateTime startDate, DateTime endDate)
+        public async Task<UpdateMembershipOutcome> UpdateMembership(
+            int membershipId,
+            DateTime startDate,
+            DateTime endDate)
         {
             var membership = await _membershipRepository.GetByIdAsync(membershipId);
 

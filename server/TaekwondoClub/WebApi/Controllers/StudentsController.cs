@@ -1,52 +1,42 @@
 ﻿using ApplicationCore.Interfaces;
 using ApplicationCore.Models;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models;
 using WebApi.Models.Requests;
 
 namespace WebApi.Controllers
 {
     public class StudentsController : ApiControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly IStudentRepository _studentRepository;
         private readonly IStudentService _studentService;
 
-        public StudentsController(IMapper mapper, IStudentRepository studentRepository, IStudentService studentService)
+        public StudentsController(IStudentRepository studentRepository, IStudentService studentService)
         {
-            _mapper = mapper;
             _studentService = studentService;
             _studentRepository = studentRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Student>>> GetAll()
         {
             var students = await _studentRepository.GetAllStudentsWithMembership();
 
-            var mappedStudents = _mapper
-                .Map<IEnumerable<Student>, IEnumerable<StudentDto>>(students)
-                .ToList(); ;
-
-            return mappedStudents;
+            return Ok(students);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentDto>> Get(int id)
+        public async Task<ActionResult<Student>> Get(int id)
         {
             var student = await _studentRepository.GetStudentAndMembershipByStudentId(id);
 
             if (student == null)
                 return NotFound();
 
-            var studentDto = _mapper.Map<Student, StudentDto>(student);
-
-            return studentDto;
+            return Ok(student);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateStudentRequest req)
+        public async Task<ActionResult<bool>> Create([FromBody] CreateStudentRequest req)
         {
             var result = await _studentService.CreateNewStudentWithMembership(req.FirstName,
                 req.LastName,

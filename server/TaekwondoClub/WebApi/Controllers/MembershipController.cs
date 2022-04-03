@@ -17,8 +17,7 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMembershipRequest req)
         {
-            var outcome =
-                await _membershipService
+            var outcome = await _membershipService
                 .CreateMembership(req.StudentId, req.StartDate, req.EndDate);
 
             switch (outcome)
@@ -29,7 +28,7 @@ namespace WebApi.Controllers
                 case CreateMembershipOutcome.StudentMembershipAlreadyExists:
                 case CreateMembershipOutcome.InvalidMembershipPeriod:
                 case CreateMembershipOutcome.InsertFailed:
-                    return UnprocessableEntity(outcome);
+                    return UnprocessableEntity(outcome.ToString());
                 default:
                     return StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -38,8 +37,7 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateMembershipRequest req)
         {
-            var outcome =
-                await _membershipService
+            var outcome = await _membershipService
                 .UpdateMembership(req.MembershipId, req.StartDate, req.EndDate);
 
             switch (outcome)
