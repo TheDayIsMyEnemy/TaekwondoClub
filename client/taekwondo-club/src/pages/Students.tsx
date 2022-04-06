@@ -9,9 +9,9 @@ import {
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { StudentTable } from "../components/StudentTable";
-import { AddStudentModal } from "../components/AddStudentModal";
-import { RenewMembershipModal } from "../components/RenewMembershipModal";
-import { DeleteStudentModal } from "../components/DeleteStudentModal";
+import { AddStudentModal } from "../components/Modals/AddStudentModal";
+import { RenewMembershipModal } from "../components/Modals/RenewMembershipModal";
+import { DeleteStudentModal } from "../components/Modals/DeleteStudentModal";
 import { CreateStudent, Student } from "../types";
 import {
   createMembership,
@@ -20,6 +20,8 @@ import {
   createStudent,
   deleteStudent,
 } from "../api/requests";
+import { useTranslation } from "react-i18next";
+import { PersonAddIcon } from "@primer/octicons-react";
 
 export const Students = () => {
   const [activePage, setPage] = useState<number>(1);
@@ -77,19 +79,17 @@ export const Students = () => {
 
   const onRenewMembershipFormSubmit = (startDate: Date, endDate: Date) => {
     if (selectedStudent?.membership) {
-      updateMembership(
-        selectedStudent.membership.id,
-        startDate,
-        endDate
-      ).then(() => {
-        setIsMembershipModalOpened(false);
-        showNotification({
-          title: "Renew Membership",
-          message: "The membership has been updated successfully!",
-          color: "green",
-        });
-        loadStudents();
-      });
+      updateMembership(selectedStudent.membership.id, startDate, endDate).then(
+        () => {
+          setIsMembershipModalOpened(false);
+          showNotification({
+            title: "Renew Membership",
+            message: "The membership has been updated successfully!",
+            color: "green",
+          });
+          loadStudents();
+        }
+      );
     } else {
       createMembership(selectedStudent!.id, startDate, endDate).then(() => {
         setIsMembershipModalOpened(false);
@@ -97,6 +97,8 @@ export const Students = () => {
       });
     }
   };
+
+  const { t } = useTranslation();
 
   return (
     <>
@@ -116,16 +118,16 @@ export const Students = () => {
         onSubmit={onRenewMembershipFormSubmit}
         onClose={() => setIsMembershipModalOpened(false)}
       />
-      <Paper p="xs" shadow="xs" withBorder style={{ height: "70px" }}>
+      <Paper mb="xs" p="xs" shadow="xs" withBorder style={{ height: "70px" }}>
         <Button
+          leftIcon={<PersonAddIcon size={16} />}
           size="sm"
-          color="green"
+          color="blue"
           onClick={() => setIsAddStudentModalOpened(true)}
         >
-          Add Student
+          {t("Add Student")}
         </Button>
       </Paper>
-      <Space h={10} />
       <Paper
         p="xs"
         shadow="xs"
@@ -134,7 +136,7 @@ export const Students = () => {
         style={{ height: "calc(100vh - 110px)" }}
       >
         {isLoading ? (
-          <Text>Loading...</Text>
+          <Text>No data found...</Text>
         ) : (
           <>
             <StudentTable

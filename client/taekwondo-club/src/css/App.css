@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext");
 
 * {
   margin: 0;
@@ -8,7 +8,7 @@
 html,
 body {
   height: 100%;
-  font-family: 'Source sans pro';
+  font-family: "Source sans pro";
   /* Uncomment this overflow if it's necessary */
   overflow: hidden;
 }

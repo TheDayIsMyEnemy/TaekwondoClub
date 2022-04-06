@@ -11,7 +11,7 @@ import { DatePicker, DateRangePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { CreateStudent } from "../types";
+import { CreateStudent } from "../../types";
 
 type AddStudentModalProps = {
   opened: boolean;

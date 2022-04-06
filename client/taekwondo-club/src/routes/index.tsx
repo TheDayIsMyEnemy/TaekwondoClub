@@ -1,7 +1,7 @@
 import { Home } from "../pages/Home";
 import { Students } from "../pages/Students";
 import { UploadStudents } from "../pages/UploadStudents";
-
+import i18n from "i18next";
 import type { Icon } from "@primer/octicons-react";
 import { HomeIcon, UploadIcon, TableIcon } from "@primer/octicons-react";
 

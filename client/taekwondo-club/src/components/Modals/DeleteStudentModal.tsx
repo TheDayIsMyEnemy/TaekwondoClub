@@ -31,7 +31,9 @@ export const DeleteStudentModal: React.FC<DeleteStudentModalProps> = ({
       >
         <Paper>
           <Text align="center">Are you sure you want to delete</Text>
-          <Text align="center" weight={700}>{studentFullName}?</Text>
+          <Text align="center" weight={700}>
+            {studentFullName}?
+          </Text>
           <Space h={20} />
           <Center>
             <Group>
