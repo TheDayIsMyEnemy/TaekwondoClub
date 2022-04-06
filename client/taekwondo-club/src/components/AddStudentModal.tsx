@@ -5,7 +5,6 @@ import {
   Checkbox,
   Modal,
   Select,
-  Space,
   TextInput,
 } from "@mantine/core";
 import { DatePicker, DateRangePicker } from "@mantine/dates";
@@ -27,33 +26,33 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
 }): JSX.Element => {
   const [isAddMembershipChecked, setIsAddMembershipChecked] =
     useState<boolean>(false);
-
   const form = useForm<CreateStudent>({
     initialValues: {
       firstName: "",
       lastName: "",
       birthDate: null,
-      gender: "Male",
+      gender: "",
       phoneNumber: "",
-      membershipPeriod: [new Date(), dayjs().add(1, "month").toDate()],
+      membershipPeriod: null,
     },
     validate: {
-      firstName: (value) => (/^\s+$/.test(value) ? "Invalid First Name" : null),
-      lastName: (value) => (/^\s+$/.test(value) ? "Invalid Last Name" : null),
+      firstName: (value) => (/^\s*$/.test(value) ? true : null),
+      lastName: (value) => (/^\s*$/.test(value) ? true : null),
+      gender: (value) => {
+        if (value !== "Male" && value !== "Female") {
+          return true;
+        }
+        return null;
+      },
       phoneNumber: (value) => {
         if (!value) {
           return null;
         }
-        return /^0\d{9}$|^359\d{9}$/.test(value)
-          ? null
-          : "Invalid number";
+        return /^0\d{9}$|^359\d{9}$/.test(value) ? null : "Invalid number";
       },
       membershipPeriod: (values) => {
-        if (
-          isAddMembershipChecked &&
-          (values[0] == null || values[1] == null)
-        ) {
-          return "Invalid dates";
+        if (values != null && (values[0] == null || values[1] == null)) {
+          return true;
         }
         return null;
       },
@@ -62,47 +61,29 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
 
   return (
     <Modal
-      size="md"
+      size="sm"
       opened={opened}
       onClose={onClose}
       title="Add a new student"
     >
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const formValidation = form.validate();
-            if (formValidation.hasErrors) {
-              return;
-            }
-            if (!isAddMembershipChecked) {
-              form.values.membershipPeriod = [null, null];
-            }
-            onSubmit(form.values);
-          }}
+          onSubmit={form.onSubmit((values) => {
+            onSubmit(values);
+          })}
         >
           <TextInput
             required
             label="First Name"
-            placeholder="Enter your first name"
-            onChange={(event) => {
-              form.clearFieldError("firstName");
-              form.setFieldValue("firstName", event.currentTarget.value);
-            }}
-            error={form.errors.firstName}
+            {...form.getInputProps("firstName")}
           />
           <TextInput
             required
             label="Last Name"
-            placeholder="Enter your last name"
-            onChange={(event) => {
-              form.clearFieldError("firstName");
-              form.setFieldValue("lastName", event.currentTarget.value);
-            }}
-            error={form.errors.lastName}
+            {...form.getInputProps("lastName")}
           />
           <Select
-            value={form.values.gender}
+            required
             label="Gender"
             data={[
               {
@@ -111,48 +92,39 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
               },
               { value: "Female", label: "Female" },
             ]}
-            onChange={(value) => form.setFieldValue("gender", value as string)}
+            {...form.getInputProps("gender")}
           />
-          <DatePicker
-            placeholder="Pick your birth date"
-            label="Birth Date"
-            defaultValue={form.values.birthDate}
-            onChange={(date) => {
-              form.setFieldValue("birthDate", date);
-            }}
-          />
+          <DatePicker label="Birth Date" {...form.getInputProps("birthDate")} />
           <TextInput
             label="Phone Number"
-            placeholder="Enter your phone number"
-            onChange={(event) => {
-              form.clearFieldError("phoneNumber");
-              form.setFieldValue("phoneNumber", event.currentTarget.value);
-            }}
-            error={form.errors.phoneNumber}
+            {...form.getInputProps("phoneNumber")}
           />
           <Checkbox
             checked={isAddMembershipChecked}
             label="Add Membership"
             mt="sm"
-            onChange={() => setIsAddMembershipChecked(!isAddMembershipChecked)}
+            onChange={() => {
+              let membershipPeriod: [Date | null, Date | null] | null = null;
+              if (!isAddMembershipChecked) {
+                membershipPeriod = [
+                  new Date(),
+                  dayjs().add(1, "month").toDate(),
+                ];
+              }
+              form.setFieldValue("membershipPeriod", membershipPeriod);
+              setIsAddMembershipChecked(!isAddMembershipChecked);
+            }}
           />
           {isAddMembershipChecked && (
             <DateRangePicker
-              required={true}
+              required
               label="Membership period"
-              placeholder="Pick dates range"
-              value={form.values.membershipPeriod}
-              onChange={(values) => {
-                form.clearFieldError("membershipPeriod");
-                form.setFieldValue("membershipPeriod", values);
-              }}
-              mt="sm"
-              error={form.errors.membershipPeriod}
+              my="sm"
+              {...form.getInputProps("membershipPeriod")}
             />
           )}
-          <Space h={35} />
-          <Center>
-            <Button color="green" size="md" type="submit">
+          <Center mt="xs">
+            <Button color="blue" size="md" type="submit">
               Submit
             </Button>
           </Center>

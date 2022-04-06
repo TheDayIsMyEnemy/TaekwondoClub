@@ -22,7 +22,7 @@ type CreateStudent = {
   gender: string;
   phoneNumber: string;
   birthDate: Date | null;
-  membershipPeriod: [Date | null, Date | null];
+  membershipPeriod: [Date | null, Date | null] | null;
 };
 
 export type { Student, Membership, CreateStudent };
