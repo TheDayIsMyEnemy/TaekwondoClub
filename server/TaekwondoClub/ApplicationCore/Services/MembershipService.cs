@@ -79,7 +79,7 @@ namespace ApplicationCore.Services
 
         private bool ValidateMembershipPeriod(DateTime startDate, DateTime endDate)
         {
-            if (startDate < DateTime.Now || startDate >= endDate)
+            if (startDate.Date < DateTime.Now.Date || startDate.Date >= endDate.Date)
                 return false;
 
             return true;
