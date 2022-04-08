@@ -1,6 +1,6 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Enums;
 using ApplicationCore.Models;
-using ApplicationCore.Enums;
+using ApplicationCore.Interfaces;
 
 namespace ApplicationCore.Services
 {
@@ -26,7 +26,7 @@ namespace ApplicationCore.Services
                 .GetStudentAndMembershipByStudentId(studentId);
 
             if (student == null)
-                return CreateMembershipOutcome.StudentDoesNotExist;
+                return CreateMembershipOutcome.StudentNotFound;
             if (student.Membership != null)
                 return CreateMembershipOutcome.StudentMembershipAlreadyExists;
             if (!ValidateMembershipPeriod(startDate, endDate))
@@ -58,7 +58,7 @@ namespace ApplicationCore.Services
             var membership = await _membershipRepository.GetByIdAsync(membershipId);
 
             if (membership == null)
-                return UpdateMembershipOutcome.MembershipDoesNotExist;
+                return UpdateMembershipOutcome.MembershipNotFound;
             if (!ValidateMembershipPeriod(startDate, endDate))
                 return UpdateMembershipOutcome.InvalidMembershipPeriod;
 

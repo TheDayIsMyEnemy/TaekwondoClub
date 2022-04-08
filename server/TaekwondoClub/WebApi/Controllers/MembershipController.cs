@@ -24,11 +24,11 @@ namespace WebApi.Controllers
             {
                 case CreateMembershipOutcome.Success:
                     return Ok();
-                case CreateMembershipOutcome.StudentDoesNotExist:
+                case CreateMembershipOutcome.StudentNotFound:
                 case CreateMembershipOutcome.StudentMembershipAlreadyExists:
                 case CreateMembershipOutcome.InvalidMembershipPeriod:
                 case CreateMembershipOutcome.InsertFailed:
-                    return UnprocessableEntity(outcome.ToString());
+                    return UnprocessableEntity();
                 default:
                     return StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -44,7 +44,7 @@ namespace WebApi.Controllers
             {
                 case UpdateMembershipOutcome.Success:
                     return Ok();
-                case UpdateMembershipOutcome.MembershipDoesNotExist:
+                case UpdateMembershipOutcome.MembershipNotFound:
                 case UpdateMembershipOutcome.InvalidMembershipPeriod:
                 case UpdateMembershipOutcome.UpdateFailed:
                     return UnprocessableEntity();

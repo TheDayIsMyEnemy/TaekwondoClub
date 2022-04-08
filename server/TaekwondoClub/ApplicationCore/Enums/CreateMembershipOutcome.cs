@@ -3,7 +3,7 @@
     public enum CreateMembershipOutcome
     {
         Success,
-        StudentDoesNotExist,
+        StudentNotFound,
         StudentMembershipAlreadyExists,
         InvalidMembershipPeriod,
         InsertFailed
