@@ -20,8 +20,8 @@ type CreateStudent = {
   firstName: string;
   lastName: string;
   gender: string;
-  phoneNumber: string;
   birthDate: Date | null;
+  phoneNumber: string | null;
   membershipPeriod: [Date | null, Date | null] | null;
 };
 

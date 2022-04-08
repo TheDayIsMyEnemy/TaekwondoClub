@@ -2,9 +2,13 @@ import {
   Box,
   Button,
   Center,
-  Checkbox,
+  Collapse,
+  CSSObject,
+  Group,
   Modal,
-  Select,
+  Radio,
+  RadioGroup,
+  Switch,
   TextInput,
 } from "@mantine/core";
 import { DatePicker, DateRangePicker } from "@mantine/dates";
@@ -32,7 +36,7 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
       lastName: "",
       birthDate: null,
       gender: "",
-      phoneNumber: "",
+      phoneNumber: null,
       membershipPeriod: null,
     },
     validate: {
@@ -59,12 +63,17 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
     },
   });
 
+  const inputStyles: CSSObject = {
+    width: 142,
+  };
+
   return (
     <Modal
       size="sm"
       opened={opened}
       onClose={onClose}
-      title="Add a new student"
+      title="Add student"
+      radius="md"
     >
       <Box sx={{ maxWidth: 300 }} mx="auto">
         <form
@@ -72,37 +81,50 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
             onSubmit(values);
           })}
         >
-          <TextInput
-            required
-            label="First Name"
-            {...form.getInputProps("firstName")}
-          />
-          <TextInput
-            required
-            label="Last Name"
-            {...form.getInputProps("lastName")}
-          />
-          <Select
+          <Group spacing="xs" mb={8}>
+            <TextInput
+              required
+              label="First name"
+              sx={inputStyles}
+              {...form.getInputProps("firstName")}
+            />
+            <TextInput
+              required
+              label="Last name"
+              sx={inputStyles}
+              {...form.getInputProps("lastName")}
+            />
+          </Group>
+          <Group spacing="xs" mb={8}>
+            <DatePicker
+              label="Birthdate"
+              sx={inputStyles}
+              // dropdownType="modal"
+              {...form.getInputProps("birthDate")}
+            />
+            <TextInput
+              label="Mobile number"
+              sx={inputStyles}
+              {...form.getInputProps("phoneNumber")}
+            />
+          </Group>
+          <RadioGroup
             required
             label="Gender"
-            data={[
-              {
-                value: "Male",
-                label: "Male",
-              },
-              { value: "Female", label: "Female" },
-            ]}
+            spacing="xs"
+            size="sm"
+            sx={{ "& label": { marginLeft: 10 } }}
             {...form.getInputProps("gender")}
-          />
-          <DatePicker label="Birth Date" {...form.getInputProps("birthDate")} />
-          <TextInput
-            label="Phone Number"
-            {...form.getInputProps("phoneNumber")}
-          />
-          <Checkbox
+          >
+            <Radio value="Male" label="Male" />
+            <Radio value="Female" label="Female" />
+          </RadioGroup>
+          <Switch
             checked={isAddMembershipChecked}
-            label="Add Membership"
+            label="Activate Membership"
             mt="sm"
+            mb="xs"
+            radius="md"
             onChange={() => {
               let membershipPeriod: [Date | null, Date | null] | null = null;
               if (!isAddMembershipChecked) {
@@ -114,17 +136,18 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
               form.setFieldValue("membershipPeriod", membershipPeriod);
               setIsAddMembershipChecked(!isAddMembershipChecked);
             }}
+            styles={{ label: { paddingLeft: 10 } }}
           />
-          {isAddMembershipChecked && (
+          <Collapse in={isAddMembershipChecked}>
             <DateRangePicker
               required
               label="Membership period"
-              my="sm"
+              sx={{ width: 250 }}
               {...form.getInputProps("membershipPeriod")}
             />
-          )}
-          <Center mt="xs">
-            <Button color="blue" size="md" type="submit">
+          </Collapse>
+          <Center mt="sm">
+            <Button color="green" size="md" type="submit" radius="md">
               Submit
             </Button>
           </Center>
