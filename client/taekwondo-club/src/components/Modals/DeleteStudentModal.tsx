@@ -15,7 +15,7 @@ type DeleteStudentModalProps = {
   onClose: () => void;
 };
 
-export const DeleteStudentModal: React.FC<DeleteStudentModalProps> = ({
+const DeleteStudentModal: React.FC<DeleteStudentModalProps> = ({
   studentFullName,
   opened,
   onSubmit,
@@ -50,3 +50,5 @@ export const DeleteStudentModal: React.FC<DeleteStudentModalProps> = ({
     </Modal>
   );
 };
+
+export default DeleteStudentModal;

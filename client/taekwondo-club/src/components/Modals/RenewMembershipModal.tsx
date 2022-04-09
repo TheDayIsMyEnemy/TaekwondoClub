@@ -9,7 +9,7 @@ type RenewMembershipModalProps = {
   onClose: () => void;
 };
 
-export const RenewMembershipModal: FC<RenewMembershipModalProps> = ({
+const RenewMembershipModal: FC<RenewMembershipModalProps> = ({
   opened,
   onSubmit,
   onClose,
@@ -44,3 +44,5 @@ export const RenewMembershipModal: FC<RenewMembershipModalProps> = ({
     </Modal>
   );
 };
+
+export default RenewMembershipModal;

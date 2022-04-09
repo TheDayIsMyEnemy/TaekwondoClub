@@ -9,9 +9,11 @@ import {
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { StudentTable } from "../components/StudentTable";
-import { AddStudentModal } from "../components/Modals/AddStudentModal";
-import { RenewMembershipModal } from "../components/Modals/RenewMembershipModal";
-import { DeleteStudentModal } from "../components/Modals/DeleteStudentModal";
+import {
+  AddStudentModal,
+  DeleteStudentModal,
+  RenewMembershipModal,
+} from "../components/Modals";
 import { CreateStudent, Student } from "../types";
 import {
   createMembership,

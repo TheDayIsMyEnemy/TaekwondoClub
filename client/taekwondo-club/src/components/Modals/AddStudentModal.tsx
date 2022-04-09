@@ -23,7 +23,7 @@ type AddStudentModalProps = {
   onClose: () => void;
 };
 
-export const AddStudentModal: React.FC<AddStudentModalProps> = ({
+const AddStudentModal: React.FC<AddStudentModalProps> = ({
   opened,
   onSubmit,
   onClose,
@@ -156,3 +156,5 @@ export const AddStudentModal: React.FC<AddStudentModalProps> = ({
     </Modal>
   );
 };
+
+export default AddStudentModal;
