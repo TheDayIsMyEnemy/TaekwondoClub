@@ -8,10 +8,11 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 var allowAllCorsPolicy = "Allow All Cors Policy";
+var connectionString = config.GetConnectionString("MySql");
 
 builder.Services.AddDbContext<TaekwondoClubContext>(options =>
 {
-    options.UseSqlServer(config.GetConnectionString("TaekwondoClubConnection"));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 builder.Services.AddControllers()
