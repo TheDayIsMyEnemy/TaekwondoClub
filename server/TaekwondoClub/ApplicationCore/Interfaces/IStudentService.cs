@@ -1,11 +1,20 @@
-﻿namespace ApplicationCore.Interfaces
+﻿using ApplicationCore.Enums;
+using ApplicationCore.Models;
+
+namespace ApplicationCore.Interfaces
 {
     public interface IStudentService
     {
-        public Task<bool> CreateNewStudentWithMembership(
+        Task<IEnumerable<Student>> GetAllStudentsAndMembership();
+
+        Task<(GetStudentOutcome, Student?)> GetStudentAndMembershipByStudentId(int studentId);
+
+        Task<DeleteStudentOutcome> DeleteStudent(int studentId);
+
+        Task<CreateStudentWithMembershipOutcome> CreateStudentWithMembership(
             string firstName,
             string lastName,
-            string gender,
+            Gender gender,
             DateTime? birthDate,
             string? phoneNumber,
             DateTime[]? membershipPeriod);

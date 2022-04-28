@@ -4,10 +4,10 @@ namespace ApplicationCore.Interfaces
 {
     public interface IStudentRepository : IAsyncRepository<Student>
     {
-        public Task<IEnumerable<Student>> GetAllStudentsWithMembership();
+        Task<IEnumerable<Student>> GetAllStudentsAndMembership();
 
-        public Task<Student?> GetStudentAndMembershipByStudentId(int studentId);
+        Task<Student?> GetStudentAndMembershipByStudentId(int studentId);
 
-        public Task<Student?> GetStudentByFirstNameAndLastName(string firstName, string lastName);
+        Task<Student?> GetStudentByFirstNameAndLastName(string firstName, string lastName);
     }
 }

@@ -6,17 +6,17 @@ namespace WebApi.Controllers
 {
     public class UploadStudentsController : ApiControllerBase
     {
-        private readonly IUploadStudentsCsvFileService _uploadStudentsCsvFileService;
+        private readonly IUploadFileService _uploadFileService;
 
-        public UploadStudentsController(IUploadStudentsCsvFileService uploadStudentsCsvFileService)
+        public UploadStudentsController(IUploadFileService uploadFileService)
         {
-            _uploadStudentsCsvFileService = uploadStudentsCsvFileService;
+            _uploadFileService = uploadFileService;
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] IFormFile students)
         {
-            var (outcome, newStudentsCount) = await _uploadStudentsCsvFileService
+            var (outcome, newStudentsCount) = await _uploadFileService
                 .UploadStudentsCsvFile(students.OpenReadStream());
 
             switch (outcome)
@@ -27,7 +27,7 @@ namespace WebApi.Controllers
                 case UploadStudentsCsvFileOutcome.EmptyFile:
                 case UploadStudentsCsvFileOutcome.MissingRequiredColumns:
                 case UploadStudentsCsvFileOutcome.InvalidFile:
-                    return UnprocessableEntity(outcome.ToString());
+                    return UnprocessableEntity();
                 default:
                     return StatusCode(StatusCodes.Status500InternalServerError);
             }

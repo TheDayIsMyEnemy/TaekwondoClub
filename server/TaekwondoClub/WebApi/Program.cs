@@ -17,6 +17,7 @@ builder.Services.AddDbContext<TaekwondoClubContext>(options =>
 builder.Services.AddControllers()
     .AddJsonOptions(o =>
     {
+        o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());  
         o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         o.JsonSerializerOptions.MaxDepth = 0;
     });
@@ -28,8 +29,9 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IMembershipRepository, MembershipRepository>();
 
 builder.Services.AddScoped<IStudentService, StudentService>();
-builder.Services.AddScoped<IUploadStudentsCsvFileService, UploadStudentsCsvFileService>();
+builder.Services.AddScoped<IUploadFileService, UploadFileService>();
 builder.Services.AddScoped<IMembershipService, MembershipService>();
+builder.Services.AddScoped<IMembershipValidationService, MembershipValidationService>();
 
 builder.Services.AddCors(options =>
 {

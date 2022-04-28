@@ -15,9 +15,7 @@ export const StudentTable: FC<StudentTableProps> = ({
   onRenewMembershipModalOpen,
   onDeleteStudentModalOpen,
 }): JSX.Element => {
-  const getStatusBadge = (
-    membership: Membership | null
-  ): JSX.Element => {
+  const getStatusBadge = (membership: Membership | null): JSX.Element => {
     if (membership == null) {
       return <></>;
     }
@@ -43,7 +41,7 @@ export const StudentTable: FC<StudentTableProps> = ({
           <th>First Name</th>
           <th>Last Name</th>
           <th>Date Of Birth</th>
-          <th>Phone</th>
+          <th>Phone No.</th>
           <th>Membership</th>
           <th>Actions</th>
         </tr>
@@ -56,7 +54,11 @@ export const StudentTable: FC<StudentTableProps> = ({
                 <td>{student.id}</td>
                 <td>{student.firstName}</td>
                 <td>{student.lastName}</td>
-                <td>{student.birthDate ? new Date(student.birthDate).toLocaleDateString() : null}</td>
+                <td>
+                  {student.birthDate
+                    ? new Date(student.birthDate).toLocaleDateString()
+                    : null}
+                </td>
                 <td>{student.phoneNumber}</td>
                 <td>{getStatusBadge(student.membership)}</td>
                 <td>

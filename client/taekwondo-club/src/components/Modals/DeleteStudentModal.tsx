@@ -37,11 +37,11 @@ const DeleteStudentModal: React.FC<DeleteStudentModalProps> = ({
           <Space h={20} />
           <Center>
             <Group>
-              <Button color="red" size="md" type="submit">
-                Yes
-              </Button>
               <Button color="green" size="md" onClick={onClose}>
                 No
+              </Button>
+              <Button color="red" size="md" type="submit">
+                Yes
               </Button>
             </Group>
           </Center>

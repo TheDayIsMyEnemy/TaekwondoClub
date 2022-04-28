@@ -12,6 +12,8 @@ import {
   Navbar,
   ColorScheme,
   ScrollArea,
+  GlobalStyles,
+  Global,
 } from "@mantine/core";
 import PrivateRoute from "./routes/PrivateRoute";
 import NavbarSimple from "./components/Navbar";
@@ -19,6 +21,7 @@ import Brand from "./components/Brand";
 import { useCallback, useState } from "react";
 import { NotificationsProvider } from "@mantine/notifications";
 import "./localization";
+import theme, { styles, globalStyles } from "./theme";
 
 const App = () => {
   const [color, setColor] = useState<ColorScheme>("light");
@@ -41,6 +44,7 @@ const App = () => {
           colorScheme: color,
         }}
       >
+        <Global styles={globalStyles} />
         <NotificationsProvider position="top-right" zIndex={2077}>
           <AppShell
             // Add fixed prop if don't want sidebar to shrink

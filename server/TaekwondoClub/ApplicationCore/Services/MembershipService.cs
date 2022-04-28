@@ -8,13 +8,16 @@ namespace ApplicationCore.Services
     {
         public readonly IMembershipRepository _membershipRepository;
         public readonly IStudentRepository _studentRepository;
+        public readonly IMembershipValidationService _membershipValidationService;
 
         public MembershipService(
             IMembershipRepository membershipRepository,
-            IStudentRepository studentRepository)
+            IStudentRepository studentRepository,
+            IMembershipValidationService membershipValidationService)
         {
             _membershipRepository = membershipRepository;
             _studentRepository = studentRepository;
+            _membershipValidationService = membershipValidationService;
         }
 
         public async Task<CreateMembershipOutcome> CreateMembership(
@@ -29,9 +32,9 @@ namespace ApplicationCore.Services
                 return CreateMembershipOutcome.StudentNotFound;
             if (student.Membership != null)
                 return CreateMembershipOutcome.StudentMembershipAlreadyExists;
-            if (!ValidateMembershipPeriod(startDate, endDate))
+            if (!_membershipValidationService.Validate(startDate, endDate))
                 return CreateMembershipOutcome.InvalidMembershipPeriod;
-
+                
             try
             {
                 await _membershipRepository.AddAsync(new Membership
@@ -59,7 +62,7 @@ namespace ApplicationCore.Services
 
             if (membership == null)
                 return UpdateMembershipOutcome.MembershipNotFound;
-            if (!ValidateMembershipPeriod(startDate, endDate))
+            if (!_membershipValidationService.Validate(startDate, endDate))
                 return UpdateMembershipOutcome.InvalidMembershipPeriod;
 
             membership.StartDate = startDate;
@@ -75,14 +78,6 @@ namespace ApplicationCore.Services
             }
 
             return UpdateMembershipOutcome.Success;
-        }
-
-        private bool ValidateMembershipPeriod(DateTime startDate, DateTime endDate)
-        {
-            if (startDate.Date < DateTime.Now.Date || startDate.Date >= endDate.Date)
-                return false;
-
-            return true;
         }
     }
 }

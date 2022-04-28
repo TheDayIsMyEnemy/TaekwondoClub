@@ -1,4 +1,5 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Enums;
+using ApplicationCore.Interfaces;
 using ApplicationCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models.Requests;
@@ -7,19 +8,17 @@ namespace WebApi.Controllers
 {
     public class StudentsController : ApiControllerBase
     {
-        private readonly IStudentRepository _studentRepository;
         private readonly IStudentService _studentService;
 
-        public StudentsController(IStudentRepository studentRepository, IStudentService studentService)
+        public StudentsController(IStudentService studentService)
         {
             _studentService = studentService;
-            _studentRepository = studentRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetAll()
         {
-            var students = await _studentRepository.GetAllStudentsWithMembership();
+            var students = await _studentService.GetAllStudentsAndMembership();
 
             return Ok(students);
         }
@@ -27,45 +26,59 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Student>> Get(int id)
         {
-            var student = await _studentRepository.GetStudentAndMembershipByStudentId(id);
+            var (outcome, student) = await _studentService.GetStudentAndMembershipByStudentId(id);
 
-            if (student == null)
-                return NotFound();
-
-            return Ok(student);
+            switch (outcome)
+            {
+                case GetStudentOutcome.NotFound:
+                    return NotFound();
+                case GetStudentOutcome.Success:
+                    return Ok(student);
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> Create([FromBody] CreateStudentRequest req)
+        public async Task<IActionResult> Create([FromBody] CreateStudentRequest req)
         {
-            var result = await _studentService.CreateNewStudentWithMembership(req.FirstName,
+            var outcome = await _studentService.CreateStudentWithMembership(
+                req.FirstName,
                 req.LastName,
                 req.Gender,
                 req.BirthDate,
                 req.PhoneNumber,
                 req.MembershipPeriod);
 
-            return Ok(result);
+            switch (outcome)
+            {
+                case CreateStudentWithMembershipOutcome.StudentAlreadyExists:
+                case CreateStudentWithMembershipOutcome.MembershipPeriodValidationFailed:      
+                case CreateStudentWithMembershipOutcome.InsertFailed:
+                    return UnprocessableEntity();
+                case CreateStudentWithMembershipOutcome.Success:
+                    return Ok();
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var student = await _studentRepository.GetByIdAsync(id);
+            var outcome = await _studentService.DeleteStudent(id);
 
-            if (student == null)
-                return NotFound();
-
-            try
+            switch (outcome)
             {
-                await _studentRepository.RemoveAsync(student);
+                case DeleteStudentOutcome.NotFound:
+                    return NotFound();
+                case DeleteStudentOutcome.DeleteFailed:
+                    return UnprocessableEntity();
+                case DeleteStudentOutcome.Success:
+                    return NoContent();
+                default:
+                    return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            catch (Exception)
-            {
-                return UnprocessableEntity();
-            }
-
-            return NoContent();
         }
     }
 }

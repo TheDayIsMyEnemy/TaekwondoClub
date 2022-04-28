@@ -1,34 +1,62 @@
-﻿using ApplicationCore.Interfaces;
+﻿using ApplicationCore.Enums;
+using ApplicationCore.Interfaces;
 using ApplicationCore.Models;
-using System.Text.RegularExpressions;
 
 namespace ApplicationCore.Services
 {
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly IMembershipService _membershipService;
+        private readonly IMembershipValidationService _membershipValidationService;
 
         public StudentService(
             IStudentRepository studentRepository,
-            IMembershipService membershipService)
+            IMembershipValidationService membershipValidationService)
         {
             _studentRepository = studentRepository;
-            _membershipService = membershipService;
+            _membershipValidationService = membershipValidationService;
         }
 
-        public async Task<bool> CreateNewStudentWithMembership(
+        public async Task<IEnumerable<Student>> GetAllStudentsAndMembership()
+            => await _studentRepository.GetAllStudentsAndMembership();
+
+        public async Task<(GetStudentOutcome, Student?)> GetStudentAndMembershipByStudentId(
+            int studentId)
+        {
+            var student = await _studentRepository.GetByIdAsync(studentId);
+            if (student == null)
+                return (GetStudentOutcome.NotFound, null);
+
+            return (GetStudentOutcome.Success, student);
+        }
+
+        public async Task<CreateStudentWithMembershipOutcome> CreateStudentWithMembership(
             string firstName,
             string lastName,
-            string gender,
+            Gender gender,
             DateTime? birthDate,
             string? phoneNumber,
             DateTime[]? membershipPeriod)
         {
-            if (!ValidateStudent(firstName, lastName, gender, birthDate, phoneNumber))
-                return false;
+            var student = await _studentRepository
+                .GetStudentByFirstNameAndLastName(firstName, lastName);
+            if (student != null)
+                return CreateStudentWithMembershipOutcome.StudentAlreadyExists;
 
-            var student = new Student(firstName, lastName, gender, birthDate, phoneNumber);
+            student = new Student(firstName, lastName, gender, birthDate, phoneNumber);
+
+            if (membershipPeriod != null)
+            {
+                if (_membershipValidationService.Validate(membershipPeriod[0], membershipPeriod[1]))
+                    return CreateStudentWithMembershipOutcome.MembershipPeriodValidationFailed;
+
+                student.Membership = new Membership
+                {
+                    StartDate = membershipPeriod[0],
+                    EndDate = membershipPeriod[1],
+                    CreatedDate = DateTime.Now
+                };
+            }
 
             try
             {
@@ -36,39 +64,28 @@ namespace ApplicationCore.Services
             }
             catch (Exception)
             {
-                return false;
+                return CreateStudentWithMembershipOutcome.InsertFailed;
             }
 
-            if (membershipPeriod != null && membershipPeriod.Length == 2)
-            {
-                await _membershipService.CreateMembership(
-                    student.Id,
-                    membershipPeriod[0],
-                    membershipPeriod[1]);
-            }
-
-            return true;
+            return CreateStudentWithMembershipOutcome.Success;
         }
 
-        private bool ValidateStudent(
-            string firstName,
-            string lastName,
-            string gender,
-            DateTime? birthDate,
-            string? phoneNumber)
+        public async Task<DeleteStudentOutcome> DeleteStudent(int studentId)
         {
-            if (string.IsNullOrWhiteSpace(firstName))
-                return false;
-            if (string.IsNullOrWhiteSpace(lastName))
-                return false;
-            if (!gender.Equals("Male") && !gender.Equals("Female"))
-                return false;
-            if (birthDate.HasValue && birthDate.Value >= DateTime.Now)
-                return false;
-            if (phoneNumber != null && !Regex.IsMatch(phoneNumber, @"^0\d{9}$|^359\d{9}$"))
-                return false;
+            var student = await _studentRepository.GetByIdAsync(studentId);
+            if (student == null)
+                return DeleteStudentOutcome.NotFound;
 
-            return true;
+            try
+            {
+                await _studentRepository.RemoveAsync(student);
+            }
+            catch (Exception)
+            {
+                return DeleteStudentOutcome.DeleteFailed;
+            }
+
+            return DeleteStudentOutcome.Success;
         }
     }
 }

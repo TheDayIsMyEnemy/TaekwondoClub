@@ -2,10 +2,11 @@
 using ApplicationCore.Interfaces;
 using ApplicationCore.Models;
 using ApplicationCore.Enums;
+using System.Reflection;
 
 namespace ApplicationCore.Services
 {
-    public class UploadStudentsCsvFileService : IUploadStudentsCsvFileService
+    public class UploadFileService : IUploadFileService
     {
         private readonly IStudentRepository _studentRepository;
         private readonly Dictionary<string, string> _csvColumnToStudentProp =
@@ -16,7 +17,7 @@ namespace ApplicationCore.Services
                 { "Date of Birth", "BirthDate"}
             };
 
-        public UploadStudentsCsvFileService(IStudentRepository studentRepository)
+        public UploadFileService(IStudentRepository studentRepository)
         {
             _studentRepository = studentRepository;
         }
@@ -84,7 +85,7 @@ namespace ApplicationCore.Services
 
         private Student CreateNewStudentFromCsvRow(string[] csvColumns, string[] csvRow)
         {
-            var student = new Student("", "", "", null, null);
+            var student = new Student("", "", Gender.Male, null, null);
 
             var studentType = student.GetType();
 
@@ -98,16 +99,21 @@ namespace ApplicationCore.Services
                 {
                     var studentPropName = _csvColumnToStudentProp[columnName];
                     var studentProp = studentType.GetProperty(studentPropName);
-                    var parsedCellValue = ParseCellValue(cellValue, studentPropName);
-                    studentProp?.SetValue(student, parsedCellValue);
+                    if (studentProp == null)
+                        continue;
+
+                    var propValue = GetPropertyValue(cellValue, studentProp);
+                    studentProp.SetValue(student, propValue);
                 }
             }
             return student;
         }
 
-        private object ParseCellValue(string cellValue, string studentPropName)
+        private object GetPropertyValue(string cellValue, PropertyInfo prop)
         {
-            if (studentPropName.Equals("BirthDate"))
+            if (prop.PropertyType == typeof(Gender))
+                return Enum.Parse(prop.PropertyType, cellValue);
+            if (prop.PropertyType == typeof(DateTime?))
                 return DateTime.ParseExact(cellValue, "dd/MM/yyyy", null);
 
             return cellValue;

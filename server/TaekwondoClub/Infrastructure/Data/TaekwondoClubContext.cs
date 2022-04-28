@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ApplicationCore.Models;
+﻿using ApplicationCore.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data
 {
@@ -11,28 +12,36 @@ namespace Infrastructure.Data
         public DbSet<Group> Groups => Set<Group>();
         public DbSet<Membership> Memberships => Set<Membership>();
 
+        private const string OnlyDateColumnType = "date";
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            var dateColumnType = "date";
+            builder.Entity<Student>(ConfigureStudent);
+            builder.Entity<Membership>(ConfigureMembership);
+        }
 
+        private void ConfigureStudent(EntityTypeBuilder<Student> builder)
+        {
             builder
-                .Entity<Student>()
                 .Property(p => p.BirthDate)
-                .HasColumnType(dateColumnType);
+                .HasColumnType(OnlyDateColumnType);
             builder
-                .Entity<Membership>()
+                .Property(p => p.Gender)
+                .HasConversion<string>();
+        }
+
+        private void ConfigureMembership(EntityTypeBuilder<Membership> builder)
+        {
+            builder
                 .Property(p => p.StartDate)
-                .HasColumnType(dateColumnType);
+                .HasColumnType(OnlyDateColumnType);
             builder
-                .Entity<Membership>()
                 .Property(p => p.EndDate)
-                .HasColumnType(dateColumnType);
+                .HasColumnType(OnlyDateColumnType);
             builder
-                .Entity<Membership>()
                 .Property(p => p.CreatedDate)
-                .HasColumnType(dateColumnType);
+                .HasColumnType(OnlyDateColumnType);
             builder
-                .Entity<Membership>()
                 .Ignore(p => p.IsActive);
         }
     }

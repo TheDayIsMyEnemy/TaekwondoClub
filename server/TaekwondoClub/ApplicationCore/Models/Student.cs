@@ -1,11 +1,13 @@
-﻿namespace ApplicationCore.Models
+﻿using ApplicationCore.Enums;
+
+namespace ApplicationCore.Models
 {
     public class Student
     {
         public Student(
             string firstName,
             string lastName,
-            string gender,
+            Gender gender,
             DateTime? birthDate,
             string? phoneNumber)
         {
@@ -22,7 +24,7 @@
 
         public string LastName { get; set; }
 
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
 
         public DateTime? BirthDate { get; set; }
 
