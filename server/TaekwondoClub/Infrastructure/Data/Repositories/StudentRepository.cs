@@ -22,11 +22,13 @@ namespace Infrastructure.Data.Repositories
                 .FirstOrDefaultAsync(s => s.Id == studentId);
         }
 
-        public async Task<Student?> GetStudentByFirstNameAndLastName(string firstName, string lastName)
+        public async Task<Student?> GetStudentByFirstNameAndLastName(
+            string firstName,
+            string lastName)
         {
-            return await _dbSet
-                .Where(s => s.FirstName == firstName && s.LastName == lastName)
-                .FirstOrDefaultAsync();
+            return await _dbSet.FirstOrDefaultAsync(s =>
+                s.FirstName.ToLower().Equals(firstName.ToLower()) &&
+                s.LastName.ToLower().Equals(lastName.ToLower()));
         }
     }
 }
