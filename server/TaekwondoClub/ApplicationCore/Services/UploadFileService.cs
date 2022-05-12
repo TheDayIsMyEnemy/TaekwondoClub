@@ -47,15 +47,17 @@ namespace ApplicationCore.Services
             }
 
             if (!ValidateColumns(csvColumns))
-                return (UploadStudentsCsvFileOutcome.MissingRequiredColumns, null);          
+                return (UploadStudentsCsvFileOutcome.MissingRequiredColumns, null);
 
+            var students = await _studentRepository.ListAllAsync();
             var newStudents = new List<Student>();
 
             for (int row = 1; row < csvRows.Length; row++)
             {
                 var student = CreateNewStudentFromCsvRow(csvColumns, csvRows[row]);
-                var studentExists = await _studentRepository
-                    .GetStudentByFirstNameAndLastName(student.FirstName, student.LastName) != null;
+                var studentExists = students
+                    .Any(s => s.FirstName.Equals(student.FirstName, StringComparison.OrdinalIgnoreCase)
+                      && s.LastName.Equals(student.LastName, StringComparison.OrdinalIgnoreCase));
                 if (!studentExists)
                     newStudents.Add(student);
             }
