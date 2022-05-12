@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/server/TaekwondoClub/WebApi/appsettings.Production.json
+/server/TaekwondoClub/WebApi/.config
