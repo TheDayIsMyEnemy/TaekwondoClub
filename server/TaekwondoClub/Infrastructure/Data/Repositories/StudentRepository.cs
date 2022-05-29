@@ -12,6 +12,7 @@ namespace Infrastructure.Data.Repositories
         {
             return await _dbSet
                 .Include(s => s.Membership)
+                .AsNoTracking()
                 .ToListAsync();
         }
 

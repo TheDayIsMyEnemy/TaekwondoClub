@@ -47,7 +47,7 @@ namespace ApplicationCore.Services
 
             if (membershipPeriod != null)
             {
-                if (_membershipValidationService.Validate(membershipPeriod[0], membershipPeriod[1]))
+                if (!_membershipValidationService.Validate(membershipPeriod[0], membershipPeriod[1]))
                     return CreateStudentWithMembershipOutcome.MembershipPeriodValidationFailed;
 
                 student.Membership = new Membership
