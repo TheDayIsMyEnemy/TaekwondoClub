@@ -3,6 +3,6 @@
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public abstract class ApiControllerBase : ControllerBase { }
 }
