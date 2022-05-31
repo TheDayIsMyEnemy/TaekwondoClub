@@ -16,15 +16,15 @@ import {
   Global,
 } from "@mantine/core";
 import PrivateRoute from "./routes/PrivateRoute";
-import NavbarSimple from "./components/Navbar";
 import Brand from "./components/Brand";
+import { NavbarMinimal } from "./components/Navbar";
 import { useCallback, useState } from "react";
 import { NotificationsProvider } from "@mantine/notifications";
 import "./localization";
 import theme, { styles, globalStyles } from "./theme";
 
 const App = () => {
-  const [color, setColor] = useState<ColorScheme>("light");
+  const [color, setColor] = useState<ColorScheme>("dark");
 
   const toggleColorScheme = useCallback(() => {
     setColor((prev) => (prev === "light" ? "dark" : "light"));
@@ -38,7 +38,7 @@ const App = () => {
       <MantineProvider
         theme={{
           // Override any other properties from default theme
-          fontFamily: "Roboto",
+          fontFamily: "Montserrat",
           colors: {},
           spacing: { xs: 15, sm: 20, md: 25, lg: 30, xl: 40 },
           colorScheme: color,
@@ -51,7 +51,7 @@ const App = () => {
             // But it will make main content to be tear off into right side
             // fixed
             padding="xs"
-            navbar={<NavbarSimple />}
+            navbar={<NavbarMinimal />}
             header={
               <Header height={60} p="xs">
                 <Brand />

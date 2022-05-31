@@ -1,9 +1,7 @@
 import { Home } from "../pages/Home";
 import { Students } from "../pages/Students";
 import { UploadStudents } from "../pages/UploadStudents";
-import i18n from "i18next";
-import type { Icon } from "@primer/octicons-react";
-import { HomeIcon, UploadIcon, TableIcon } from "@primer/octicons-react";
+import { HomeIcon, UploadIcon, Icon, PeopleIcon } from "@primer/octicons-react";
 
 export type Route = {
   name: string;
@@ -26,12 +24,12 @@ const routes: Route[] = [
     name: "Students",
     path: "/students",
     element: Students,
-    icon: TableIcon,
+    icon: PeopleIcon,
     color: "lime",
   },
   {
     name: "Upload Students",
-    path: "/upload-students",
+    path: "/upload",
     element: UploadStudents,
     icon: UploadIcon,
     color: "lime",

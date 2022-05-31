@@ -1,8 +1,16 @@
 import { FC } from "react";
-import { Table, ActionIcon, Group, Badge, Tooltip } from "@mantine/core";
+import {
+  Table,
+  ActionIcon,
+  Group,
+  Badge,
+  Tooltip,
+  ScrollArea,
+} from "@mantine/core";
 import { Membership, Student } from "../types";
 import { Pencil, Trash } from "tabler-icons-react";
 import { IdBadgeIcon } from "@primer/octicons-react";
+import { useMediaQuery } from "@mantine/hooks";
 
 type StudentTableProps = {
   students: Student[];
@@ -32,62 +40,70 @@ export const StudentTable: FC<StudentTableProps> = ({
       </Tooltip>
     );
   };
-
+  const matchesBreakpoint = useMediaQuery("(min-width: 900px)");
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Date Of Birth</th>
-          <th>Phone No.</th>
-          <th>Membership</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {students &&
-          students.map((student) => {
-            return (
-              <tr key={student.id}>
-                <td>{student.id}</td>
-                <td>{student.firstName}</td>
-                <td>{student.lastName}</td>
-                <td>
-                  {student.birthDate
-                    ? new Date(student.birthDate).toLocaleDateString()
-                    : null}
-                </td>
-                <td>{student.phoneNumber}</td>
-                <td>{getStatusBadge(student.membership)}</td>
-                <td>
-                  <Group spacing={0}>
-                    <ActionIcon
-                      color="blue"
-                      onClick={() => {
-                        onRenewMembershipModalOpen(student);
-                      }}
-                    >
-                      <IdBadgeIcon></IdBadgeIcon>
-                    </ActionIcon>
-                    <ActionIcon color="green">
-                      <Pencil size={16} />
-                    </ActionIcon>
-                    <ActionIcon
-                      color="red"
-                      onClick={() => {
-                        onDeleteStudentModalOpen(student);
-                      }}
-                    >
-                      <Trash size={16} />
-                    </ActionIcon>
-                  </Group>
-                </td>
-              </tr>
-            );
-          })}
-      </tbody>
-    </Table>
+    <ScrollArea>
+      <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
+        <thead>
+          <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            {matchesBreakpoint && (
+              <>
+                <th>BirthDate</th>
+                <th>Phone No.</th>
+              </>
+            )}
+            <th>Membership</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {students &&
+            students.map((student) => {
+              return (
+                <tr key={student.id}>
+                  <td>{student.firstName}</td>
+                  <td>{student.lastName}</td>
+                  {matchesBreakpoint && (
+                    <>
+                      <td>
+                        {student.birthDate
+                          ? new Date(student.birthDate).toLocaleDateString()
+                          : null}
+                      </td>
+                      <td>{student.phoneNumber}</td>
+                    </>
+                  )}
+                  <td>{getStatusBadge(student.membership)}</td>
+                  <td>
+                    <Group spacing={0}>
+                      <ActionIcon
+                        color="blue"
+                        onClick={() => {
+                          onRenewMembershipModalOpen(student);
+                        }}
+                      >
+                        <IdBadgeIcon></IdBadgeIcon>
+                      </ActionIcon>
+                      <ActionIcon color="green">
+                        <Pencil size={16} />
+                      </ActionIcon>
+                      <ActionIcon
+                        color="red"
+                        onClick={() => {
+                          onDeleteStudentModalOpen(student);
+                        }}
+                      >
+                        <Trash size={16} />
+                      </ActionIcon>
+                    </Group>
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </Table>
+    </ScrollArea>
   );
 };

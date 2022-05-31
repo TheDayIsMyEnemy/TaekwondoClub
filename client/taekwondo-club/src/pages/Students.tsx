@@ -6,6 +6,7 @@ import {
   Text,
   ScrollArea,
   Button,
+  ActionIcon,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import { StudentTable } from "../components/StudentTable";
@@ -120,15 +121,16 @@ export const Students = () => {
         onSubmit={onRenewMembershipFormSubmit}
         onClose={() => setIsMembershipModalOpened(false)}
       />
-      <Paper mb="xs" p="xs" shadow="xs" withBorder style={{ height: "70px" }}>
-        <Button
-          leftIcon={<PersonAddIcon size={16} />}
-          size="sm"
-          color="blue"
+      <Paper p="xs" shadow="xs" withBorder style={{ height: "70px" }}>
+        <ActionIcon
+          variant="filled"
+          color="primary"
+          size="lg"
+          radius="sm"
           onClick={() => setIsAddStudentModalOpened(true)}
         >
-          {t("Add Student")}
-        </Button>
+          <PersonAddIcon size={16} />
+        </ActionIcon>
       </Paper>
       <Paper
         p="xs"
