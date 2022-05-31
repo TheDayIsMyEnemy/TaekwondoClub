@@ -2,6 +2,6 @@
 {
     public interface IMembershipValidationService
     {
-        bool Validate(DateTime startDate, DateTime endDate);
+        bool Validate(DateTimeOffset startDate, DateTimeOffset endDate);
     }
 }

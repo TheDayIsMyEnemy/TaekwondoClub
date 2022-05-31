@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IStudentRepository : IAsyncRepository<Student>
+    public interface IStudentRepository : IRepository<Student>
     {
         Task<IEnumerable<Student>> GetAllStudentsAndMembership();
 

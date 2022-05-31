@@ -22,8 +22,8 @@ namespace ApplicationCore.Services
 
         public async Task<CreateMembershipOutcome> CreateMembership(
             int studentId,
-            DateTime startDate,
-            DateTime endDate)
+            DateTimeOffset startDate,
+            DateTimeOffset endDate)
         {
             var student = await _studentRepository
                 .GetStudentAndMembershipByStudentId(studentId);
@@ -41,8 +41,7 @@ namespace ApplicationCore.Services
                 {
                     StudentId = studentId,
                     StartDate = startDate,
-                    EndDate = endDate,
-                    CreatedDate = DateTime.Now
+                    EndDate = endDate
                 });
             }
             catch (Exception)
@@ -55,8 +54,8 @@ namespace ApplicationCore.Services
 
         public async Task<UpdateMembershipOutcome> UpdateMembership(
             int membershipId,
-            DateTime startDate,
-            DateTime endDate)
+            DateTimeOffset startDate,
+            DateTimeOffset endDate)
         {
             var membership = await _membershipRepository.GetByIdAsync(membershipId);
 

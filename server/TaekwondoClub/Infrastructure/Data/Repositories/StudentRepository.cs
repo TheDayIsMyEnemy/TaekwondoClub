@@ -4,7 +4,7 @@ using ApplicationCore.Models;
 
 namespace Infrastructure.Data.Repositories
 {
-    public class StudentRepository : AsyncRepository<Student>, IStudentRepository
+    public class StudentRepository : Repository<Student>, IStudentRepository
     {
         public StudentRepository(TaekwondoClubContext context) : base(context) { }
 

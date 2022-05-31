@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IAsyncRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity> where TEntity : class
     {
         Task<TEntity> AddAsync(TEntity entity);
         Task AddRangeAsync(IEnumerable<TEntity> entities);

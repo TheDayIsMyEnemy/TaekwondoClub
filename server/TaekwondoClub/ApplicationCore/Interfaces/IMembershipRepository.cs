@@ -2,5 +2,5 @@
 
 namespace ApplicationCore.Interfaces
 {
-    public interface IMembershipRepository : IAsyncRepository<Membership> { }
+    public interface IMembershipRepository : IRepository<Membership> { }
 }

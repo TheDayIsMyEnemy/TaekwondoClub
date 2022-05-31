@@ -4,9 +4,9 @@ namespace ApplicationCore.Services
 {
     public class MembershipValidationService : IMembershipValidationService
     {
-        public bool Validate(DateTime startDate, DateTime endDate)
+        public bool Validate(DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            if (startDate.Date < DateTime.Now.Date || startDate.Date >= endDate.Date)
+            if (startDate.Date < DateTime.UtcNow.Date || startDate.Date >= endDate.Date)
                 return false;
 
             return true;

@@ -34,16 +34,23 @@ namespace ApplicationCore.Services
             string firstName,
             string lastName,
             Gender gender,
-            DateTime? birthDate,
+            DateTimeOffset? birthDate,
             string? phoneNumber,
-            DateTime[]? membershipPeriod)
+            DateTimeOffset[]? membershipPeriod)
         {
             var student = await _studentRepository
                 .GetStudentByFirstNameAndLastName(firstName, lastName);
             if (student != null)
                 return CreateStudentWithMembershipOutcome.StudentAlreadyExists;
 
-            student = new Student(firstName, lastName, gender, birthDate, phoneNumber);
+            student = new Student
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Gender = gender,
+                BirthDate = birthDate,
+                PhoneNumber = phoneNumber
+            };
 
             if (membershipPeriod != null)
             {
@@ -54,7 +61,6 @@ namespace ApplicationCore.Services
                 {
                     StartDate = membershipPeriod[0],
                     EndDate = membershipPeriod[1],
-                    CreatedDate = DateTime.Now
                 };
             }
 

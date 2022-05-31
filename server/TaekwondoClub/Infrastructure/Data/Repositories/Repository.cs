@@ -4,12 +4,12 @@ using ApplicationCore.Interfaces;
 
 namespace Infrastructure.Data.Repositories
 {
-    public abstract class AsyncRepository<TEntity> : IAsyncRepository<TEntity> where TEntity : class
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly TaekwondoClubContext _context;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public AsyncRepository(TaekwondoClubContext context)
+        public Repository(TaekwondoClubContext context)
         {
             _context = context;
             _dbSet = _context.Set<TEntity>();

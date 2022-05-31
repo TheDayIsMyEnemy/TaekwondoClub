@@ -12,8 +12,6 @@ namespace Infrastructure.Data
         public DbSet<Group> Groups => Set<Group>();
         public DbSet<Membership> Memberships => Set<Membership>();
 
-        private const string OnlyDateColumnType = "date";
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Student>(ConfigureStudent);
@@ -23,26 +21,13 @@ namespace Infrastructure.Data
         private void ConfigureStudent(EntityTypeBuilder<Student> builder)
         {
             builder
-                .Property(p => p.BirthDate)
-                .HasColumnType(OnlyDateColumnType);
-            builder
                 .Property(p => p.Gender)
                 .HasConversion<string>();
         }
 
         private void ConfigureMembership(EntityTypeBuilder<Membership> builder)
         {
-            builder
-                .Property(p => p.StartDate)
-                .HasColumnType(OnlyDateColumnType);
-            builder
-                .Property(p => p.EndDate)
-                .HasColumnType(OnlyDateColumnType);
-            builder
-                .Property(p => p.CreatedDate)
-                .HasColumnType(OnlyDateColumnType);
-            builder
-                .Ignore(p => p.IsActive);
+            builder.Ignore(p => p.IsActive);
         }
     }
 }

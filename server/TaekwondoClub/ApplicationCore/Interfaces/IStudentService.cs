@@ -15,8 +15,8 @@ namespace ApplicationCore.Interfaces
             string firstName,
             string lastName,
             Gender gender,
-            DateTime? birthDate,
+            DateTimeOffset? birthDate,
             string? phoneNumber,
-            DateTime[]? membershipPeriod);
+            DateTimeOffset[]? membershipPeriod);
     }
 }
