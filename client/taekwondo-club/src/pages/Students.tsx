@@ -76,7 +76,7 @@ export const Students = () => {
            has been deleted successfully!`,
         color: "green",
       });
-      loadStudents();
+      setStudents(students.filter((s) => s.id !== selectedStudent!.id));
     });
   };
 
@@ -125,11 +125,11 @@ export const Students = () => {
         <ActionIcon
           variant="filled"
           color="primary"
-          size="lg"
+          size={35}
           radius="sm"
           onClick={() => setIsAddStudentModalOpened(true)}
         >
-          <PersonAddIcon size={16} />
+          <PersonAddIcon size={18} />
         </ActionIcon>
       </Paper>
       <Paper

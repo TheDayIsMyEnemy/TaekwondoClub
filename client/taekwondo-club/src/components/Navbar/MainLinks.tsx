@@ -35,8 +35,8 @@ const MainLink = ({ icon: Icon, color, name, path }: Route) => {
     <>
       <Anchor component={Link} to={path} className={classes.button}>
         <Group>
-          <ThemeIcon color={color} variant="light" size="lg">
-            <Icon size="small" />
+          <ThemeIcon color={color} variant="light" size={35}>
+            <Icon size={20} />
           </ThemeIcon>
 
           {/* <Text size="sm">{name}</Text> */}

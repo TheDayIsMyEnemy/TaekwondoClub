@@ -43,7 +43,12 @@ export const StudentTable: FC<StudentTableProps> = ({
   const matchesBreakpoint = useMediaQuery("(min-width: 900px)");
   return (
     <ScrollArea>
-      <Table sx={{ minWidth: 800 }} verticalSpacing="xs">
+      <Table
+        sx={{ minWidth: 800 }}
+        fontSize="lg"
+        horizontalSpacing="xs"
+        verticalSpacing="xs"
+      >
         <thead>
           <tr>
             <th>FirstName</th>
@@ -84,10 +89,10 @@ export const StudentTable: FC<StudentTableProps> = ({
                           onRenewMembershipModalOpen(student);
                         }}
                       >
-                        <IdBadgeIcon></IdBadgeIcon>
+                        <IdBadgeIcon size={18} />
                       </ActionIcon>
                       <ActionIcon color="green">
-                        <Pencil size={16} />
+                        <Pencil size={20} />
                       </ActionIcon>
                       <ActionIcon
                         color="red"
@@ -95,7 +100,7 @@ export const StudentTable: FC<StudentTableProps> = ({
                           onDeleteStudentModalOpen(student);
                         }}
                       >
-                        <Trash size={16} />
+                        <Trash size={20} />
                       </ActionIcon>
                     </Group>
                   </td>
