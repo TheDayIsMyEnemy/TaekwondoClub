@@ -350,3 +350,4 @@ MigrationBackup/
 .ionide/
 /server/TaekwondoClub/WebApi/appsettings.Production.json
 /server/TaekwondoClub/WebApi/.config
+/client/taekwondo-club/.env
