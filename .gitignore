@@ -351,3 +351,5 @@ MigrationBackup/
 /server/TaekwondoClub/WebApi/appsettings.Production.json
 /server/TaekwondoClub/WebApi/.config
 /client/taekwondo-club/.env
+/client/taekwondo-club/.env.production
+/client/taekwondo-club/.env.development
