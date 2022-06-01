@@ -1,10 +1,15 @@
 import { Navbar, Center, createStyles, Group } from "@mantine/core";
 import MainLinks from "./MainLinks";
-// import { MantineLogoSmall } from "../../shared/MantineLogo";
 
 const NavbarMinimal = () => {
   return (
-    <Navbar height={750} width={{ base: 80 }}>
+    <Navbar
+      height="100%"
+      fixed
+      position={{ top: 0, left: 0 }}
+      sx={{ top: 0 }}
+      width={{ base: 80 }}
+    >
       <Center>{/* <MantineLogoSmall /> */}</Center>
       <Navbar.Section grow mt={50}>
         <Group direction="column" align="center" spacing={0}>

@@ -1,7 +1,6 @@
 import { useMantineColorScheme, useMantineTheme } from "@mantine/styles";
 import { Group, ActionIcon } from "@mantine/core";
 import { Sun, MoonStars } from "tabler-icons-react";
-import { BookmarkFillIcon, BookmarkIcon } from "@primer/octicons-react";
 
 const Brand = (): JSX.Element => {
   const theme = useMantineTheme();
@@ -19,17 +18,15 @@ const Brand = (): JSX.Element => {
         }`,
       }}
     >
-      <Group position="apart">
-        <ActionIcon variant="light" size={30} color="orange">
-          {dark ? <BookmarkIcon /> : <BookmarkFillIcon />}
-        </ActionIcon>
+      <Group position="right">
         <ActionIcon
           variant="outline"
           color={dark ? "gray" : "blue"}
           onClick={() => toggleColorScheme()}
           title="Toggle color scheme"
+          size={33}
         >
-          {dark ? <Sun size={18} /> : <MoonStars size={18} />}
+          {dark ? <Sun size={22} /> : <MoonStars size={22} />}
         </ActionIcon>
       </Group>
     </div>

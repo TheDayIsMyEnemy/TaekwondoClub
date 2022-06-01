@@ -6,13 +6,7 @@ import {
   ColorSchemeProvider,
   AppShell,
   Header,
-  MediaQuery,
-  Burger,
-  Text,
-  Navbar,
   ColorScheme,
-  ScrollArea,
-  GlobalStyles,
   Global,
 } from "@mantine/core";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -47,13 +41,16 @@ const App = () => {
         <Global styles={globalStyles} />
         <NotificationsProvider position="top-right" zIndex={2077}>
           <AppShell
-            // Add fixed prop if don't want sidebar to shrink
-            // But it will make main content to be tear off into right side
-            // fixed
+            fixed
             padding="xs"
             navbar={<NavbarMinimal />}
             header={
-              <Header height={60} p="xs">
+              <Header
+                fixed
+                position={{ left: 80, right: 0 }}
+                height={60}
+                p="xs"
+              >
                 <Brand />
               </Header>
             }
