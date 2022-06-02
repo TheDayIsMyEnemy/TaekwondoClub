@@ -5,7 +5,6 @@ import {
   Space,
   Text,
   ScrollArea,
-  Button,
   ActionIcon,
 } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
@@ -27,8 +26,9 @@ import { useTranslation } from "react-i18next";
 import { PersonAddIcon } from "@primer/octicons-react";
 
 export const Students = () => {
-  const [activePage, setPage] = useState<number>(1);
+  const [activePage, setActivePage] = useState<number>(1);
   const [students, setStudents] = useState<Student[]>([]);
+  const [selectedStudents, setSelectedStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isMembershipModalOpened, setIsMembershipModalOpened] =
@@ -37,6 +37,8 @@ export const Students = () => {
     useState<boolean>(false);
   const [isAddStudentModalOpened, setIsAddStudentModalOpened] =
     useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState<number>(0);
+  const totalStudentsPerPage = 10;
 
   useEffect(() => {
     if (!isLoading) {
@@ -51,6 +53,8 @@ export const Students = () => {
     setIsLoading(true);
     getStudents().then((res) => {
       setStudents(res.data);
+      setTotalPages(Math.ceil(res.data.length / totalStudentsPerPage));
+      setSelectedStudentsByPage(res.data, activePage);
       setIsLoading(false);
     });
   };
@@ -76,7 +80,9 @@ export const Students = () => {
            has been deleted successfully!`,
         color: "green",
       });
-      setStudents(students.filter((s) => s.id !== selectedStudent!.id));
+      const newStudents = students.filter((s) => s.id !== selectedStudent!.id);
+      setStudents(newStudents);
+      setSelectedStudentsByPage(newStudents, activePage);
     });
   };
 
@@ -101,7 +107,17 @@ export const Students = () => {
     }
   };
 
-  const { t } = useTranslation();
+  const onPageChanged = (page: number) => {
+    setActivePage(page);
+    setSelectedStudentsByPage(students, page);
+  };
+
+  const setSelectedStudentsByPage = (students: Student[], page: number) => {
+    const start = (page - 1) * totalStudentsPerPage;
+    const end = start + totalStudentsPerPage;
+    const studentsByPage = students.slice(start, end);
+    setSelectedStudents(studentsByPage);
+  };
 
   return (
     <>
@@ -137,14 +153,14 @@ export const Students = () => {
         shadow="xs"
         withBorder
         component={ScrollArea}
-        style={{ height: "calc(100vh - 110px)" }}
+        style={{ height: "calc(100vh - 180px)" }}
       >
         {isLoading ? (
           <Text>No data found...</Text>
         ) : (
           <>
             <StudentTable
-              students={students}
+              students={selectedStudents}
               onRenewMembershipModalOpen={(selectedStudent) => {
                 setIsMembershipModalOpened(true);
                 setSelectedStudent(selectedStudent);
@@ -156,14 +172,14 @@ export const Students = () => {
             />
             <Space h="sm" />
             <Pagination
-              total={20}
+              total={totalPages}
               color="orange"
               size="md"
               radius="md"
-              siblings={1} // default to 1
-              boundaries={2} // default to 1
+              siblings={1}
+              boundaries={2}
               page={activePage}
-              onChange={setPage}
+              onChange={onPageChanged}
             />
           </>
         )}
