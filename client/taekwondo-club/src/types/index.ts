@@ -16,13 +16,19 @@ type Student = {
   membership: Membership | null;
 };
 
+type CreateMembership = {
+  startDate: Date | null;
+  endDate: Date | null;
+  subscriptionFee: number | undefined;
+};
+
 type CreateStudent = {
   firstName: string;
   lastName: string;
   gender: string;
-  birthDate: Date | null;
+  birthDate: Date | null | string;
   phoneNumber: string | null;
-  membershipPeriod: [Date | null, Date | null] | null;
+  membership: CreateMembership | null;
 };
 
-export type { Student, Membership, CreateStudent };
+export type { Student, Membership, CreateMembership, CreateStudent };

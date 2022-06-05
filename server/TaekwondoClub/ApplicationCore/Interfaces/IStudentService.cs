@@ -11,12 +11,11 @@ namespace ApplicationCore.Interfaces
 
         Task<DeleteStudentOutcome> DeleteStudent(int studentId);
 
-        Task<CreateStudentWithMembershipOutcome> CreateStudentWithMembership(
+        Task<(CreateStudentOutcome, int?)> CreateStudent(
             string firstName,
             string lastName,
             Gender gender,
-            DateTimeOffset? birthDate,
-            string? phoneNumber,
-            DateTimeOffset[]? membershipPeriod);
+            DateTime? birthDate,
+            string? phoneNumber);
     }
 }

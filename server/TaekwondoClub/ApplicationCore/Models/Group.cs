@@ -1,6 +1,6 @@
 ﻿namespace ApplicationCore.Models
 {
-    public class Group
+    public class Group : AuditableEntity
     {
         public int Id { get; set; }
 

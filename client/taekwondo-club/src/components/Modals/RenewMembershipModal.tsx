@@ -1,11 +1,22 @@
-import { Button, Center, Modal, Space } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Input,
+  Modal,
+  NumberInput,
+  Space,
+} from "@mantine/core";
 import { RangeCalendar } from "@mantine/dates";
 import { FC, useState } from "react";
 import dayjs from "dayjs";
 
 type RenewMembershipModalProps = {
   opened: boolean;
-  onSubmit: (startDate: Date, endDate: Date) => void;
+  onSubmit: (
+    startDate: Date,
+    endDate: Date,
+    subscriptionFee: number | undefined
+  ) => void;
   onClose: () => void;
 };
 
@@ -20,15 +31,26 @@ const RenewMembershipModal: FC<RenewMembershipModalProps> = ({
     startDate,
     endDate,
   ]);
+  const [subscriptionFee, setSubscriptionFee] = useState<number | undefined>(
+    20
+  );
 
   return (
     <Modal size="xl" opened={opened} onClose={onClose} title="Renew Membership">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onSubmit(calendar[0]!, calendar[1]!);
+          onSubmit(calendar[0]!, calendar[1]!, subscriptionFee);
         }}
       >
+        <NumberInput
+          value={subscriptionFee}
+          onChange={(val) => setSubscriptionFee(val)}
+          label="Subscription Fee"
+          sx={{ width: 150 }}
+          mb={15}
+          required
+        />
         <RangeCalendar
           value={calendar}
           onChange={setCalendar}

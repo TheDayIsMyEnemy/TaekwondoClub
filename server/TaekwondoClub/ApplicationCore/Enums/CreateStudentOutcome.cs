@@ -1,9 +1,8 @@
 ﻿namespace ApplicationCore.Enums
 {
-    public enum CreateStudentWithMembershipOutcome
+    public enum CreateStudentOutcome
     {
         StudentAlreadyExists,
-        MembershipPeriodValidationFailed,
         InsertFailed,
         Success
     }

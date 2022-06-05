@@ -115,8 +115,8 @@ namespace ApplicationCore.Services
         {
             if (prop.PropertyType == typeof(Gender))
                 return Enum.Parse(prop.PropertyType, cellValue);
-            if (prop.PropertyType == typeof(DateTimeOffset?))
-                return DateTimeOffset.ParseExact(cellValue, "dd/MM/yyyy", null);
+            if (prop.PropertyType == typeof(DateTime?))
+                return DateTime.ParseExact(cellValue, "dd/MM/yyyy", null);
 
             return cellValue;
         }

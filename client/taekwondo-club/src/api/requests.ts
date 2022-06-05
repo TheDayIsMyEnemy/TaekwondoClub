@@ -15,24 +15,28 @@ export const deleteStudent = (id: number) => {
 
 export const createMembership = (
   studentId: number,
-  startDate: Date,
-  endDate: Date
+  startDate: Date | null,
+  endDate: Date | null,
+  subscriptionFee: number | undefined
 ) => {
   return client.post("/membership", {
     studentId: studentId,
     startDate: startDate,
     endDate: endDate,
+    subscriptionFee: subscriptionFee,
   });
 };
 
 export const updateMembership = (
   membershipId: number,
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  subscriptionFee: number | undefined
 ) => {
   return client.put("/membership", {
     membershipId: membershipId,
     startDate: startDate,
     endDate: endDate,
+    subscriptionFee: subscriptionFee,
   });
 };

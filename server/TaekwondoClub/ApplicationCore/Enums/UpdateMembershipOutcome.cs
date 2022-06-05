@@ -4,7 +4,6 @@
     {
         Success,
         MembershipNotFound,
-        InvalidMembershipPeriod,
         UpdateFailed
     }
 }

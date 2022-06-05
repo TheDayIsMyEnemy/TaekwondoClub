@@ -42,22 +42,20 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateStudentRequest req)
         {
-            var outcome = await _studentService.CreateStudentWithMembership(
+            var (outcome, studentId) = await _studentService.CreateStudent(
                 req.FirstName,
                 req.LastName,
                 req.Gender,
                 req.BirthDate,
-                req.PhoneNumber,
-                req.MembershipPeriod);
+                req.PhoneNumber);
 
             switch (outcome)
             {
-                case CreateStudentWithMembershipOutcome.StudentAlreadyExists:
-                case CreateStudentWithMembershipOutcome.MembershipPeriodValidationFailed:      
-                case CreateStudentWithMembershipOutcome.InsertFailed:
+                case CreateStudentOutcome.StudentAlreadyExists:
+                case CreateStudentOutcome.InsertFailed:
                     return UnprocessableEntity();
-                case CreateStudentWithMembershipOutcome.Success:
-                    return Ok();
+                case CreateStudentOutcome.Success:
+                    return Ok(studentId);
                 default:
                     return StatusCode(StatusCodes.Status500InternalServerError);
             }

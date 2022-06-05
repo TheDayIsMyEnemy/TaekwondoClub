@@ -5,7 +5,6 @@
         Success,
         StudentNotFound,
         StudentMembershipAlreadyExists,
-        InvalidMembershipPeriod,
-        InsertFailed
+        InsertFailed,
     }
 }

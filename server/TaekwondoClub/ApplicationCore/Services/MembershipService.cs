@@ -6,42 +6,42 @@ namespace ApplicationCore.Services
 {
     public class MembershipService : IMembershipService
     {
-        public readonly IMembershipRepository _membershipRepository;
         public readonly IStudentRepository _studentRepository;
-        public readonly IMembershipValidationService _membershipValidationService;
+        public readonly IMembershipRepository _membershipRepository;
+        public readonly IMembershipHistoryRepository _membershipHistoryRepository;
 
         public MembershipService(
-            IMembershipRepository membershipRepository,
             IStudentRepository studentRepository,
-            IMembershipValidationService membershipValidationService)
+            IMembershipRepository membershipRepository,
+            IMembershipHistoryRepository membershipHistoryRepository)
         {
-            _membershipRepository = membershipRepository;
             _studentRepository = studentRepository;
-            _membershipValidationService = membershipValidationService;
+            _membershipRepository = membershipRepository;
+            _membershipHistoryRepository = membershipHistoryRepository;
         }
 
         public async Task<CreateMembershipOutcome> CreateMembership(
             int studentId,
-            DateTimeOffset startDate,
-            DateTimeOffset endDate)
+            DateTime startDate,
+            DateTime endDate,
+            double subscriptionFee)
         {
             var student = await _studentRepository
                 .GetStudentAndMembershipByStudentId(studentId);
-
             if (student == null)
                 return CreateMembershipOutcome.StudentNotFound;
             if (student.Membership != null)
                 return CreateMembershipOutcome.StudentMembershipAlreadyExists;
-            if (!_membershipValidationService.Validate(startDate, endDate))
-                return CreateMembershipOutcome.InvalidMembershipPeriod;
-                
+
+            Membership membership;
             try
             {
-                await _membershipRepository.AddAsync(new Membership
+                membership = await _membershipRepository.AddAsync(new Membership
                 {
                     StudentId = studentId,
-                    StartDate = startDate,
-                    EndDate = endDate
+                    StartDate = startDate.ToLocalTime(),
+                    EndDate = endDate.ToLocalTime(),
+                    SubscriptionFee = subscriptionFee
                 });
             }
             catch (Exception)
@@ -49,23 +49,34 @@ namespace ApplicationCore.Services
                 return CreateMembershipOutcome.InsertFailed;
             }
 
+            try
+            {
+                await _membershipHistoryRepository.AddAsync(new MembershipHistory
+                {
+                    MembershipId = membership.Id,
+                    StartDate = membership.StartDate,
+                    EndDate = membership.EndDate,
+                    SubscriptionFee = membership.SubscriptionFee
+                });
+            }
+            catch (Exception) { }
+
             return CreateMembershipOutcome.Success;
         }
 
         public async Task<UpdateMembershipOutcome> UpdateMembership(
             int membershipId,
-            DateTimeOffset startDate,
-            DateTimeOffset endDate)
+            DateTime startDate,
+            DateTime endDate,
+            double subscriptionFee)
         {
             var membership = await _membershipRepository.GetByIdAsync(membershipId);
-
             if (membership == null)
                 return UpdateMembershipOutcome.MembershipNotFound;
-            if (!_membershipValidationService.Validate(startDate, endDate))
-                return UpdateMembershipOutcome.InvalidMembershipPeriod;
 
-            membership.StartDate = startDate;
-            membership.EndDate = endDate;
+            membership.StartDate = startDate.ToLocalTime();
+            membership.EndDate = endDate.ToLocalTime();
+            membership.SubscriptionFee = subscriptionFee;
 
             try
             {
@@ -75,6 +86,18 @@ namespace ApplicationCore.Services
             {
                 return UpdateMembershipOutcome.UpdateFailed;
             }
+
+            try
+            {
+                await _membershipHistoryRepository.AddAsync(new MembershipHistory
+                {
+                    MembershipId = membership.Id,
+                    StartDate = membership.StartDate,
+                    EndDate = membership.EndDate,
+                    SubscriptionFee = membership.SubscriptionFee
+                });
+            }
+            catch (Exception) { }
 
             return UpdateMembershipOutcome.Success;
         }

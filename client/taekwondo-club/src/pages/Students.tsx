@@ -60,15 +60,28 @@ export const Students = () => {
   };
 
   const onAddStudentFormSubmit = (student: CreateStudent) => {
-    createStudent(student).then(() => {
-      setIsAddStudentModalOpened(false);
-      showNotification({
-        title: "Add Student",
-        message: `${student.firstName} ${student.lastName} has been created successfully!`,
-        color: "green",
-      });
-      loadStudents();
+    createStudent(student).then((response) => {
+      if (student.membership) {
+        createMembership(
+          response.data,
+          student.membership.startDate,
+          student.membership.endDate,
+          student.membership.subscriptionFee
+        ).then(() => onStudentCreated(student.firstName, student.lastName));
+      } else {
+        onStudentCreated(student.firstName, student.lastName);
+      }
     });
+  };
+
+  const onStudentCreated = (firstName: string, lastName: string) => {
+    setIsAddStudentModalOpened(false);
+    showNotification({
+      title: "Add Student",
+      message: `${firstName} ${lastName} has been created successfully!`,
+      color: "green",
+    });
+    loadStudents();
   };
 
   const onDeleteStudentFormSubmit = () => {
@@ -86,21 +99,33 @@ export const Students = () => {
     });
   };
 
-  const onRenewMembershipFormSubmit = (startDate: Date, endDate: Date) => {
+  const onRenewMembershipFormSubmit = (
+    startDate: Date,
+    endDate: Date,
+    subscriptionFee: number | undefined
+  ) => {
     if (selectedStudent?.membership) {
-      updateMembership(selectedStudent.membership.id, startDate, endDate).then(
-        () => {
-          setIsMembershipModalOpened(false);
-          showNotification({
-            title: "Renew Membership",
-            message: "The membership has been updated successfully!",
-            color: "green",
-          });
-          loadStudents();
-        }
-      );
+      updateMembership(
+        selectedStudent.membership.id,
+        startDate,
+        endDate,
+        subscriptionFee
+      ).then(() => {
+        setIsMembershipModalOpened(false);
+        showNotification({
+          title: "Renew Membership",
+          message: "The membership has been updated successfully!",
+          color: "green",
+        });
+        loadStudents();
+      });
     } else {
-      createMembership(selectedStudent!.id, startDate, endDate).then(() => {
+      createMembership(
+        selectedStudent!.id,
+        startDate,
+        endDate,
+        subscriptionFee
+      ).then(() => {
         setIsMembershipModalOpened(false);
         loadStudents();
       });
@@ -156,7 +181,7 @@ export const Students = () => {
         style={{ height: "calc(100vh - 180px)" }}
       >
         {isLoading ? (
-          <Text>No data found...</Text>
+          <Text>Loading...</Text>
         ) : (
           <>
             <StudentTable

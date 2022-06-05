@@ -6,6 +6,7 @@ import {
   CSSObject,
   Group,
   Modal,
+  NumberInput,
   Radio,
   RadioGroup,
   Switch,
@@ -15,7 +16,7 @@ import { DatePicker, DateRangePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { CreateStudent } from "../../types";
+import { CreateStudent, CreateMembership } from "../../types";
 
 type AddStudentModalProps = {
   opened: boolean;
@@ -37,7 +38,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
       birthDate: null,
       gender: "",
       phoneNumber: null,
-      membershipPeriod: null,
+      membership: null,
     },
     validate: {
       firstName: (value) => (/^\s*$/.test(value) ? true : null),
@@ -54,8 +55,17 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
         }
         return /^0\d{9}$|^359\d{9}$/.test(value) ? null : "Invalid number";
       },
-      membershipPeriod: (values) => {
-        if (values != null && (values[0] == null || values[1] == null)) {
+      membership: (value) => {
+        if (
+          value != null &&
+          (value.startDate == null || value.endDate == null)
+        ) {
+          return true;
+        }
+        if (
+          value != null &&
+          (!value.subscriptionFee || value.subscriptionFee < 20)
+        ) {
           return true;
         }
         return null;
@@ -126,24 +136,46 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
             mb="xs"
             radius="md"
             onChange={() => {
-              let membershipPeriod: [Date | null, Date | null] | null = null;
+              let membership = null;
               if (!isAddMembershipChecked) {
-                membershipPeriod = [
-                  new Date(),
-                  dayjs().add(1, "month").toDate(),
-                ];
+                membership = {
+                  startDate: new Date(),
+                  endDate: dayjs().add(1, "month").toDate(),
+                  subscriptionFee: 20,
+                };
               }
-              form.setFieldValue("membershipPeriod", membershipPeriod);
+              form.setFieldValue("membership", membership);
               setIsAddMembershipChecked(!isAddMembershipChecked);
             }}
             styles={{ label: { paddingLeft: 10 } }}
           />
           <Collapse in={isAddMembershipChecked}>
+            <NumberInput
+              value={
+                form.values.membership
+                  ? form.values.membership.subscriptionFee
+                  : 0
+              }
+              onChange={(value) => {
+                form.values.membership!.subscriptionFee = value;
+              }}
+              label="Subscription Fee"
+              sx={{ width: 150 }}
+              mb={10}
+            />
             <DateRangePicker
-              required
               label="Membership period"
               sx={{ width: 250 }}
-              {...form.getInputProps("membershipPeriod")}
+              value={[
+                form.values.membership
+                  ? form.values.membership.startDate
+                  : null,
+                form.values.membership ? form.values.membership.endDate : null,
+              ]}
+              onChange={(value) => {
+                form.values.membership!.startDate = value[0];
+                form.values.membership!.endDate = value[1];
+              }}
             />
           </Collapse>
           <Center mt="sm">

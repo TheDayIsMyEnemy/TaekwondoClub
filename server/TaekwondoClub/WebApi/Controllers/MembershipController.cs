@@ -17,8 +17,11 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMembershipRequest req)
         {
-            var outcome = await _membershipService
-                .CreateMembership(req.StudentId, req.StartDate, req.EndDate);
+            var outcome = await _membershipService.CreateMembership(
+                req.StudentId,
+                req.StartDate,
+                req.EndDate,
+                req.SubscriptionFee);
 
             switch (outcome)
             {
@@ -26,7 +29,6 @@ namespace WebApi.Controllers
                     return Ok();
                 case CreateMembershipOutcome.StudentNotFound:
                 case CreateMembershipOutcome.StudentMembershipAlreadyExists:
-                case CreateMembershipOutcome.InvalidMembershipPeriod:
                 case CreateMembershipOutcome.InsertFailed:
                     return UnprocessableEntity();
                 default:
@@ -37,15 +39,17 @@ namespace WebApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateMembershipRequest req)
         {
-            var outcome = await _membershipService
-                .UpdateMembership(req.MembershipId, req.StartDate, req.EndDate);
+            var outcome = await _membershipService.UpdateMembership(
+                req.MembershipId,
+                req.StartDate,
+                req.EndDate,
+                req.SubscriptionFee);
 
             switch (outcome)
             {
                 case UpdateMembershipOutcome.Success:
                     return Ok();
                 case UpdateMembershipOutcome.MembershipNotFound:
-                case UpdateMembershipOutcome.InvalidMembershipPeriod:
                 case UpdateMembershipOutcome.UpdateFailed:
                     return UnprocessableEntity();
                 default:

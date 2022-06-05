@@ -7,14 +7,10 @@ namespace ApplicationCore.Services
     public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly IMembershipValidationService _membershipValidationService;
 
-        public StudentService(
-            IStudentRepository studentRepository,
-            IMembershipValidationService membershipValidationService)
+        public StudentService(IStudentRepository studentRepository)
         {
             _studentRepository = studentRepository;
-            _membershipValidationService = membershipValidationService;
         }
 
         public async Task<IEnumerable<Student>> GetAllStudentsAndMembership()
@@ -30,39 +26,26 @@ namespace ApplicationCore.Services
             return (GetStudentOutcome.Success, student);
         }
 
-        public async Task<CreateStudentWithMembershipOutcome> CreateStudentWithMembership(
+        public async Task<(CreateStudentOutcome, int?)> CreateStudent(
             string firstName,
             string lastName,
             Gender gender,
-            DateTimeOffset? birthDate,
-            string? phoneNumber,
-            DateTimeOffset[]? membershipPeriod)
+            DateTime? birthDate,
+            string? phoneNumber)
         {
             var student = await _studentRepository
                 .GetStudentByFirstNameAndLastName(firstName, lastName);
             if (student != null)
-                return CreateStudentWithMembershipOutcome.StudentAlreadyExists;
+                return (CreateStudentOutcome.StudentAlreadyExists, null);
 
             student = new Student
             {
                 FirstName = firstName,
                 LastName = lastName,
                 Gender = gender,
-                BirthDate = birthDate,
+                BirthDate = birthDate?.ToLocalTime(),
                 PhoneNumber = phoneNumber
             };
-
-            if (membershipPeriod != null)
-            {
-                if (!_membershipValidationService.Validate(membershipPeriod[0], membershipPeriod[1]))
-                    return CreateStudentWithMembershipOutcome.MembershipPeriodValidationFailed;
-
-                student.Membership = new Membership
-                {
-                    StartDate = membershipPeriod[0],
-                    EndDate = membershipPeriod[1],
-                };
-            }
 
             try
             {
@@ -70,10 +53,10 @@ namespace ApplicationCore.Services
             }
             catch (Exception)
             {
-                return CreateStudentWithMembershipOutcome.InsertFailed;
+                return (CreateStudentOutcome.InsertFailed, null);
             }
 
-            return CreateStudentWithMembershipOutcome.Success;
+            return (CreateStudentOutcome.Success, student.Id);
         }
 
         public async Task<DeleteStudentOutcome> DeleteStudent(int studentId)

@@ -2,7 +2,7 @@
 
 namespace ApplicationCore.Models
 {
-    public class Student
+    public class Student : AuditableEntity
     {
         public int Id { get; set; }
 
@@ -12,7 +12,7 @@ namespace ApplicationCore.Models
 
         public Gender Gender { get; set; }
 
-        public DateTimeOffset? BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public string? PhoneNumber { get; set; }
 
