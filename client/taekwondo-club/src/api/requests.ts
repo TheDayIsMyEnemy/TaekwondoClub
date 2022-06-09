@@ -13,13 +13,17 @@ export const deleteStudent = (id: number) => {
   return client.delete(`/students/${id}`);
 };
 
+export const getMemberships = () => {
+  return client.get("/memberships");
+};
+
 export const createMembership = (
   studentId: number,
   startDate: Date | null,
   endDate: Date | null,
   subscriptionFee: number | undefined
 ) => {
-  return client.post("/membership", {
+  return client.post("/memberships", {
     studentId: studentId,
     startDate: startDate,
     endDate: endDate,
@@ -33,7 +37,7 @@ export const updateMembership = (
   endDate: Date,
   subscriptionFee: number | undefined
 ) => {
-  return client.put("/membership", {
+  return client.put("/memberships", {
     membershipId: membershipId,
     startDate: startDate,
     endDate: endDate,

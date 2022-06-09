@@ -45,7 +45,7 @@ export const StudentTable: FC<StudentTableProps> = ({
     <ScrollArea>
       <Table
         sx={{ minWidth: 800 }}
-        fontSize="lg"
+        fontSize={matchesBreakpoint ? "lg" : "xs"}
         horizontalSpacing="xs"
         verticalSpacing="xs"
       >
@@ -53,12 +53,8 @@ export const StudentTable: FC<StudentTableProps> = ({
           <tr>
             <th>FirstName</th>
             <th>LastName</th>
-            {matchesBreakpoint && (
-              <>
-                <th>BirthDate</th>
-                <th>Phone No.</th>
-              </>
-            )}
+            <th>BirthDate</th>
+            <th>Phone No.</th>
             <th>Membership</th>
             <th>Actions</th>
           </tr>
@@ -70,16 +66,12 @@ export const StudentTable: FC<StudentTableProps> = ({
                 <tr key={student.id}>
                   <td>{student.firstName}</td>
                   <td>{student.lastName}</td>
-                  {matchesBreakpoint && (
-                    <>
-                      <td>
-                        {student.birthDate
-                          ? new Date(student.birthDate).toLocaleDateString()
-                          : null}
-                      </td>
-                      <td>{student.phoneNumber}</td>
-                    </>
-                  )}
+                  <td>
+                    {student.birthDate
+                      ? new Date(student.birthDate).toLocaleDateString()
+                      : null}
+                  </td>
+                  <td>{student.phoneNumber}</td>
                   <td>{getStatusBadge(student.membership)}</td>
                   <td>
                     <Group spacing={0}>

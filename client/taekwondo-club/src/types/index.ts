@@ -2,8 +2,15 @@ type Membership = {
   id: number;
   startDate: Date;
   endDate: Date;
-  note: string;
+  subscriptionFee: number;
   isActive: boolean;
+  history: MembershipHistory[];
+};
+
+type MembershipHistory = {
+  startDate: Date;
+  endDate: Date;
+  subscriptionFee: number;
 };
 
 type Student = {

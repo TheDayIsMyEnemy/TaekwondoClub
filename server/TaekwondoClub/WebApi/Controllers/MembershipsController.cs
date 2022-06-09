@@ -1,18 +1,23 @@
 ﻿using ApplicationCore.Enums;
 using ApplicationCore.Interfaces;
+using ApplicationCore.Models;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models.Requests;
 
 namespace WebApi.Controllers
 {
-    public class MembershipController : ApiControllerBase
+    public class MembershipsController : ApiControllerBase
     {
         private readonly IMembershipService _membershipService;
 
-        public MembershipController(IMembershipService membershipService)
+        public MembershipsController(IMembershipService membershipService)
         {
             _membershipService = membershipService;
         }
+
+        [HttpGet]
+        public async Task<IEnumerable<Membership>> GetAll()
+            => await _membershipService.GetAllMembershipsAndHistory();
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateMembershipRequest req)

@@ -1,9 +1,12 @@
 ﻿using ApplicationCore.Enums;
+using ApplicationCore.Models;
 
 namespace ApplicationCore.Interfaces
 {
     public interface IMembershipService
     {
+        Task<IEnumerable<Membership>> GetAllMembershipsAndHistory();
+
         Task<CreateMembershipOutcome> CreateMembership(
             int studentId,
             DateTime startDate,

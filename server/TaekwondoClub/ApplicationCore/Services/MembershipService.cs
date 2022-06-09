@@ -20,6 +20,9 @@ namespace ApplicationCore.Services
             _membershipHistoryRepository = membershipHistoryRepository;
         }
 
+        public async Task<IEnumerable<Membership>> GetAllMembershipsAndHistory()
+            => await _membershipRepository.GetAllMembershipsAndHistory();
+
         public async Task<CreateMembershipOutcome> CreateMembership(
             int studentId,
             DateTime startDate,

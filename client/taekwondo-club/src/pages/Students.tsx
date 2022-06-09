@@ -24,6 +24,7 @@ import {
 } from "../api/requests";
 import { useTranslation } from "react-i18next";
 import { PersonAddIcon } from "@primer/octicons-react";
+import { useMediaQuery } from "@mantine/hooks";
 
 export const Students = () => {
   const [activePage, setActivePage] = useState<number>(1);
@@ -144,6 +145,9 @@ export const Students = () => {
     setSelectedStudents(studentsByPage);
   };
 
+  const matchesBreakpoint = useMediaQuery("(min-width: 900px)");
+  const height = matchesBreakpoint ? 500 : 360;
+
   return (
     <>
       <AddStudentModal
@@ -178,7 +182,7 @@ export const Students = () => {
         shadow="xs"
         withBorder
         component={ScrollArea}
-        style={{ height: "calc(100vh - 180px)" }}
+        style={{ height: height }}
       >
         {isLoading ? (
           <Text>Loading...</Text>

@@ -1,4 +1,4 @@
-import { Home } from "../pages/Home";
+import { Dashboard } from "../pages/Dashboard";
 import { Students } from "../pages/Students";
 import { UploadStudents } from "../pages/UploadStudents";
 import { HomeIcon, UploadIcon, Icon, PeopleIcon } from "@primer/octicons-react";
@@ -14,9 +14,9 @@ export type Route = {
 
 const routes: Route[] = [
   {
-    name: "Home",
+    name: "Dashboard",
     path: "/",
-    element: Home,
+    element: Dashboard,
     color: "pink",
     icon: HomeIcon,
   },
